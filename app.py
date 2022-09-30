@@ -8,5 +8,9 @@ app.secret_key = "".join(random.choices(string.ascii_letters, k=256))
 def u_login_page():
     return render_template("u_login.html")
 
+@app.route("/signup")
+def signup_page():
+    return render_template("signup.html")
+
 if __name__ == "__main__":
     app.run(debug=True)
