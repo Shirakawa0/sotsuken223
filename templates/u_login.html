@@ -1,11 +1,14 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-</head>
-<body>
-    <h1>利用者ログイン</h1>
-    <a href="{{ url_for('signup_page') }}">新規登録</a>
-</body>
-</html>
+{% extends "template.html" %}
+{% block content %}
+<img src="{{ url_for('static', filename='img/logo.png') }}" alt="就活帳" class="logo1">
+<h1>利用者ログイン</h1>
+<form action="">
+    学籍番号<br>
+    <input type="number"><br>
+    パスワード<br>
+    <input type="password"><br>
+    <input type="submit" value="ログイン">
+</form>
+<a href="">新規登録はこちら</a>
+<a href="">管理者ログイン</a>
+{% endblock %}
