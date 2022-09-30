@@ -21,5 +21,9 @@ def aaa_page():
     return render_template("aaa_2.html")
 
 
+@app.route("/test")
+def test():
+    return
+
 if __name__ == "__main__":
     app.run(debug=True)
