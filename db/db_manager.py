@@ -1,7 +1,4 @@
-# データベース操作クラス
-
 import pymysql.cursors
-# import pymysql
 import random,string,hashlib
 
 class db_manager():
