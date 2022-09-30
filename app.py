@@ -16,5 +16,10 @@ def signup2_page():
 def signup_page():
     return render_template("signup.html")
 
+@app.route("/aaa")
+def aaa_page():
+    return render_template("aaa_2.html")
+
+
 if __name__ == "__main__":
     app.run(debug=True)
