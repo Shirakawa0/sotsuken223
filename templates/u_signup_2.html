@@ -2,9 +2,12 @@
 {% block content %}
 <img src="{{ url_for('static', filename='img/logo.png') }}" alt="就活帳" class="logo1">
 <h1>利用者アカウント新規登録</h1>
-<a href="{{ url_for('') }}"></a>
-<form action="">
-    <input type="submit" value="新規登録">
-</form>
+学籍番号{{ result[0] }}<br>
+パスワード{{ result[1] }}<br>
+名前{{ result[2] }}<br>
+学科{{ result[3] }}<br>
+学年{{ result[4] }}<br>
+クラス{{ result[5] }}<br>
+<a href="">新規登録</a><br>
 <a href="">戻る</a>
 {% endblock %}
