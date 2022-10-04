@@ -1,0 +1,22 @@
+{% extends "template.html" %}
+{% block content %}
+<h1>面接練習</h1>
+<h1>面接練習の希望状況を入力してください</h1>
+<form action="">
+    先生<br>
+    <select>
+        <option value="">山口裕</option>
+        <option value="">大坪直之</option>
+        <option value="">樋口正之</option>
+        <option value="">細川潤哉</option>
+    </select><br>
+    日付<br>
+    <input type="text">
+    時間帯<br>
+    <select>
+        <option value="">13:00~14:00</option>
+    </select><br>
+    <input type="submit" value="戻る"><br>
+    <input type="submit" value="つぎへ進む">
+</form>
+{% endblock %}
