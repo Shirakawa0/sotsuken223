@@ -19,14 +19,12 @@ def u_login():
     sql = "select * from u_account where id=%s"
     result = dbmg.exec_query(sql, id)
 
-    hash_pw, salt = dbmg.calc_pw_hash(pw, result[0]["salt"])
+    hash_pw, _ = dbmg.calc_pw_hash(pw, result[0]["salt"])
 
-    print("hash_pw" + hash_pw)
-    print("db_pw" + result[0]["hash_pw"])
+    print(result)
 
     if hash_pw == result[0]["hash_pw"]: 
         session["user_name"] = result[0]["name"]
-
         # sessionの有効期限
         session.permanent = True
         app.permanent_session_lifetime = timedelta(minutes=30)
