@@ -23,6 +23,8 @@ def u_signup():
     Class = request.form.get("class") # 区別のためcは大文字
     
     param = (id,pw,name,dep,grade,Class)
+    dbmg = db_manager()
+    dbmg.calc_pw_hash(pw)
 
     return render_template("u_signup_2.html",result=param)
 
