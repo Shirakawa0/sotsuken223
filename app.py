@@ -46,12 +46,16 @@ def u_signup():
     dep = request.form.get("dep")
     grade = request.form.get("grade")
     Class = request.form.get("class") # 区別のためcは大文字
-    
-    param = (id,pw,name,dep,grade,Class)
-    dbmg = db_manager()
-    dbmg.calc_pw_hash(pw)
 
-    return render_template("u_signup_2.html",result=param)
+    dbmg = db_manager()
+    hash_pw, salt = dbmg.calc_pw_hash(pw)
+
+    class_id = dep + grade + Class
+    #dbmg.exec_query("insert into class values(%s,%s,%s,%s)",(class_id,dep,int(grade),int(Class)))
+
+    dbmg.exec_query("insert into u_account values(%s,%s,%s,%s,%s)",(id,hash_pw,salt,name,class_id))
+
+    return render_template("u_signup_3.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
