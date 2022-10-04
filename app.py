@@ -24,9 +24,6 @@ def u_signup():
     
     param = (id,pw,name,dep,grade,Class)
 
-    dbmg = db_manager()
-    dbmg.exec_query("select * from u_account")
-
     return render_template("u_signup_2.html",result=param)
 
 if __name__ == "__main__":
