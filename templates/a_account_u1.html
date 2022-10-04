@@ -1,0 +1,40 @@
+{% extends "template.html" %}
+{% block content %}
+<a href=""><img src="{{ url_for('static', filename='img/back.png') }}" alt="back" class="logo1"></a><br>
+<h1>利用者アカウント管理</h1><br>
+<h1>アカウント検索</h1><br>
+<form action="">
+    学籍番号
+    <input type="text">
+    <input type="submit" value="検索">
+    <input type="button" value="検索条件を追加"><br><br>
+
+    学科<br>
+    <select>
+        <option value="">情報システム科</option>
+        <option value="">ネットワークセキュリティ科</option>
+        <option value="">総合システム工学科</option>
+        <option value="">高度情報工学科</option>
+    </select><br>
+
+    学年・組
+    <select>
+        <option value="">1年</option>
+        <option value="">2年</option>
+        <option value="">3年</option>
+        <option value="">4年</option>
+    </select>
+
+    <select>
+        <option value="">1組</option>
+        <option value="">2組</option>
+        <option value="">3組</option>
+    </select><br>
+
+    名前
+    <input type="text">
+
+    <input type="submit" value="この条件で検索する">
+
+</form>
+{% endblock %}

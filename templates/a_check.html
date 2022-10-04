@@ -1,0 +1,16 @@
+{% extends "template.html" %}
+{% block content %}
+<a href=""><img src="{{ url_for('static', filename='img/back.png') }}" alt="back" class="logo1"></a><br>
+<h1>文章チェック</h1><br>
+<a href="{{ url_for('') }}"></a><br>
+
+<h1>タイトル:</h1>
+<a href="{{ url_for('') }}"></a><br>
+
+<a href="{{ url_for('') }}"></a><br>
+
+<form action="">
+    <input type="submit" value="修正が必要"><br>
+    <input type="submit" value="OK">
+</form>
+{% endblock %}
