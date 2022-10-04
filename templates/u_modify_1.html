@@ -1,0 +1,29 @@
+{% extends "template.html" %}
+{% block content %}
+<h1>変更情報を登録してください</h1>
+<form action="">
+    選考段階
+    <select>
+        <option value="">1次選考</option>
+        <option value="">2次選考</option>
+        <option value="">3次選考</option>
+    </select><br>
+    内容
+    <select>
+        <option value="">筆記</option>
+        <option value="">面接</option>
+    </select><br>
+    場所
+    <selec>
+        <option value="">自宅(オンライン)</option>
+        <option value="">学校(オンライン)</option>
+        <option value="">学校(対面)</option>
+        <option value="">県内</option>
+        <option value="">県外</option>
+    </select><br>
+    日付・時刻
+    <input type="text"><br>
+    <input type="submit" value="戻る"><br>
+    <input type="submit" value="登録する">
+</form>
+{% endblock %}
