@@ -19,6 +19,7 @@
     </select><br>
     学年<br>
     <select name="grade">
+        <option value="">学年を選択</option>
         <option value="1">1年</option>
         <option value="2">2年</option>
         <option value="3">3年</option>
@@ -26,11 +27,12 @@
     </select><br>
     組<br>
     <select name="class">
+        <option value="">組を選択</option>
         <option value="1">1組</option>
         <option value="2">2組</option>
         <option value="3">3組</option>
     </select><br>
     <input type="submit" value="次へ進む">
 </form>
-<a href="">ログインはこちら</a>
+<a href="{{ url_for('u_login_page') }}">ログインはこちら</a>
 {% endblock %}
