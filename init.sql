@@ -1,4 +1,3 @@
-CREATE USER 'test'@'localhost' IDENTIFIED BY 'test'
 CREATE DATABASE sotsuken;
 USE sotsuken;
 CREATE TABLE u_account(
