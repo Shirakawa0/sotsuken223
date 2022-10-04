@@ -1,0 +1,18 @@
+{% extends "template.html" %}
+{% block content %}
+<a href=""><img src="{{ url_for('static', filename='img/back.png') }}" alt="back" class="logo1"></a><br>
+
+<h1>就活状況一覧</h1><br>
+
+<form action="">
+    <select>
+        <option value="">学科</option>
+        <option value="">年</option>
+        <option value="">組</option>
+    </select>
+</form><br>
+
+<h1>選考中の学生</h1><br><br>
+
+<h1>選考終了済みの学生</h1>
+{% endblock %}
