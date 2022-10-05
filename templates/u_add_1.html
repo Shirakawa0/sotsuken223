@@ -2,34 +2,34 @@
 {% block content %}
 <h1>受験企業追加</h1>
 <h1>選考情報を登録してください</h1>
-<form action="">
+<form action="{{url_for('u_add_confirm')}}" method="post">
     企業名
-    <input type="text"><br>
+    <input type="text" name="company"><br>
     選考段階
-    <select>
-        <option value="">1次選考</option>
-        <option value="">2次選考</option>
-        <option value="">3次選考</option>
+    <select name="step">
+        <option value="1次選考">1次選考</option>
+        <option value="2次選考">2次選考</option>
+        <option value="3次選考">3次選考</option>
     </select><br>
     内容
-    <select>
-        <option value="">面接</option>
-        <option value="">筆記</option>
+    <select name="detail">
+        <option value="面接">面接</option>
+        <option value="適性試験">適性試験</option>
     </select><br>
     場所
-    <select>
-        <option value="">自宅(オンライン)</option>
-        <option value="">学校(オンライン)</option>
-        <option value="">学校(対面)</option>
-        <option value="">県内</option>
-        <option value="">県外</option>
+    <select name="place">
+        <option value="自宅(オンライン)">自宅(オンライン)</option>
+        <option value="学校(オンライン)">学校(オンライン)</option>
+        <option value="学校(対面)">学校(対面)</option>
+        <option value="県内">県内</option>
+        <option value="県外">県外</option>
     </select><br>
 
     <input type="submit" value="戻る" class="btn btn-outline-secondary">
     <input type="submit" value="登録する" class="btn btn-outline-primary">
 
     日時
-    <input type="datetime"><br>
+    <input type="datetime" name="date_time"><br>
     <a href="{{ url_for('u_home_page') }}">戻る</a>
     <input type="submit" value="次へ進む">
 

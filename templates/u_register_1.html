@@ -1,29 +1,30 @@
 {% extends "template.html" %}
 {% block content %}
 <h1>次の選考情報を登録してください</h1>
-<form action="">
-    選考段階<br>
-    <select>
-        <option value="">1次選考</option>
-        <option value="">2次選考</option>
-        <option value="">3次選考</option>
+<form action="{{url_for('u_register_confirm')}}" method="post">
+    <input type="hidden" name="company" value="ここに企業名入るよ">
+    選考段階
+    <select name="step">
+        <option value="1次選考">1次選考</option>
+        <option value="2次選考">2次選考</option>
+        <option value="3次選考">3次選考</option>
     </select><br>
-    内容<br>
-    <select>
-        <option value="">筆記</option>
-        <option value="">面接</option>
+    内容
+    <select name="detail">
+        <option value="面接">面接</option>
+        <option value="適性試験">適性試験</option>
     </select><br>
-    場所<br>
-    <select>
-        <option value="">自宅(オンライン)</option>
-        <option value="">学校(オンライン)</option>
-        <option value="">学校(対面)</option>
-        <option value="">県内</option>
-        <option value="">県外</option>
+    場所
+    <select name="place">
+        <option value="自宅(オンライン)">自宅(オンライン)</option>
+        <option value="学校(オンライン)">学校(オンライン)</option>
+        <option value="学校(対面)">学校(対面)</option>
+        <option value="県内">県内</option>
+        <option value="県外">県外</option>
     </select><br>
-    日付・時刻<br>
-    <input type="text"><br>
-    <input type="submit" value="戻る" class="btn btn-outline-secondary"><br>
-    <input type="submit" value="つぎへ進む" class="btn btn-outline-primary"><br>
+    日付・時刻
+    <input type="datetime" name="date_time"><br>
+    <a href="{{ url_for('u_home_page') }}" class="btn btn-outline-secondary">戻る</a>
+    <input type="submit" value="次へ進む" class="btn btn-outline-primary">
 </form>
 {% endblock %}
