@@ -1,9 +1,8 @@
 {% extends "template.html" %}
 {% block content %}
 <h1>選考中の企業</h1><br>
-<form action="">
-    <input type="submit" value="企業追加">
-</form><br><br>
+<a href="{{ url_for('u_add_page') }}">企業追加</a>
+<br><br>
 
 <h1>内定済みの企業</h1><br><br>
 

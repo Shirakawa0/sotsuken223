@@ -55,11 +55,15 @@ def u_signup():
     return render_template("u_signup_3.html")
 
 @app.route("/home")
-def home_page():
+def u_home_page():
     if "id" not in session:
         return redirect("/")
 
     return render_template("u_home.html")
+
+@app.route("/u_add")
+def u_add_page():
+    return render_template("u_add_1.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
