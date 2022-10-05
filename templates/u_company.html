@@ -1,9 +1,8 @@
 {% extends "template.html" %}
 {% block content %}
-<h1></h1>
+<h1>{{company}}</h1>
 <h1>最新の選考状況</h1><br>
+
 <h1>これまでの選考状況</h1><br>
-<form action="">
-    <input type="submit" value="戻る" class="btn btn-outline-secondary">
-</form>
+<a href="{{ url_for('u_home_page') }}" class="btn btn-outline-secondary">戻る</a>
 {% endblock %}
