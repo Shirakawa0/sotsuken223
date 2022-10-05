@@ -1,7 +1,5 @@
 {% extends "template.html" %}
 {% block content %}
 <h1>登録が完了しました</h1><br>
-<form action="">
-    <input type="submit" value="マイページへ戻る" class="btn btn-outline-secondary">
-</form>
+<a href="{{url_for('u_home_page')}}" class="btn btn-outline-primary">マイページへ戻る</a>
 {% endblock %}
