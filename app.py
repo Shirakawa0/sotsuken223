@@ -27,7 +27,46 @@ def u_signup():
     param = (id,pw,name,dep,grade,Class)
     dbmg = db_manager()
 
-    return render_template("u_signup_2.html",result=param)
+    return render_template("u_signup_3.html")
+
+@app.route("/home")
+def u_home_page():
+    if "id" not in session:
+        return redirect("/")
+
+    return render_template("u_home.html")
+
+@app.route("/u_add")
+def u_add_page():
+    return render_template("u_add_1.html")
+
+@app.route("/u_modify")
+def u_modify_page():
+    return render_template("u_modify_1.html")
+
+@app.route("/u_modify/confirm", methods=["POST"])
+def u_modify_confirm():
+    step = request.form.get("step")
+    detail = request.form.get("detail")
+    place = request.form.get("place")
+    date_time = request.form.get("date_time")
+
+    schedule = {"step":step,"detail":detail,"place":place,"date_time":date_time}
+
+    return render_template("u_modify_2",schedule=schedule)
+
+@app.route("/u_modify/done")
+def u_modify():
+    id = session["id"]
+    company = request.form.get("company")
+    step = request.form.get("step")
+    detail = request.form.get("detail")
+    place = request.form.get("place")
+    date_time = request.form.get("date_time")
+
+    dbmg = db_manager()
+
+    return render_template("u_modify_3.html")
 
 @app.route("/u_add/u_add2",methods=["POST"])
 def u_add_confirm():
