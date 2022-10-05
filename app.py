@@ -82,11 +82,16 @@ def u_modify_confirm():
 
 @app.route("/u_modify/done")
 def u_modify():
-    company = request.args.get("company")
+    id = session["id"]
+    company = request.form.get("company")
     step = request.form.get("step")
     detail = request.form.get("detail")
     place = request.form.get("place")
     date_time = request.form.get("date_time")
+
+    dbmg = db_manager()
+
+    return render_template("u_modify_3.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
