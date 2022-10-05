@@ -65,5 +65,57 @@ def u_home_page():
 def u_add_page():
     return render_template("u_add_1.html")
 
+@app.route("/u_add/u_add2",methods=["POST"])
+def u_add_confirm():
+    company = request.form.get("company")
+    step = request.form.get("step")
+    detail = request.form.get("detail")
+    place = request.form.get("place")
+    date_time = request.form.get("date_time")
+
+    result = (company,step,detail,place,date_time)
+    return render_template("u_add_2.html",result=result)
+
+@app.route("/u_add/u_add2/u_add3",methods=["POST"])
+def u_add():
+    company = request.form.get("company")
+    step = request.form.get("step")
+    detail = request.form.get("detail")
+    place = request.form.get("place")
+    date_time = request.form.get("date_time")
+    print(date_time)
+
+    dbmg = db_manager()
+    dbmg.exec_query("insert into schedule values(%s,%s,%s,%s,%s,%s)",(session["id"],company,date_time,step,detail,place))
+    return render_template("u_add_3.html")
+
+@app.route("/u_register")
+def u_register_page():
+    return render_template("u_register_1.html")
+
+@app.route("/u_register/u_register2",methods=["POST"])
+def u_register_confirm():
+    company = request.form.get("company")
+    step = request.form.get("step")
+    detail = request.form.get("detail")
+    place = request.form.get("place")
+    date_time = request.form.get("date_time")
+
+    result = (company,step,detail,place,date_time)
+    return render_template("u_register_2.html",result=result)
+
+@app.route("/u_register/u_register2/u_register3",methods=["POST"])
+def u_register():
+    company = request.form.get("company")
+    step = request.form.get("step")
+    detail = request.form.get("detail")
+    place = request.form.get("place")
+    date_time = request.form.get("date_time")
+    print(date_time)
+
+    dbmg = db_manager()
+    dbmg.exec_query("insert into schedule values(%s,%s,%s,%s,%s,%s)",(session["id"],company,date_time,step,detail,place))
+    return render_template("u_register_3.html")
+
 if __name__ == "__main__":
     app.run(debug=True)
