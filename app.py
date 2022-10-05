@@ -61,10 +61,6 @@ def u_home_page():
 
     return render_template("u_home.html")
 
-@app.route("/u_add")
-def u_add_page():
-    return render_template("u_add_1.html")
-
 @app.route("/u_modify")
 def u_modify_page():
     return render_template("u_modify_1.html")
@@ -90,6 +86,10 @@ def u_modify():
     date_time = request.form.get("date_time")
 
     return render_template("u_modify_3.html")
+
+@app.route("/u_add")
+def u_add_page():
+    return render_template("u_add_1.html")
 
 @app.route("/u_add/u_add2",methods=["POST"])
 def u_add_confirm():
