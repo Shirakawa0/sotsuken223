@@ -68,3 +68,7 @@ CREATE TABLE class(
     class int
 );
 
+CREATE TABLE dep(
+    id int(2) PRIMARY KEY NOT NULL,
+    name VARCHAR(32) NOT NULL
+)
