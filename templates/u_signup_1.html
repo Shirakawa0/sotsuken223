@@ -1,8 +1,11 @@
 {% extends "template.html" %}
 {% block content %}
-<img src="{{ url_for('static', filename='img/logo.png') }}" alt="就活帳" class="logo1">
+{% if m == "1" %}
+<!-- 入力されていない項目があった場合の処理 -->
+{% endif %}
+<img src="{{ url_for('static', filename='img/logo.png') }}" alt="就活帳" class="logo">
 <h1>利用者アカウント新規登録</h1>
-<form action="u_signup" method="post">
+<form action="{{ url_for('u_signup') }}" method="post">
     学籍番号<br>
     <input type="number" name="id"><br>
     パスワード<br>
@@ -19,6 +22,7 @@
     </select><br>
     学年<br>
     <select name="grade">
+        <option value="">学年を選択</option>
         <option value="1">1年</option>
         <option value="2">2年</option>
         <option value="3">3年</option>
@@ -26,11 +30,12 @@
     </select><br>
     組<br>
     <select name="class">
+        <option value="">組を選択</option>
         <option value="1">1組</option>
         <option value="2">2組</option>
         <option value="3">3組</option>
     </select><br>
     <input type="submit" value="次へ進む" class="btn btn-outline-primary">
 </form>
-<a href="">ログインはこちら</a>
+<a href="{{ url_for('u_login_page') }}">ログインはこちら</a>
 {% endblock %}
