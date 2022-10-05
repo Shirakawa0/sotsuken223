@@ -72,6 +72,6 @@ CREATE TABLE class(
 );
 
 CREATE TABLE dep(
-    id int(2) PRIMARY KEY NOT NULL,
+    id VARCHAR(2) PRIMARY KEY NOT NULL,
     name VARCHAR(32) NOT NULL
 );
