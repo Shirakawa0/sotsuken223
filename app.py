@@ -65,5 +65,28 @@ def u_home_page():
 def u_add_page():
     return render_template("u_add_1.html")
 
+@app.route("/u_modify")
+def u_modify_page():
+    return render_template("u_modify_1.html")
+
+@app.route("/u_modify/confirm", methods=["POST"])
+def u_modify_confirm():
+    step = request.form.get("step")
+    detail = request.form.get("detail")
+    place = request.form.get("place")
+    date_time = request.form.get("date_time")
+
+    schedule = {"step":step,"detail":detail,"place":place,"date_time":date_time}
+
+    return render_template("u_modify_2",schedule=schedule)
+
+@app.route("/u_modify/done")
+def u_modify():
+    company = request.args.get("company")
+    step = request.form.get("step")
+    detail = request.form.get("detail")
+    place = request.form.get("place")
+    date_time = request.form.get("date_time")
+
 if __name__ == "__main__":
     app.run(debug=True)
