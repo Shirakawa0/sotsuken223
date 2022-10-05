@@ -89,8 +89,6 @@ def u_modify():
     place = request.form.get("place")
     date_time = request.form.get("date_time")
 
-    dbmg = db_manager()
-
     return render_template("u_modify_3.html")
 
 @app.route("/u_add/u_add2",methods=["POST"])
