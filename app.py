@@ -58,8 +58,12 @@ def u_signup():
 def u_home_page():
     if "id" not in session:
         return redirect("/")
+    #選考中の企業表示
+    dbmg = db_manager()
+    sql = "select company,step,detail,date_time from schedule where id=%s"
+    result = dbmg.exec_query(sql, session["id"])
 
-    return render_template("u_home.html")
+    return render_template("u_home.html",result=result)
 
 @app.route("/u_modify")
 def u_modify_page():
@@ -142,6 +146,11 @@ def u_register():
     dbmg = db_manager()
     dbmg.exec_query("insert into schedule values(%s,%s,%s,%s,%s,%s)",(session["id"],company,date_time,step,detail,place))
     return render_template("u_register_3.html")
+
+@app.route("/u_company")
+def u_company_page():
+    company = request.args.get("company")
+    return render_template("u_company.html",company=company)
 
 if __name__ == "__main__":
     app.run(debug=True)
