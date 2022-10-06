@@ -1,8 +1,10 @@
 {% extends "template.html" %}
 {% block content %}
-<h1>{{company}}</h1>
+<h1>{{ company }}</h1>
 <h1>最新の選考状況</h1><br>
-
+{{ schedule[0].step }}
+{{ schedule[0].detail }}
+{{ schedule[0].date_time }}
 <h1>これまでの選考状況</h1><br>
 <a href="{{ url_for('u_home_page') }}" class="btn btn-outline-secondary">戻る</a>
 {% endblock %}
