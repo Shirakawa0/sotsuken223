@@ -7,8 +7,8 @@
     {{ schedule[0].detail }}
     {{ schedule[0].date_time }}
     <a href="{{ url_for('u_register_page', company=company) }}">通過</a>
-    <a href="{{ url_for('u_delete_page'), company=company }}">落選</a>
-    <a href="{{ url_for('u_modify_page'), company=company }}">変更</a>
+    <a href="{{ url_for('u_delete_page', company=company )}}">落選</a>
+    <a href="{{ url_for('u_modify_page', company=company )}}">変更</a>
 </div>
 <h1>これまでの選考状況</h1><br>
 {% for s in schedule %}

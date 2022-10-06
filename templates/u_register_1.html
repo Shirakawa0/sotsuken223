@@ -2,7 +2,7 @@
 {% block content %}
 <h1>次の選考情報を登録してください</h1>
 <form action="{{url_for('u_register_confirm')}}" method="post">
-    <input type="hidden" name="company" value="ここに企業名入るよ">
+    <input type="hidden" name="company" value="{{company}}">
     選考段階
     <select name="step">
         <option value="1次選考">1次選考</option>

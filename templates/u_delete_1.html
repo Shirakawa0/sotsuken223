@@ -2,8 +2,6 @@
 {% block content %}
 <h1></h1>
 <h1>選考終了済に変更します。よろしいですか?</h1>
-<form action="">
-    <input type="submit" value="戻る" class="btn btn-outline-secondary"><br>
-    <input type="submit" value="確定する" class="btn btn-outline-primary"><br>
-</form>
+<a href="{{ url_for('u_delete', company=company) }}" class="btn btn-outline-primary">確定する</a>
+<a href="{{ url_for('u_company_page', company=company )}}" class="btn btn-outline-secondary">戻る</a>
 {% endblock %}
