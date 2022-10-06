@@ -2,19 +2,23 @@
 {% block content %}
 <h1>{{ company }}</h1>
 <h1>最新の選考状況</h1><br>
-{{ schedule[0].step }}
-{{ schedule[0].detail }}
-{{ schedule[0].date_time }}
+<div>
+    {{ schedule[0].step }}
+    {{ schedule[0].detail }}
+    {{ schedule[0].date_time }}
+    <a href="{{ url_for('u_register_page', company=company) }}">通過</a>
+    <a href="{{ url_for('u_delete_page'), company=company }}">落選</a>
+    <a href="{{ url_for('u_modify_page'), company=company }}">変更</a>
+</div>
 <h1>これまでの選考状況</h1><br>
 {% for s in schedule %}
 {% if loop.index > 1 %}
-    <a href="">
-        <div>
-            {{ s.step }}
-            {{ s.detail }}
-            {{ s.date_time }}
-        </div>
-    </a>
+<div>
+    {{ s.step }}
+    {{ s.detail }}
+    {{ s.date_time }}
+    通過済み
+</div>
 {% endif %}
 {% endfor %}
 <a href="{{ url_for('u_home_page') }}" class="btn btn-outline-secondary">戻る</a>

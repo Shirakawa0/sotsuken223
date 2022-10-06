@@ -160,5 +160,9 @@ def u_company_page():
 
     return render_template("u_company.html",company=company, schedule=schedule)
 
+@app.route("/u_delete")
+def u_delete_page():
+    return render_template("u_delete_1.html")
+
 if __name__ == "__main__":
     app.run(debug=True)
