@@ -60,7 +60,7 @@ def u_home_page():
         return redirect("/")
     #選考中の企業表示
     dbmg = db_manager()
-    sql = "select company,step,detail,date_time from schedule where id=%s"
+    sql = "select company,step,detail,max(date_time) as date_time from schedule where id=%s group by company"
     result = dbmg.exec_query(sql, session["id"])
 
     return render_template("u_home.html",result=result)
