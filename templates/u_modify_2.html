@@ -7,11 +7,11 @@
 場所{{ schedule["place"] }}
 日時{{ schedule["date_time"] }}
 <form action="{{ url_for('u_modify') }}" method="post">
-    <input type="hidden" name="company" value="TEST">
+    <input type="hidden" name="company" value="{{ company }}">
     <input type="hidden" name="step" value="{{ schedule['step'] }}">
-    <input type="hidden" name="step" value="{{ schedule['detail'] }}">
-    <input type="hidden" name="step" value="{{ schedule['place'] }}">
-    <input type="hidden" name="step" value="{{ schedule['date_time'] }}">
+    <input type="hidden" name="detail" value="{{ schedule['detail'] }}">
+    <input type="hidden" name="place" value="{{ schedule['place'] }}">
+    <input type="hidden" name="date_time" value="{{ schedule['date_time'] }}">
     <input type="submit" value="変更する">
 </form>
 {% endblock %}

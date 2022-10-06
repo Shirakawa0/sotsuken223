@@ -69,10 +69,12 @@ def u_home_page():
 
 @app.route("/u_modify")
 def u_modify_page():
-    return render_template("u_modify_1.html")
+    company = request.args.get("company")
+    return render_template("u_modify_1.html", company=company)
 
 @app.route("/u_modify/confirm", methods=["POST"])
 def u_modify_confirm():
+    company = request.form.get("company")
     step = request.form.get("step")
     detail = request.form.get("detail")
     place = request.form.get("place")
@@ -80,9 +82,9 @@ def u_modify_confirm():
 
     schedule = {"step":step,"detail":detail,"place":place,"date_time":date_time}
 
-    return render_template("u_modify_2",schedule=schedule)
+    return render_template("u_modify_2.html", company=company, schedule=schedule)
 
-@app.route("/u_modify/done")
+@app.route("/u_modify/done", methods=["POST"])
 def u_modify():
     id = session["id"]
     company = request.form.get("company")
@@ -90,6 +92,10 @@ def u_modify():
     detail = request.form.get("detail")
     place = request.form.get("place")
     date_time = request.form.get("date_time")
+
+    dbmg = db_manager()
+    sql = "update schedule set step=%s, detail=%s, place=%s, date_time=%s where id=%s and company=%s and date_time=%s"
+    dbmg.exec_query(sql,(step, detail, place, date_time, id, company, "2022-05-22 00:00:00"))
 
     return render_template("u_modify_3.html")
 
