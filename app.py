@@ -60,7 +60,7 @@ def u_home_page():
         return redirect("/")
     #選考中の企業表示
     dbmg = db_manager()
-    sql = "select * from schedule as s1 where id = %s and s1.date_time = (select max(s2.date_time) from schedule as s2 where s1.company = s2.company group by s2.company);"
+    sql = "select * from schedule as s1 where id = %s and s1.date_time = (select max(s2.date_time) from schedule as s2 where s1.company = s2.company group by s2.company) order by date_time asc;"
     result = dbmg.exec_query(sql, session["id"])
 
     #print(result)
