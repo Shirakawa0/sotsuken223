@@ -129,7 +129,8 @@ def u_add():
 
 @app.route("/u_register")
 def u_register_page():
-    return render_template("u_register_1.html")
+    company = request.args.get("company")
+    return render_template("u_register_1.html",company=company)
 
 @app.route("/u_register/u_register2",methods=["POST"])
 def u_register_confirm():
@@ -168,7 +169,17 @@ def u_company_page():
 
 @app.route("/u_delete")
 def u_delete_page():
-    return render_template("u_delete_1.html")
+    company = request.args.get("company")
+    return render_template("u_delete_1.html",company=company)
+
+@app.route("/u_delete/u_delete2")
+def u_delete():
+    id = session["id"]
+    company = request.args.get("company")
+    dbmg = db_manager()
+    dbmg.exec_query("delete from schedule where id=%s and company=%s",(id,company))
+    return render_template("u_delete_2.html",company=company)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
