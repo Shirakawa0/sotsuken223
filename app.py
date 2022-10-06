@@ -63,7 +63,7 @@ def u_home_page():
     sql = "select * from schedule as s1 where id = %s and s1.date_time = (select max(s2.date_time) from schedule as s2 where s1.company = s2.company group by s2.company);"
     result = dbmg.exec_query(sql, session["id"])
 
-    print(result)
+    #print(result)
 
     return render_template("u_home.html",result=result)
 
@@ -94,8 +94,8 @@ def u_modify():
     date_time = request.form.get("date_time")
 
     dbmg = db_manager()
-    sql = "update schedule set step=%s, detail=%s, place=%s, date_time=%s where id=%s and company=%s and date_time=%s"
-    dbmg.exec_query(sql,(step, detail, place, date_time, id, company, "2022-05-22 00:00:00"))
+    sql = "update schedule set step=%s, detail=%s, place=%s, date_time=%s where id=%s and company=%s and date_time = (select max(date_time) from (select date_time from schedule where id=%s and company=%s) as sch);"
+    dbmg.exec_query(sql,(step, detail, place, date_time, id, company, id, company))
 
     return render_template("u_modify_3.html")
 
