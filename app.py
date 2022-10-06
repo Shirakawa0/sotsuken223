@@ -149,10 +149,12 @@ def u_register():
 
 @app.route("/u_company")
 def u_company_page():
+    id = session["id"]
     company = request.args.get("company")
 
     dbmg = db_manager()
-    schedule = dbmg.exec_query("select * from schedule where id=%s and company=%s order by date_time desc")
+    sql = "select * from schedule where id=%s and company=%s order by date_time desc"
+    schedule = dbmg.exec_query(sql,(id,company))
 
     return render_template("u_company.html",company=company, schedule=schedule)
 
