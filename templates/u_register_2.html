@@ -1,13 +1,13 @@
 {% extends "template.html" %}
 {% block content %}
-<h1>登録内容を入力してください</h1>
+<h1>登録内容を確認してください</h1>
 <form action="{{url_for('u_register')}}" method="post">
     {{result[0]}}<input type="hidden" name="company" value="{{result[0]}}"><br>
     {{result[1]}}<input type="hidden" name="step" value="{{result[1]}}"><br>
     {{result[2]}}<input type="hidden" name="detail" value="{{result[2]}}"><br>
     {{result[3]}}<input type="hidden" name="place" value="{{result[3]}}"><br>
     {{result[4]}}<input type="hidden" name="date_time" value="{{result[4]}}"><br>
-    <a href="{{url_for('u_register_page')}}" class="btn btn-outline-secondary">戻る</a>
+    <a href="{{url_for('u_register_page',company=result[0])}}" class="btn btn-outline-secondary">戻る</a>
     <input type="submit" value="登録する" class="btn btn-outline-primary"><br>
 </form>
 {% endblock %}
