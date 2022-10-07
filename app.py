@@ -1,3 +1,5 @@
+import re
+from unittest import result
 from flask import Flask, render_template, request, redirect, url_for, session
 from datetime import timedelta
 import random, string
@@ -180,6 +182,30 @@ def u_delete():
     dbmg.exec_query("delete from schedule where id=%s and company=%s",(id,company))
     return render_template("u_delete_2.html",company=company)
 
+@app.route("/u_men")
+def u_men_page():
+    dbmg = db_manager()
+    result = dbmg.exec_query("select id,name from a_account")
+    return render_template("u_men_1.html",result=result)
+
+@app.route("/u_men/u_men2",methods=["POST"])
+def u_men_confirm():
+    id = request.form.get("id")
+    date = request.form.get("date")
+    time = request.form.get("time")
+    result = (id,date,time)
+    return render_template("u_men_2.html",result=result)
+
+@app.route("/u_men/u_men2/u_men3",methods=["POST"])
+def u_men():
+    student = session["id"]
+    teacher = request.form.get("id")
+    date = request.form.get("date")
+    time = request.form.get("time")
+    dbmg = db_manager()
+    dbmg.exec_query("insert into practice(student,teacher,date,time) values(%s,%s,%s,%s)",(student,teacher,date,time))
+    return render_template("u_men_3.html")
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
