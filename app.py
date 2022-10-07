@@ -180,6 +180,33 @@ def u_delete():
     dbmg.exec_query("delete from schedule where id=%s and company=%s",(id,company))
     return render_template("u_delete_2.html",company=company)
 
+@app.route("/u_check")
+def u_check_page():
+    dbmg = db_manager()
+    teachers = dbmg.exec_query("select * from a_account")
+    return render_template("u_check_1.html",teachers=teachers)
+
+@app.route("/u_check/confirm", methods=["POST"])
+def u_check_confirm():
+    teacher = request.form.get("teacher")
+    title = request.form.get("title")
+    body = request.form.get("body")
+
+    check = {"teacher":teacher,"title":title,"body":body}
+
+    return render_template("u_check_2.html", check=check)
+
+@app.route("/u_check/done", methods=["POST"])
+def u_check():
+    student = session["id"]
+    teacher = request.form.get("teacher")
+    title = request.form.get("title")
+    body = request.form.get("body")
+
+    dbmg = db_manager()
+    dbmg.exec_query("insert into review(student,teacher,title,body,check_flg,propriety_flg) values(%s,%s,%s,%s,%s,%s)",(student,teacher,title,body,0,0))
+
+    return render_template("u_check_3.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
