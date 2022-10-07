@@ -1,7 +1,7 @@
 import re
 from unittest import result
 from flask import Flask, render_template, request, redirect, url_for, session
-from datetime import timedelta
+import datetime
 import random, string
 from db.db_manager import db_manager
 
@@ -28,7 +28,7 @@ def u_login():
         session["user_name"] = result[0]["name"]
         # sessionの有効期限
         session.permanent = True
-        app.permanent_session_lifetime = timedelta(minutes=30)
+        app.permanent_session_lifetime = datetime.timedelta(minutes=30)
         return redirect("/home")
     else:
         return redirect("/") 
@@ -182,6 +182,114 @@ def u_delete():
     dbmg.exec_query("delete from schedule where id=%s and company=%s",(id,company))
     return render_template("u_delete_2.html",company=company)
 
+@app.route("/u_check")
+def u_check_page():
+    dbmg = db_manager()
+    teachers = dbmg.exec_query("select * from a_account")
+    return render_template("u_check_1.html",teachers=teachers)
+
+@app.route("/u_check/confirm", methods=["POST"])
+def u_check_confirm():
+    teacher = request.form.get("teacher")
+    title = request.form.get("title")
+    body = request.form.get("body")
+
+    check = {"teacher":teacher,"title":title,"body":body}
+
+    return render_template("u_check_2.html", check=check)
+
+@app.route("/u_check/done", methods=["POST"])
+def u_check():
+    student = session["id"]
+    teacher = request.form.get("teacher")
+    title = request.form.get("title")
+    body = request.form.get("body")
+
+    dbmg = db_manager()
+    dbmg.exec_query("insert into review(student,teacher,title,body,check_flg,propriety_flg) values(%s,%s,%s,%s,%s,%s)",(student,teacher,title,body,0,0))
+
+    return render_template("u_check_3.html")
+
+@app.route("/u_search")
+def u_search_page():
+    return render_template("u_search.html")
+
+@app.route("/u_forum")
+def u_forum_page():
+
+    dbmg = db_manager()
+    threads = dbmg.exec_query("select * from threads")
+
+    for thread in threads:
+        comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
+        thread["comment_num"] = comment_num[0]["num"]
+
+    return render_template("u_forum.html",threads=threads)
+
+@app.route("/forum_build")
+def forum_build_page():
+    return render_template("forum_build.html")
+
+@app.route("/forum_build/done")
+def forum_build():
+    id = session["id"]
+    date_time = datetime.datetime.now()
+    title = request.args.get("title")
+    body = request.args.get("body")
+
+    dbmg = db_manager()
+    dbmg.exec_query("insert into threads(title,author,last_contributer,last_update) values(%s,%s,%s,%s)",(title,id,id,date_time))
+    
+    thread_id = dbmg.exec_query("select id from threads where author=%s order by last_update desc limit 1",id)
+    thread_id = thread_id[0]["id"]
+    dbmg.exec_query("insert into comments(thread_id,contributer,date_time,body) values(%s,%s,%s,%s)",(thread_id,id,date_time,body))
+
+    return redirect(url_for("forum_brows",thread_id=thread_id))
+
+@app.route("/forum_brows")
+def forum_brows():
+    thread_id = request.args.get("thread_id")
+
+    dbmg = db_manager()
+    thread = dbmg.exec_query("select * from threads where id = %s",thread_id)
+    comments = dbmg.exec_query("select * from comments where thread_id = %s",thread_id)
+
+    return render_template("forum_brows.html",thread=thread[0],comments=comments)
+
+@app.route("/forum_contribute")
+def forum_contribute():
+    id = session["id"]
+    thread_id = request.args.get("thread_id")
+    body = request.args.get("body")
+    date_time = datetime.datetime.now()
+
+    dbmg = db_manager()
+    dbmg.exec_query("insert into comments(thread_id,contributer,date_time,body) values(%s,%s,%s,%s)",(thread_id,id,date_time,body))
+
+    return redirect(url_for("forum_brows",thread_id=thread_id))
+
+@app.route("/u_account")
+def u_account_page():
+    return render_template("u_account_1.html")
+
+@app.route("/u_account", methods=["POST"])
+def u_account():
+    id = session["id"]
+    pw = request.form.get("pw")
+    name = request.form.get("name")
+    dep = request.form.get("dep")
+    grade = request.form.get("grade")
+    Class = request.form.get("class") # 区別のためcは大文字
+
+    class_id = dep + grade + Class
+
+    dbmg = db_manager()
+    hash_pw, salt = dbmg.calc_pw_hash(pw)
+
+    sql = "update u_account set hash_pw=%s, salt=%s, name=%s, class_id=%s where id=%s"
+    dbmg.exec_query(sql, (hash_pw, salt, name, class_id, id))
+
+    return render_template("u_account_3.html")
 @app.route("/u_men")
 def u_men_page():
     dbmg = db_manager()

@@ -2,12 +2,18 @@
 {% block content %}
 <h1>文章チェック</h1>
 <h1>タイトルと本文を入力してくください</h1>
-<form action="">
+<form action="{{ url_for('u_check_confirm') }}" method="post">
+    先生<br>
+    <select name="teacher">
+        {% for teacher in teachers %}
+        <option value="{{ teacher.id }}">{{ teacher.name }}先生</option>
+        {% endfor %}
+    </select><br>
     タイトル<br>
-    <input type="text"><br>
+    <input type="text" name="title"><br>
     本文<br>
-    <input type="text"><br>
-    <input type="submit" value="戻る" class="btn btn-outline-secondary">
+    <input type="text" name="body"><br>
+    <a href="{{ url_for('u_home_page') }}" class="btn btn-outline-secondary">戻る</a>
     <input type="submit" value="次へ進む" class="btn btn-outline-primary">
 </form>
 {% endblock %}

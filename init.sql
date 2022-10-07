@@ -41,12 +41,17 @@ CREATE TABLE review(
 
 CREATE TABLE threads(
     id int NOT NULL auto_increment PRIMARY KEY,
-    name VARCHAR(30) NOT NULL
+    title VARCHAR(30) NOT NULL,
+    author VARCHAR(128) NOT NULL,
+    last_contributer VARCHAR(128) NOT NULL,
+    last_update datetime NOT NULL
 );
 
 CREATE TABLE comments(
     id int NOT NULL auto_increment PRIMARY KEY,
     thread_id int NOT NULL,
+    contributer VARCHAR(128) NOT NULL,
+    date_time datetime NOT NULL,
     body VARCHAR(500) NOT NULL
 );
 
