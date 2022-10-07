@@ -2,7 +2,5 @@
 {% block content %}
 <h1>利用者アカウント編集</h1>
 <h1>変更が完了しました</h1><br>
-<form action="">
-    <input type="submit" value="マイページへ戻る" class="btn btn-outline-secondary">
-</form>
+<a href="{{ url_for('u_home_page') }}" class="btn btn-outline-primary">マイページへ戻る</a>
 {% endblock %}

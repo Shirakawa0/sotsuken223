@@ -1,14 +1,15 @@
 {% extends "template.html" %}
 {% block content %}
+<a href="{{ url_for('u_forum_page') }}">
+    <img src="{{ url_for('static', filename='img/back.png') }}" alt="戻る" class="return_btn">
+</a>
 <h1>新規スレッド作成</h1><br>
 
-<form action="">
+<form action="{{ url_for('forum_build') }}">
     スレッドタイトル<br>
-    <input type="text"><br>
-    ニックネーム<br>
-    <input type="text"><br>
+    <input type="text" name="title"><br>
     本文<br>
-    <input type="text"><br><br>
+    <input type="text" name="body"><br><br>
     <input type="submit" value="この内容で作成" class="btn btn-outline-primary">
 </form>
 

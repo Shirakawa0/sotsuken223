@@ -1,18 +1,21 @@
 {% extends "template.html" %}
 {% block content %}
 <h1>スレッド</h1>
-<form action="">
-    <input type="submit" value="スレッド一覧" class="btn btn-outline-primary">
-    <h1></h1>
-    <input type="text"><br>
-    <input type="text"><br>
-    <input type="text"><br>
-    【返信投稿用フォーム】<br>
-    ニックネーム<br>
-    <input type="text"><br>
-    本文(文字以内)
-    <input type="text"><br>
+<a href="{{ url_for('u_forum_page') }}" class="btn btn-primary">スレッド一覧</a>
+<br>
+<h2>{{ thread.title }}</h2>
+<br>
+{% for comment in comments %}
+{{ comment.contributer }}<br>
+{{ comment.body }}<br>
+{{ comment.date_time }}<br><br>
+{% endfor %}
+<p>【返信投稿用フォーム】</p>
+<form action="{{ url_for('forum_contribute') }}">
+    <input type="hidden" name="thread_id" value="{{ thread.id }}">
+    本文（600文字以内）<br>
+    <textarea name="body" cols="60" rows="10"></textarea>
+    <br>
     <input type="submit" value="返信する" class="btn btn-outline-primary">
 </form>
-
 {% endblock %}

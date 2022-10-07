@@ -1,10 +1,22 @@
 {% extends "template.html" %}
 {% block content %}
+<a href="{{ url_for('u_home_page') }}">
+    <img src="{{ url_for('static', filename='img/back.png') }}" alt="戻る" class="return_btn">
+</a>
 <h1>スレッド一覧</h1><br>
 <h1>就活者同士の雑談や1人ではわからない問題を解決する場として設置しています。<br>コミュニティとして活用してください</h1><br>
+<a href="{{ url_for('forum_build_page') }}" class="btn btn-primary">新規スレッド作成</a>
 
-<form action="">
-    <input type="submit" value="新規スレッド作成" class="btn btn-outline-primary">
-</form>
+{% for thread in threads %}
+<a href="{{ url_for('forum_brows',thread_id = thread.id ) }}">
+    <div style="border: 1px black solid;">
+        {{ thread.title }}<br>
+        最終更新：{{ thread.last_update }}
+        投稿数：{{ thread.comment_num }}
+        作成者：{{ thread.author }}
+        最終投稿者：{{ thread.last_contributer }}
+    </div>
+</a>
+{% endfor %}
 
 {% endblock %}

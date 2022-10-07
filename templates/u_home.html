@@ -29,13 +29,15 @@
 </form><br>
 
 <h1>報告書検索</h1>
-<form action="">
-    先輩の報告書を検索し、閲覧できます。<br>
-    <input type="submit" value="報告書を閲覧" class="btn btn-outline-primary">
-</form><br><br>
-
-<h1>掲示板</h1><br><br>
-<form action="">
-    <input type="submit" value="スレッド一覧・作成" class="btn btn-outline-primary">
-</form>
+<p>
+    先輩の報告書を検索し、閲覧できます。
+</p>
+<a href="{{ url_for('u_search_page') }}" class="btn btn-outline-primary">報告書を閲覧</a><br><br>
+<a href="{{ url_for('u_account_page') }}" class="btn btn-outline-secondary">利用者アカウント編集（仮）</a>
+<h1>掲示板</h1>
+<p>
+    就活者どうしの雑談や１人ではわからない問題を解決する場として設置しています。
+    コミュニティとして活用してください。
+</p>
+<a href="{{ url_for('u_forum_page') }}" class="btn btn-outline-primary">スレッド一覧・作成</a>
 {% endblock %}
