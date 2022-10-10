@@ -1,18 +1,18 @@
 {% extends "template.html" %}
 {% block content %}
-<h1></h1>
-<h1>変更内容を確認してください</h1><br>
-選考段階{{ schedule["step"] }}<br>
-内容{{ schedule["detail"] }}<br>
-場所{{ schedule["place"] }}<br>
-日時{{ schedule["date_time"] }}<br>
+<h1>{{ schedule.company }}</h1>
+<h1>変更内容を確認してください</h1>
+<p>選考段階：{{ schedule.step }}</p>
+<p>内容　　：{{ schedule.detail }}</p>
+<p>場所　　：{{ schedule.place }}</p>
+<p>日時　　：{{ schedule.date_time }}</p>
 <form action="{{ url_for('u_modify') }}" method="post">
-    <input type="hidden" name="company" value="{{ company }}">
-    <input type="hidden" name="step" value="{{ schedule['step'] }}">
-    <input type="hidden" name="detail" value="{{ schedule['detail'] }}">
-    <input type="hidden" name="place" value="{{ schedule['place'] }}">
-    <input type="hidden" name="date_time" value="{{ schedule['date_time'] }}">
-    <a href="{{ url_for('u_modify_page', company = company) }}" class="btn btn-outline-secondary">戻る</a>
+    <input type="hidden" name="company" value="{{ schedule.company }}">
+    <input type="hidden" name="step" value="{{ schedule.step }}">
+    <input type="hidden" name="detail" value="{{ schedule.detail }}">
+    <input type="hidden" name="place" value="{{ schedule.place }}">
+    <input type="hidden" name="date_time" value="{{ schedule.date_time }}">
+    <a href="{{ url_for('u_modify_page',company=schedule.company) }}" class="btn btn-outline-secondary">戻る</a>
     <input type="submit" value="変更する"  class="btn btn-outline-primary">
 </form>
 {% endblock %}

@@ -1,41 +1,46 @@
 {% extends "template.html" %}
 {% block content %}
-<h1>選考中の企業</h1><br>
-{% for res in result %}
-<a href="{{url_for('u_company_page',company=res.company)}}">
-    {{res.company}}
-    {{res.step}}
-    {{res.detail}}
-    {{res.date_time}}<br>
+<h1>選考中の企業</h1>
+<br>
+{% for schedule in schedules %}
+<a href="{{ url_for('u_company_page',company=schedule.company) }}">
+    {{ schedule.company }}
+    {{ schedule.step }}
+    {{ schedule.detail }}
+    {{ schedule.date_time }}
 </a>
+<br>
 {% endfor %}
+<br>
 <a href="{{ url_for('u_add_page') }}" class="btn btn-outline-primary">企業追加</a>
 <br><br>
 
-<h1>内定済みの企業</h1><br><br>
+<h1>内定済みの企業</h1>
+<br><br>
 
-<h1>選考終了済みの企業</h1><br><br>
+<h1>選考終了済みの企業</h1>
+<br><br>
 
 <h1>面接練習</h1>
-面接練習を希望する際はこちらから申し込んでください。<br>
-<a href="{{url_for('u_men_page')}}" class="btn btn-outline-primary">面接練習を希望</a>
+<p>面接練習を希望する際はこちらから申し込んでください。</p>
+<a href="{{ url_for('u_men_page') }}" class="btn btn-outline-primary">面接練習を希望</a>
+<br><br>
 
 <h1>文章チェック</h1>
-<form action="{{ url_for('u_check_page') }}">
-    ESの文章を提出する前などに、文章のチェックを依頼できます。<br>
-    <input type="submit" value="文章チェックを依頼" class="btn btn-outline-primary">
-</form><br>
+<p>ESの文章を提出する前などに、文章のチェックを依頼できます。</p>
+<a href="{{ url_for('u_check_page') }}" class="btn btn-outline-primary">文章チェックを依頼</a>
+<br><br>
 
 <h1>報告書検索</h1>
-<p>
-    先輩の報告書を検索し、閲覧できます。
-</p>
-<a href="{{ url_for('u_search_page') }}" class="btn btn-outline-primary">報告書を閲覧</a><br><br>
-<a href="{{ url_for('u_account_page') }}" class="btn btn-outline-secondary">利用者アカウント編集（仮）</a>
+<p>先輩の報告書を検索し、閲覧できます。</p>
+<a href="{{ url_for('u_search_page') }}" class="btn btn-outline-primary">報告書を閲覧</a>
+<br><br>
+
 <h1>掲示板</h1>
-<p>
-    就活者どうしの雑談や１人ではわからない問題を解決する場として設置しています。
-    コミュニティとして活用してください。
-</p>
+<p>就活者どうしの雑談や１人ではわからない問題を解決する場として設置しています。コミュニティとして活用してください。</p>
 <a href="{{ url_for('u_forum_page') }}" class="btn btn-outline-primary">スレッド一覧・作成</a>
+
+<br><br>
+<a href="{{ url_for('u_account_page') }}" class="btn btn-outline-secondary">利用者アカウント編集（仮）</a>
+<br><br>
 {% endblock %}

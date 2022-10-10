@@ -1,40 +1,43 @@
 {% extends "template.html" %}
 {% block content %}
-{% if m == "1" %}
-<!-- 入力されていない項目があった場合の処理 -->
-{% endif %}
 <img src="{{ url_for('static', filename='img/logo.png') }}" alt="就活帳" class="logo">
 <h1>利用者アカウント新規登録</h1>
 <form action="{{ url_for('u_signup') }}" method="post">
-    学籍番号<br>
-    <input type="number" name="id"><br>
-    パスワード<br>
-    <input type="password" name="pw"><br>
-    名前<br>
-    <input type="text" name="name"><br>
-    学科<br>
+    <p>学籍番号</p>
+    <input type="number" name="id">
+    <br>
+    <p>パスワード</p>
+    <input type="password" name="pw">
+    <br>
+    <p>名前</p>
+    <input type="text" name="name">
+    <br>
+    <p>学科</p>
     <select name="dep">
         <option value="">学科を選択</option>
         <option value="01">情報システム科</option>
         <option value="02">ネットワークセキュリティ科</option>
         <option value="03">総合システム工学科</option>
         <option value="04">高度情報工学科</option>
-    </select><br>
-    学年<br>
+    </select>
+    <br>
+    <p>学年</p>
     <select name="grade">
         <option value="">学年を選択</option>
         <option value="1">1年</option>
         <option value="2">2年</option>
         <option value="3">3年</option>
         <option value="4">4年</option>
-    </select><br>
-    組<br>
+    </select>
+    <br>
+    <p>組</p>
     <select name="class">
         <option value="">組を選択</option>
         <option value="1">1組</option>
         <option value="2">2組</option>
         <option value="3">3組</option>
-    </select><br>
+    </select>
+    <br>
     <input type="submit" value="次へ進む" class="btn btn-outline-primary">
 </form>
 <a href="{{ url_for('u_login_page') }}">ログインはこちら</a>

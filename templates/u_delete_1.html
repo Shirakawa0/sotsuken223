@@ -1,7 +1,7 @@
 {% extends "template.html" %}
 {% block content %}
-<h1></h1>
+<h1>{{ company }}</h1>
 <h1>選考終了済に変更します。よろしいですか?</h1>
-<a href="{{ url_for('u_delete', company=company) }}" class="btn btn-outline-primary">確定する</a>
-<a href="{{ url_for('u_company_page', company=company )}}" class="btn btn-outline-secondary">戻る</a>
+<a href="{{ url_for('u_company_page',company=company )}}" class="btn btn-outline-secondary">戻る</a>
+<a href="{{ url_for('u_delete',company=company) }}" class="btn btn-outline-primary">確定する</a>
 {% endblock %}

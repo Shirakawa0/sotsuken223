@@ -1,29 +1,44 @@
 {% extends "template.html" %}
 {% block content %}
+<h1>{{ company }}</h1>
 <h1>次の選考情報を登録してください</h1>
-<form action="{{url_for('u_register_confirm')}}" method="post">
-    <input type="hidden" name="company" value="{{company}}">
+<form action="{{ url_for('u_register_confirm') }}" method="post">
+    <input type="hidden" name="company" value="{{ company }}">
     選考段階
     <select name="step">
+        <option value="">選考段階を選択</option>
+        <option value="選考前">選考前（説明会など）</option>
         <option value="1次選考">1次選考</option>
         <option value="2次選考">2次選考</option>
-        <option value="3次選考">3次選考</option>
-    </select><br>
+        <option value="3次選考">3次選考以降（最終選考を除く）</option>
+        <option value="最終選考">最終選考</option>
+    </select>
+    <br>
     内容
     <select name="detail">
-        <option value="面接">面接</option>
-        <option value="適性試験">適性試験</option>
-    </select><br>
+        <option value="">内容を選択</option>
+        <option value="説明会">説明会</option>
+        <option value="適性検査">適性検査</option>
+        <option value="面接（対面）">面接（対面）</option>
+        <option value="面接（オンライン）">面接（オンライン）</option>
+        <option value="その他">その他</option>
+    </select>
+    <br>
     場所
     <select name="place">
-        <option value="自宅(オンライン)">自宅(オンライン)</option>
+        <option value="">場所を選択</option>
+        <option value="自宅">自宅(オンラインを含む)</option>
         <option value="学校(オンライン)">学校(オンライン)</option>
         <option value="学校(対面)">学校(対面)</option>
-        <option value="県内">県内</option>
-        <option value="県外">県外</option>
-    </select><br>
-    日付・時刻
-    <input type="datetime" name="date_time"><br>
+        <option value="企業（県内）">企業（県内）</option>
+        <option value="企業（県外）">企業（県外）</option>
+        <option value="試験センター">試験センター</option>
+        <option value="その他">その他</option>
+    </select>
+    <br>
+    日時
+    <input type="datetime-local" name="date_time">
+    <br>
     <a href="{{ url_for('u_home_page') }}" class="btn btn-outline-secondary">戻る</a>
     <input type="submit" value="次へ進む" class="btn btn-outline-primary">
 </form>

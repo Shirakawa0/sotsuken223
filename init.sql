@@ -35,8 +35,8 @@ CREATE TABLE review(
     teacher VARCHAR(128) NOT NULL,
     title VARCHAR(32) NOT NULL,
     body VARCHAR(600) NOT NULL,
-    check_flg BOOLEAN NOT NULL,
-    propriety_flg BOOLEAN NOT NULL
+    check_flg BOOLEAN NOT NULL DEFAULT 0,
+    propriety_flg BOOLEAN NOT NULL DEFAULT 0
 );
 
 CREATE TABLE threads(

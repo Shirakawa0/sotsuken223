@@ -1,6 +1,6 @@
 {% extends "template.html" %}
 {% block content %}
-<h1></h1>
+<h1>{{ company }}</h1>
 <h1>変更が完了しました</h1>
-<a href="{{ url_for('u_home_page') }}">マイページへ戻る</a>
+<a href="{{ url_for('u_home_page',company=company) }}" class="btn btn-outline-primary">企業ページへ戻る</a>
 {% endblock %}

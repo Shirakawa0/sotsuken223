@@ -10,20 +10,19 @@ app.secret_key = "".join(random.choices(string.ascii_letters, k=256))
 def u_login_page():
     return render_template("u_login.html")
 
-@app.route("/", methods=["POST"])
+@app.route("/",methods=["POST"])
 def u_login():
     id = request.form.get("id")
     pw = request.form.get("pw")
     
     dbmg = db_manager()
-    sql = "select * from u_account where id=%s"
-    result = dbmg.exec_query(sql, id)
+    user = dbmg.exec_query("select * from u_account where id=%s",id)
 
-    hash_pw, _ = dbmg.calc_pw_hash(pw, result[0]["salt"])
+    hash_pw,_ = dbmg.calc_pw_hash(pw,user[0]["salt"])
 
-    if hash_pw == result[0]["hash_pw"]:
-        session["id"] = result[0]["id"]
-        session["user_name"] = result[0]["name"]
+    if hash_pw == user[0]["hash_pw"]:
+        session["id"] = user[0]["id"]
+        session["user_name"] = user[0]["name"]
         # sessionの有効期限
         session.permanent = True
         app.permanent_session_lifetime = datetime.timedelta(minutes=30)
@@ -36,7 +35,7 @@ def u_login():
 def u_signup_page():
     return render_template("u_signup_1.html")
 
-@app.route("/u_signup", methods=["POST"])
+@app.route("/u_signup",methods=["POST"])
 def u_signup():
     id = request.form.get("id")
     pw = request.form.get("pw")
@@ -58,103 +57,13 @@ def u_signup():
 def u_home_page():
     if "id" not in session:
         return redirect("/")
-    #選考中の企業表示
+
+    # 選考中の企業表示
     dbmg = db_manager()
     sql = "select * from schedule as s1 where id = %s and s1.date_time = (select max(s2.date_time) from schedule as s2 where s1.company = s2.company group by s2.company) order by date_time asc;"
-    result = dbmg.exec_query(sql, session["id"])
+    schedules = dbmg.exec_query(sql,session["id"])
 
-    #print(result)
-
-    return render_template("u_home.html",result=result)
-
-@app.route("/u_modify")
-def u_modify_page():
-    company = request.args.get("company")
-    return render_template("u_modify_1.html", company=company)
-
-@app.route("/u_modify/confirm", methods=["POST"])
-def u_modify_confirm():
-    company = request.form.get("company")
-    step = request.form.get("step")
-    detail = request.form.get("detail")
-    place = request.form.get("place")
-    date_time = request.form.get("date_time")
-
-    schedule = {"step":step,"detail":detail,"place":place,"date_time":date_time}
-
-    return render_template("u_modify_2.html", company=company, schedule=schedule)
-
-@app.route("/u_modify/done", methods=["POST"])
-def u_modify():
-    id = session["id"]
-    company = request.form.get("company")
-    step = request.form.get("step")
-    detail = request.form.get("detail")
-    place = request.form.get("place")
-    date_time = request.form.get("date_time")
-
-    dbmg = db_manager()
-    sql = "update schedule set step=%s, detail=%s, place=%s, date_time=%s where id=%s and company=%s and date_time = (select max(date_time) from (select date_time from schedule where id=%s and company=%s) as sch);"
-    dbmg.exec_query(sql,(step, detail, place, date_time, id, company, id, company))
-
-    return render_template("u_modify_3.html")
-
-@app.route("/u_add")
-def u_add_page():
-    return render_template("u_add_1.html")
-
-@app.route("/u_add/u_add2",methods=["POST"])
-def u_add_confirm():
-    company = request.form.get("company")
-    step = request.form.get("step")
-    detail = request.form.get("detail")
-    place = request.form.get("place")
-    date_time = request.form.get("date_time")
-
-    result = (company,step,detail,place,date_time)
-    return render_template("u_add_2.html",result=result)
-
-@app.route("/u_add/u_add2/u_add3",methods=["POST"])
-def u_add():
-    company = request.form.get("company")
-    step = request.form.get("step")
-    detail = request.form.get("detail")
-    place = request.form.get("place")
-    date_time = request.form.get("date_time")
-    print(date_time)
-
-    dbmg = db_manager()
-    dbmg.exec_query("insert into schedule values(%s,%s,%s,%s,%s,%s)",(session["id"],company,date_time,step,detail,place))
-    return render_template("u_add_3.html")
-
-@app.route("/u_register")
-def u_register_page():
-    company = request.args.get("company")
-    return render_template("u_register_1.html",company=company)
-
-@app.route("/u_register/u_register2",methods=["POST"])
-def u_register_confirm():
-    company = request.form.get("company")
-    step = request.form.get("step")
-    detail = request.form.get("detail")
-    place = request.form.get("place")
-    date_time = request.form.get("date_time")
-
-    result = (company,step,detail,place,date_time)
-    return render_template("u_register_2.html",result=result)
-
-@app.route("/u_register/u_register2/u_register3",methods=["POST"])
-def u_register():
-    company = request.form.get("company")
-    step = request.form.get("step")
-    detail = request.form.get("detail")
-    place = request.form.get("place")
-    date_time = request.form.get("date_time")
-    print(date_time)
-
-    dbmg = db_manager()
-    dbmg.exec_query("insert into schedule values(%s,%s,%s,%s,%s,%s)",(session["id"],company,date_time,step,detail,place))
-    return render_template("u_register_3.html")
+    return render_template("u_home.html",schedules=schedules)
 
 @app.route("/u_company")
 def u_company_page():
@@ -163,48 +72,196 @@ def u_company_page():
 
     dbmg = db_manager()
     sql = "select * from schedule where id=%s and company=%s order by date_time desc"
-    schedule = dbmg.exec_query(sql,(id,company))
+    schedules = dbmg.exec_query(sql,(id,company))
 
-    return render_template("u_company.html",company=company, schedule=schedule)
+    return render_template("u_company.html", schedules=schedules)
+
+@app.route("/u_add")
+def u_add_page():
+    return render_template("u_add_1.html")
+
+@app.route("/u_add/confirm",methods=["POST"])
+def u_add_confirm():
+    schedule = {
+        "company":request.form.get("company"),
+        "step":request.form.get("step"),
+        "detail":request.form.get("detail"),
+        "place":request.form.get("place"),
+        "date_time":request.form.get("date_time")
+    }
+    return render_template("u_add_2.html",schedule=schedule)
+
+@app.route("/u_add/done",methods=["POST"])
+def u_add():
+    schedule = (
+        session["id"],
+        request.form.get("company"),
+        request.form.get("date_time"),
+        request.form.get("step"),
+        request.form.get("detail"),
+        request.form.get("place")
+    )
+
+    dbmg = db_manager()
+    dbmg.exec_query("insert into schedule values(%s,%s,%s,%s,%s,%s)",schedule)
+
+    return render_template("u_add_3.html")
+
+@app.route("/u_register")
+def u_register_page():
+    company = request.args.get("company")
+    return render_template("u_register_1.html",company=company)
+
+@app.route("/u_register/confirm",methods=["POST"])
+def u_register_confirm():
+    schedule = {
+        "company":request.form.get("company"),
+        "step":request.form.get("step"),
+        "detail":request.form.get("detail"),
+        "place":request.form.get("place"),
+        "date_time":request.form.get("date_time")
+    }
+    return render_template("u_register_2.html",schedule=schedule)
+
+@app.route("/u_register/done",methods=["POST"])
+def u_register():
+    company = request.form.get("company")
+    schedule = (
+        session["id"],
+        request.form.get("company"),
+        request.form.get("date_time"),
+        request.form.get("step"),
+        request.form.get("detail"),
+        request.form.get("place")
+    )
+
+    dbmg = db_manager()
+    dbmg.exec_query("insert into schedule values(%s,%s,%s,%s,%s,%s)",schedule)
+    return render_template("u_register_3.html",company=company)
+
+@app.route("/u_modify")
+def u_modify_page():
+    company = request.args.get("company")
+    return render_template("u_modify_1.html",company=company)
+
+@app.route("/u_modify/confirm",methods=["POST"])
+def u_modify_confirm():
+    schedule = {
+        "company":request.form.get("company"),
+        "step":request.form.get("step"),
+        "detail":request.form.get("detail"),
+        "place":request.form.get("place"),
+        "date_time":request.form.get("date_time")
+    }
+
+    return render_template("u_modify_2.html",schedule=schedule)
+
+@app.route("/u_modify/done",methods=["POST"])
+def u_modify():
+    company = request.form.get("company")
+    schedule = (
+        request.form.get("step"),
+        request.form.get("detail"),
+        request.form.get("place"),
+        request.form.get("date_time"),
+        session["id"],
+        request.form.get("company"),
+        session["id"],
+        request.form.get("company")
+    )
+
+    dbmg = db_manager()
+    sql = "update schedule set step=%s, detail=%s, place=%s, date_time=%s where id=%s and company=%s and date_time = (select max(date_time) from (select date_time from schedule where id=%s and company=%s) as sch);"
+    dbmg.exec_query(sql,schedule)
+
+    return render_template("u_modify_3.html",company=company)
 
 @app.route("/u_delete")
 def u_delete_page():
     company = request.args.get("company")
     return render_template("u_delete_1.html",company=company)
 
-@app.route("/u_delete/u_delete2")
+@app.route("/u_delete/done")
 def u_delete():
     id = session["id"]
     company = request.args.get("company")
+
     dbmg = db_manager()
     dbmg.exec_query("delete from schedule where id=%s and company=%s",(id,company))
+
     return render_template("u_delete_2.html",company=company)
+
+@app.route("/u_men")
+def u_men_page():
+    dbmg = db_manager()
+    teachers = dbmg.exec_query("select id,name from a_account")
+
+    return render_template("u_men_1.html",teachers=teachers)
+
+@app.route("/u_men/confirm",methods=["POST"])
+def u_men_confirm():
+    id = request.form.get("id")
+
+    dbmg = db_manager()
+    teacher = dbmg.exec_query("select name from a_account where id=%s",id)
+
+    practice = {
+        "id":id,
+        "name":teacher[0]["name"],
+        "date":request.form.get("date"),
+        "time":request.form.get("time")
+    }
+
+    return render_template("u_men_2.html",practice=practice)
+
+@app.route("/u_men/done",methods=["POST"])
+def u_men():
+    practice = (
+        session["id"],
+        request.form.get("id"),
+        request.form.get("date"),
+        request.form.get("time")
+    )
+    
+    dbmg = db_manager()
+    dbmg.exec_query("insert into practice(student,teacher,date,time) values(%s,%s,%s,%s)",practice)
+    
+    return render_template("u_men_3.html")
 
 @app.route("/u_check")
 def u_check_page():
     dbmg = db_manager()
     teachers = dbmg.exec_query("select * from a_account")
+
     return render_template("u_check_1.html",teachers=teachers)
 
-@app.route("/u_check/confirm", methods=["POST"])
+@app.route("/u_check/confirm",methods=["POST"])
 def u_check_confirm():
-    teacher = request.form.get("teacher")
-    title = request.form.get("title")
-    body = request.form.get("body")
+    id = request.form.get("id")
 
-    check = {"teacher":teacher,"title":title,"body":body}
+    dbmg = db_manager()
+    teacher = dbmg.exec_query("select name from a_account where id=%s",id)
+
+    check = {
+        "id":id,
+        "name":teacher[0]["name"],
+        "title":request.form.get("title"),
+        "body":request.form.get("body")
+    }
 
     return render_template("u_check_2.html", check=check)
 
-@app.route("/u_check/done", methods=["POST"])
+@app.route("/u_check/done",methods=["POST"])
 def u_check():
-    student = session["id"]
-    teacher = request.form.get("teacher")
-    title = request.form.get("title")
-    body = request.form.get("body")
+    check = (
+        session["id"],
+        request.form.get("id"),
+        request.form.get("title"),
+        request.form.get("body")
+    )
 
     dbmg = db_manager()
-    dbmg.exec_query("insert into review(student,teacher,title,body,check_flg,propriety_flg) values(%s,%s,%s,%s,%s,%s)",(student,teacher,title,body,0,0))
+    dbmg.exec_query("insert into review(student,teacher,title,body) values(%s,%s,%s,%s)",check)
 
     return render_template("u_check_3.html")
 
@@ -270,7 +327,7 @@ def forum_contribute():
 def u_account_page():
     return render_template("u_account_1.html")
 
-@app.route("/u_account", methods=["POST"])
+@app.route("/u_account",methods=["POST"])
 def u_account():
     id = session["id"]
     pw = request.form.get("pw")
@@ -288,30 +345,6 @@ def u_account():
     dbmg.exec_query(sql, (hash_pw, salt, name, class_id, id))
 
     return render_template("u_account_3.html")
-@app.route("/u_men")
-def u_men_page():
-    dbmg = db_manager()
-    result = dbmg.exec_query("select id,name from a_account")
-    return render_template("u_men_1.html",result=result)
-
-@app.route("/u_men/u_men2",methods=["POST"])
-def u_men_confirm():
-    id = request.form.get("id")
-    date = request.form.get("date")
-    time = request.form.get("time")
-    result = (id,date,time)
-    return render_template("u_men_2.html",result=result)
-
-@app.route("/u_men/u_men2/u_men3",methods=["POST"])
-def u_men():
-    student = session["id"]
-    teacher = request.form.get("id")
-    date = request.form.get("date")
-    time = request.form.get("time")
-    dbmg = db_manager()
-    dbmg.exec_query("insert into practice(student,teacher,date,time) values(%s,%s,%s,%s)",(student,teacher,date,time))
-    return render_template("u_men_3.html")
-    
 
 if __name__ == "__main__":
     app.run(debug=True)

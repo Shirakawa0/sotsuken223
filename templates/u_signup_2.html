@@ -2,15 +2,5 @@
 {% block content %}
 <img src="{{ url_for('static', filename='img/logo.png') }}" alt="就活帳" class="logo">
 <h1>利用者アカウント新規登録</h1>
-<form action="" method="post">
-    学籍番号{{ result[0] }}<input type="hidden" value="{{result[0]}}"><br>
-    パスワード{{ result[1] }}<input type="hidden" value="{{result[1]}}"><br>
-    名前{{ result[2] }}<input type="hidden" value="{{result[2]}}"><br>
-    学科{{ result[3] }}<input type="hidden" value="{{result[3]}}"><br>
-    学年{{ result[4] }}<input type="hidden" value="{{result[4]}}"><br>
-    クラス{{ result[5] }}<input type="hidden" value="{{result[5]}}"><br>
-    <input type="submit" value="新規登録" class="btn btn-outline-primary">
-</form>
-
 <a href="">戻る</a>
 {% endblock %}

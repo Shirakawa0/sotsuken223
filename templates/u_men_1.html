@@ -2,22 +2,29 @@
 {% block content %}
 <h1>面接練習</h1>
 <h1>面接練習の希望状況を入力してください</h1>
-<form action="{{url_for('u_men_confirm')}}" method="post">
-    先生<br>
+<form action="{{ url_for('u_men_confirm') }}" method="post">
+    先生
+    <br>
     <select name="id">
-        <option value="">　　　</option>
-        {% for res in result %}
-        <option value="{{res.id}}">{{res.name}}</option>
+        <option value="">先生を選択</option>
+        {% for teacher in teachers %}
+        <option value="{{ teacher.id }}">{{ teacher.name }}</option>
         {% endfor %}
-    </select><br>
-    日付<br>
-    <input type="text" name="date"><br>
-    時間帯<br>
+    </select>
+    <br>
+    日付
+    <br>
+    <input type="date" name="date">
+    <br>
+    時間帯
+    <br>
     <select name="time">
-        <option value="13:00~14:00">13:00~14:00</option>
+        <option value="">時間帯を選択</option>
+        <option value="3コマ目終了時">3コマ目終了時</option>
         <option value="その他">その他</option>
-    </select><br>
-    <a href="{{url_for('u_home_page')}}" class="btn btn-outline-secondary">戻る</a>
-    <input type="submit" value="つぎへ進む" class="btn btn-outline-primary">
+    </select>
+    <br>
+    <a href="{{ url_for('u_home_page') }}" class="btn btn-outline-secondary">戻る</a>
+    <input type="submit" value="次へ進む" class="btn btn-outline-primary">
 </form>
 {% endblock %}

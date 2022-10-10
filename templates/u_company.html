@@ -1,22 +1,27 @@
 {% extends "template.html" %}
 {% block content %}
-<h1>{{ company }}</h1>
-<h1>最新の選考状況</h1><br>
+<h1>{{ schedules[0].company }}</h1>
+<h1>最新の選考状況</h1>
 <div>
-    {{ schedule[0].step }}
-    {{ schedule[0].detail }}
-    {{ schedule[0].date_time }}
-    <a href="{{ url_for('u_register_page', company=company) }}">通過</a>
-    <a href="{{ url_for('u_delete_page', company=company) }}">落選</a>
-    <a href="{{ url_for('u_modify_page', company=company) }}">変更</a>
+    {{ schedules[0].step }}
+    {{ schedules[0].detail }}
+    {{ schedules[0].place }}
+    {{ schedules[0].date_time }}
+    <a href="{{ url_for('u_register_page', company=schedules[0].company) }}">通過</a>
+    <a href="{{ url_for('u_delete_page', company=schedules[0].company) }}">落選</a>
+    <a href="{{ url_for('u_modify_page', company=schedules[0].company) }}">変更</a>
 </div>
-<h1>これまでの選考状況</h1><br>
-{% for s in schedule %}
+<h1>これまでの選考状況</h1>
+{% if schedules|length <= 1 %}
+<p>ありません</p>
+{% endif %}
+{% for schedule in schedules %}
 {% if loop.index > 1 %}
 <div>
-    {{ s.step }}
-    {{ s.detail }}
-    {{ s.date_time }}
+    {{ schedule.step }}
+    {{ schedule.detail }}
+    {{ schedule.place }}
+    {{ schedule.date_time }}
     通過済み
 </div>
 {% endif %}
