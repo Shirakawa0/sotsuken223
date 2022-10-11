@@ -10,13 +10,13 @@
 {% endfor %}
 <form action="">
     <input type="submit" value="選考状況一覧" class="btn btn-outline-primary"><br>
-    <h1>面接練習</h1><br>
+    <h1>面接練習 {{practices|length}}件</h1><br>
     {% for res in practices %}
         {{res.dep}}
-        {{res.grade}}
-        {{res.class}}
+        {{res.grade}}年
+        {{res.class}}組
         {{res.name}}
-        {{res.count}}
+        {{res.date}}<br>
     {% endfor %}
     
     <input type="submit" value="希望状況を閲覧" class="btn btn-outline-primary"><br>

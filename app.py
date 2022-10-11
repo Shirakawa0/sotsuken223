@@ -410,7 +410,7 @@ def a_home_page():
     date_time_e = date + " " + "23:59:59"
     sql = "select u_account.name as name,schedule.company as company,schedule.step as step,schedule.detail as detail,substring(schedule.date_time,12,5) as date_time from schedule left join u_account on schedule.id = u_account.id where date_time <= %s and date_time >= %s"
     schedules = dbmg.exec_query(sql,(date_time_e,date_time_s))
-    sql = "select d.name as dep,c.grade as grade,c.class as class,b.name as name,count(*) as count from practice a,u_account b,class c,dep d where a.student = b.id and b.class_id = c.id and c.dep_id = d.id and a.teacher = %s"
+    sql = "select d.name as dep,c.grade as grade,c.class as class,b.name as name,right(date,5) as date from practice a,u_account b,class c,dep d where a.student = b.id and b.class_id = c.id and c.dep_id = d.id and a.teacher = %s"
     practices = dbmg.exec_query(sql,(id))
     return render_template("a_home.html",schedules=schedules,practices=practices)
 
