@@ -2,12 +2,12 @@
 {% block content %}
 <img src="{{ url_for('static', filename='img/logo.png') }}" alt="就活帳" class="logo">
 <h1>管理者ログイン</h1>
-<form action="">
+<form action="{{url_for('a_login')}}" method="post">
     管理者ID<br>
-    <input type="text"><br>
+    <input type="text" name="id"><br>
     パスワード<br>
-    <input type="password"><br>
+    <input type="password" name="pw"><br>
     <input type="submit" value="ログイン" class="btn btn-outline-primary">
 </form>
-<a href="">戻る</a>
+<a href="{{url_for('u_login_page')}}">戻る</a>
 {% endblock %}
