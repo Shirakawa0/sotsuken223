@@ -326,6 +326,11 @@ def forum_contribute():
 
 @app.route("/u_account")
 def u_account_page():
+    dbmg = db_manager()
+    dep_ids = dbmg.exec_query("select distinct dep_id from class")
+    grades = dbmg.exec_query("select distinct grade from class")
+    classes = dbmg.exec_query("select distinct class from class")
+
     return render_template("u_account_1.html")
 
 @app.route("/u_account",methods=["POST"])
