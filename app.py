@@ -348,6 +348,42 @@ def u_account():
     return render_template("u_account_3.html")
 
 #ここから管理者------------------------------------------------------------------------------------
+@app.route("/a_login")
+def a_login_page():
+    return render_template("a_login.html")
+
+@app.route("/a_login",methods=["POST"])
+def a_login():
+    id = request.form.get("id")
+    pw = request.form.get("pw")
+    
+    dbmg = db_manager()
+    user = dbmg.exec_query("select * from a_account where id=%s",id)
+
+    hash_pw,_ = dbmg.calc_pw_hash(pw,user[0]["salt"])
+
+    if hash_pw == user[0]["hash_pw"]:
+        session["id"] = user[0]["id"]
+        session["user_name"] = user[0]["name"]
+        # sessionの有効期限
+        session.permanent = True
+        app.permanent_session_lifetime = datetime.timedelta(minutes=30)
+        return redirect("/a_home")
+    else:
+        return redirect("/a_login") 
+
+@app.route("/a_home")
+def a_home_page():
+    if "id" not in session:
+        return redirect("/")
+    dbmg = db_manager()
+    date = str(datetime.date.today())
+    date_time_s = date + " " + "00:00:00"
+    date_time_e = date + " " + "23:59:59"
+    sql = "select u_account.name as name,schedule.company as company,schedule.step as step,schedule.detail as detail,substring(schedule.date_time,12,5) as date_time from schedule left join u_account on schedule.id = u_account.id where date_time <= %s and date_time >= %s"
+    schedules = dbmg.exec_query(sql,(date_time_e,date_time_s))
+    return render_template("a_home.html",schedules=schedules)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
