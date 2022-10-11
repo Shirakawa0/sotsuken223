@@ -352,5 +352,7 @@ def u_account():
 
     return render_template("u_account_3.html")
 
+#ここから管理者------------------------------------------------------------------------------------
+
 if __name__ == "__main__":
     app.run(debug=True)
