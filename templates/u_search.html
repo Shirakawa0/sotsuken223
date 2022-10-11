@@ -3,13 +3,14 @@
 <h1>報告書検索</h1>
 <h1>企業名で検索できます</h1>
 <form action="">
-    企業名<br>
-    <input type="text"><br>
-    年度<br>
+    企業名
+    <input type="text">
+    年度
     <select>
-        <option value=""></option>
-    </select><br>
-    <input type="submit" value="検索" class="btn btn-outline-success"><br>
-    <input type="submit" value="マイページへ戻る" class="btn btn-outline-secondary">
+        <option value="">年度を選択</option>
+    </select>
+    <input type="submit" value="検索" class="btn btn-outline-success">
+    <br>
 </form>
+<a href="{{ url_for('u_home_page') }}" class="btn btn-outline-primary">マイページへ戻る</a>
 {% endblock %}

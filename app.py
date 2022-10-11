@@ -297,6 +297,7 @@ def forum_build():
     
     thread_id = dbmg.exec_query("select id from threads where author=%s order by last_update desc limit 1",id)
     thread_id = thread_id[0]["id"]
+
     dbmg.exec_query("insert into comments(thread_id,contributer,date_time,body) values(%s,%s,%s,%s)",(thread_id,id,date_time,body))
 
     return redirect(url_for("forum_brows",thread_id=thread_id))

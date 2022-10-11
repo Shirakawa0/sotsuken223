@@ -6,10 +6,11 @@
 <h1>新規スレッド作成</h1><br>
 
 <form action="{{ url_for('forum_build') }}">
-    スレッドタイトル<br>
-    <input type="text" name="title"><br>
-    本文<br>
-    <input type="text" name="body"><br><br>
+    <p>スレッドタイトル</p>
+    <input type="text" name="title">
+    <p>本文</p>
+    <input type="text" name="body">
+    <br><br>
     <input type="submit" value="この内容で作成" class="btn btn-outline-primary">
 </form>
 
