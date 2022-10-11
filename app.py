@@ -327,11 +327,26 @@ def forum_contribute():
 @app.route("/u_account")
 def u_account_page():
     dbmg = db_manager()
-    dep_ids = dbmg.exec_query("select distinct dep_id from class")
-    grades = dbmg.exec_query("select distinct grade from class")
-    classes = dbmg.exec_query("select distinct class from class")
 
-    return render_template("u_account_1.html")
+    # プルダウンに表示する学科・学年・組を取得し、配列に格納する
+    dep_ids_dict = dbmg.exec_query("select distinct dep_id from class")
+    grades_dict = dbmg.exec_query("select distinct grade from class")
+    classes_dict = dbmg.exec_query("select distinct class from class")
+
+    deps = []
+    for dep_ids in dep_ids_dict:
+        dep = dbmg.exec_query("select * from dep where id=%s",dep_ids["dep_id"])
+        deps.append(dep[0])
+
+    grades = []
+    for grade in grades_dict:
+        grades.append(grade)
+
+    classes = []
+    for Class in classes_dict:
+        classes.append(Class)
+
+    return render_template("u_account_1.html",deps=deps,grades=grades,classes=classes)
 
 @app.route("/u_account",methods=["POST"])
 def u_account():
@@ -351,6 +366,13 @@ def u_account():
     dbmg.exec_query(sql, (hash_pw, salt, name, class_id, id))
 
     return render_template("u_account_3.html")
+
+@app.route("/logout")
+def logout():
+    if "id" in session:
+        session.pop("id",None)   # セッションを空にする
+    
+    return redirect("/")
 
 #ここから管理者------------------------------------------------------------------------------------
 @app.route("/a_login")
