@@ -381,13 +381,17 @@ def a_login():
 def a_home_page():
     if "id" not in session:
         return redirect("/")
+    id = session["id"]
     dbmg = db_manager()
     date = str(datetime.date.today())
     date_time_s = date + " " + "00:00:00"
     date_time_e = date + " " + "23:59:59"
     sql = "select u_account.name as name,schedule.company as company,schedule.step as step,schedule.detail as detail,substring(schedule.date_time,12,5) as date_time from schedule left join u_account on schedule.id = u_account.id where date_time <= %s and date_time >= %s"
     schedules = dbmg.exec_query(sql,(date_time_e,date_time_s))
-    return render_template("a_home.html",schedules=schedules)
+    sql = "select d.name as dep,c.grade as grade,c.class as class,b.name as name,count(*) as count from practice a,u_account b,class c,dep d where a.student = b.id and b.class_id = c.id and c.dep_id = d.id and a.teacher = %s"
+    practices = dbmg.exec_query(sql,(id))
+    return render_template("a_home.html",schedules=schedules,practices=practices)
+
 
 
 if __name__ == "__main__":

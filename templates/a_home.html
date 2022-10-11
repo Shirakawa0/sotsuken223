@@ -11,6 +11,14 @@
 <form action="">
     <input type="submit" value="選考状況一覧" class="btn btn-outline-primary"><br>
     <h1>面接練習</h1><br>
+    {% for res in practices %}
+        {{res.dep}}
+        {{res.grade}}
+        {{res.class}}
+        {{res.name}}
+        {{res.count}}
+    {% endfor %}
+    
     <input type="submit" value="希望状況を閲覧" class="btn btn-outline-primary"><br>
     <h1>文章チェック</h1><br>
     <input type="submit" value="文章チェックへ進む" class="btn btn-outline-primary"><br>
