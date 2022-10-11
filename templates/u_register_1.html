@@ -39,7 +39,7 @@
     日時
     <input type="datetime-local" name="date_time">
     <br>
-    <a href="{{ url_for('u_home_page') }}" class="btn btn-outline-secondary">戻る</a>
+    <a href="{{ url_for('u_company_page',company=company) }}" class="btn btn-outline-secondary">戻る</a>
     <input type="submit" value="次へ進む" class="btn btn-outline-primary">
 </form>
 {% endblock %}
