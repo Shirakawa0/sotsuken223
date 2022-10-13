@@ -5,9 +5,7 @@
 </a>
 <h1>スレッド一覧</h1><br>
 <h1>管理者は新規スレッド作成、スレッドのコメント、スレッドの削除ができます。</h1><br>
-<form action="">
-    <input type="submit" value="新規スレッド作成" class="btn btn-outline-primary">
-</form>
+<a href="{{ url_for('forum_build_page',user='admin') }}" class="btn btn-outline-primary">新規スレッド作成</a>
 {% for thread in threads %}
 <a href="{{ url_for('forum_brows',thread_id=thread.id,user='admin') }}">
     <div style="border: 1px black solid;">

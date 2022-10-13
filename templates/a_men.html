@@ -1,6 +1,8 @@
 {% extends "template.html" %}
 {% block content %}
-<a href=""><img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る"></a><br>
+<a href="{{ url_for('a_home_page') }}">
+    <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
+</a>
 <h1>面接練習希望状況</h1><br>
 <h1>担任クラスの学生</h1><br><br>
 {% for res in myclass %}

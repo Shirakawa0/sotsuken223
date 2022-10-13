@@ -6,6 +6,7 @@
 <h1>新規スレッド作成</h1><br>
 
 <form action="{{ url_for('forum_build') }}">
+    <input type="hidden" name="user" value="admin">
     <p>スレッドタイトル</p>
     <input type="text" name="title">
     <p>本文</p>
