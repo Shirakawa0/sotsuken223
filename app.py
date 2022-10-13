@@ -487,7 +487,6 @@ def a_thread_page():
 @app.route("/a_thread/done")
 def a_thread_delete():
     id = request.args.get("id")
-    print(id)
 
     dbmg = db_manager()
     dbmg.exec_query("delete from threads where id = %s",id)
