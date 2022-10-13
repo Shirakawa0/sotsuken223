@@ -1,18 +1,24 @@
 {% extends "template.html" %}
 {% block content %}
-<a href=""><img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る"></a><br>
-
-<h1>就活状況一覧</h1><br>
-
-<form action="">
-    <select>
-        <option value="">学科</option>
-        <option value="">年</option>
-        <option value="">組</option>
+<a href="{{ url_for('a_home_page') }}">
+    <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
+</a>
+<br>
+<h1>就活状況一覧</h1>
+<!-- formはJavaScriptで制御予定（送信ボタンなしで表示を変更したい） -->
+<form action="{{ url_for('a_all_page') }}">
+    <select name="class_id">
+        {% for class in classes %}
+        <option value="{{ class.class_id }}">{{ class.name + class.grade + "年" + class.class + "組" }}</option>
+        {% endfor %}
+        <input type="submit" value="検索">
     </select>
-</form><br>
-
-<h1>選考中の学生</h1><br><br>
-
+</form>
+<h1>選考中の学生</h1>
+{% for schedule in schedules %}
+<a href="{{ url_for('a_student_page',id = schedule.id) }}">
+    {{ classes[0].name + classes[0].grade + "年" + classes[0].class + "組　" + schedule.name + "　" + schedule.num + "社受検中" }}
+</a>
+{% endfor %}
 <h1>選考終了済みの学生</h1>
 {% endblock %}

@@ -412,6 +412,29 @@ def a_home_page():
     practices = dbmg.exec_query(sql,(id))
     return render_template("a_home.html",schedules=schedules,practices=practices)
 
+@app.route("/a_all")
+def a_all_page():
+    id = session["id"]
+    class_id = request.args.get('class_id')
+
+    dbmg = db_manager()
+    classes = dbmg.exec_query("select class_id,dep.name,grade,class from teacher_class inner join class on class_id = class.id inner join dep on dep_id = dep.id where teacher_class.id = %s",id)
+
+    if class_id:
+        schedules = dbmg.exec_query("select schedule.id as id,name,cast(count(company) as char) as num from schedule inner join u_account on schedule.id = u_account.id where class_id = %s group by schedule.id",class_id)
+        return render_template("a_all.html",classes=classes,schedules=schedules)
+    else:
+        return render_template("a_all.html",classes=classes)
+
+@app.route("/a_student")
+def a_student_page():
+    id = request.args.get("id")
+
+    dbmg = db_manager()
+    student = dbmg.exec_query("select dep.name as dep,grade,class,u_account.name as name from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where u_account.id = %s",id)
+    schedules = dbmg.exec_query("select * from schedule as s1 where id = %s and s1.date_time = (select max(s2.date_time) from schedule as s2 where s1.company = s2.company group by s2.company) order by date_time asc",id)
+
+    return render_template("a_student.html",student=student[0],schedules=schedules)
 
 if __name__ == "__main__":
     app.run(debug=True)

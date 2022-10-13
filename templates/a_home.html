@@ -8,7 +8,8 @@
     {{res.detail}}
     {{res.date_time}}
 {% endfor %}
-<a href="" class="btn btn-outline-primary">選考状況一覧</a>
+<br>
+<a href="{{ url_for('a_all_page') }}" class="btn btn-outline-primary">選考状況一覧</a>
 
 <h1>面接練習 {{practices|length}}件</h1>
 {% for res in practices %}
@@ -26,6 +27,8 @@
 <div style="position:relative; width:250px; height:250px;">
     <canvas id="myChart" style="position: relative; height:150; width:150"></canvas>
 </div>
+
+<a href="{{ url_for('logout') }}" class="btn btn-outline-secondary">ログアウト（仮）</a>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
