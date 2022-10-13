@@ -410,7 +410,43 @@ def a_home_page():
     schedules = dbmg.exec_query(sql,(date_time_e,date_time_s))
     sql = "select d.name as dep,c.grade as grade,c.class as class,b.name as name,right(date,5) as date from practice a,u_account b,class c,dep d where a.student = b.id and b.class_id = c.id and c.dep_id = d.id and a.teacher = %s"
     practices = dbmg.exec_query(sql,(id))
-    return render_template("a_home.html",schedules=schedules,practices=practices)
+    #文章チェック
+    sql = "select student,title from review where teacher = %s"
+    reviews = dbmg.exec_query(sql,(id))
+    return render_template("a_home.html",schedules=schedules,practices=practices,reviews=reviews)
+
+@app.route("/a_signup")
+def a_signup_page():
+    return render_template("a_signup_1.html")
+
+@app.route("/a_signup",methods=["POST"])
+def a_signup():
+    id = request.form.get("id")
+    pw = request.form.get("pw")
+    name = request.form.get("name")
+    dep1 = request.form.get("dep1")
+    grade1 = request.form.get("grade1")
+    class1 = request.form.get("class1") 
+    dep2 = request.form.get("dep2")
+    grade2 = request.form.get("grade2")
+    class2 = request.form.get("class2") 
+
+    dbmg = db_manager()
+    hash_pw, salt = dbmg.calc_pw_hash(pw)
+
+    class_id1 = dep1 + grade1 + class1
+    class_id2 = dep2 + grade2 + class2
+
+    dbmg.exec_query("insert into a_account(id,hash_pw,salt,name) values(%s,%s,%s,%s)",(id,hash_pw,salt,name))
+    dbmg.exec_query("insert into teacher_class values(%s,%s)",(id,class_id1))
+    dbmg.exec_query("insert into teacher_class values(%s,%s)",(id,class_id2))
+
+    return render_template("a_signup_3.html")
+
+
+
+
+
 
 
 if __name__ == "__main__":

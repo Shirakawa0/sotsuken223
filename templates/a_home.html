@@ -20,6 +20,10 @@
 {% endfor %}
 <a href="" class="btn btn-outline-primary">希望状況を閲覧</a>
 <h1>文章チェック</h1>
+{% for res in reviews %}
+    {{res.student}}
+    {{res.title}}<br>
+{% endfor %}
 <a href="" class="btn btn-outline-primary">文章チェックを希望</a>
 
 <h1>内定率</h1>
