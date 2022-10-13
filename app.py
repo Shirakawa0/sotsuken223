@@ -304,12 +304,13 @@ def forum_build():
 @app.route("/forum_brows")
 def forum_brows():
     thread_id = request.args.get("thread_id")
+    user = request.args.get("user")
 
     dbmg = db_manager()
     thread = dbmg.exec_query("select * from threads where id = %s",thread_id)
     comments = dbmg.exec_query("select * from comments where thread_id = %s",thread_id)
 
-    return render_template("forum_brows.html",thread=thread[0],comments=comments)
+    return render_template("forum_brows.html",thread=thread[0],comments=comments,user=user)
 
 @app.route("/forum_contribute")
 def forum_contribute():
@@ -445,6 +446,38 @@ def a_signup():
 
     return render_template("a_signup_3.html")
 
+@app.route("/a_all")
+def a_all_page():
+    id = session["id"]
+    class_id = request.args.get('class_id')
+
+    dbmg = db_manager()
+    classes = dbmg.exec_query("select class_id,dep.name,grade,class from teacher_class inner join class on class_id = class.id inner join dep on dep_id = dep.id where teacher_class.id = %s",id)
+
+    if class_id:
+        schedules = dbmg.exec_query("select schedule.id as id,name,cast(count(company) as char) as num from schedule inner join u_account on schedule.id = u_account.id where class_id = %s group by schedule.id",class_id)
+        return render_template("a_all.html",classes=classes,schedules=schedules)
+    else:
+        return render_template("a_all.html",classes=classes)
+
+@app.route("/a_student")
+def a_student_page():
+    id = request.args.get("id")
+
+    dbmg = db_manager()
+    student = dbmg.exec_query("select dep.name as dep,grade,class,u_account.name as name from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where u_account.id = %s",id)
+    schedules = dbmg.exec_query("select * from schedule as s1 where id = %s and s1.date_time = (select max(s2.date_time) from schedule as s2 where s1.company = s2.company group by s2.company) order by date_time asc",id)
+
+    return render_template("a_student.html",student=student[0],schedules=schedules)
+
+@app.route("/a_forum")
+def a_forum_page():
+    dbmg = db_manager()
+    threads = dbmg.exec_query("select * from threads")
+
+    for thread in threads:
+        comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
+        thread["comment_num"] = comment_num[0]["num"]
 @app.route("/a_men")
 def a_men_page():
     id = session["id"]
@@ -453,10 +486,23 @@ def a_men_page():
     notclass = dbmg.exec_query("select e.name as dep,d.grade as grade,d.class as class,c.name as name,a.date as date,a.time as time from practice a,teacher_class b,u_account c,class d,dep e where a.teacher = b.id and a.student = c.id and c.class_id = d.id and d.dep_id = e.id and a.teacher = %s and not b.class_id = c.class_id",(id))
     return render_template("a_men.html",myclass=myclass,notclass=notclass)
 
+    return render_template("a_forum.html",threads=threads)
 
+@app.route("/a_thread")
+def a_thread_page():
+    id = request.args.get("id")
+    return render_template("a_thread_1.html",id=id)
 
+@app.route("/a_thread/done")
+def a_thread_delete():
+    id = request.args.get("id")
+    print(id)
 
+    dbmg = db_manager()
+    dbmg.exec_query("delete from threads where id = %s",id)
+    dbmg.exec_query("delete from comments where thread_id = %s",id)
 
+    return render_template("a_thread_2.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
