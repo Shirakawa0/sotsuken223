@@ -8,7 +8,7 @@
 <a href="{{ url_for('forum_build_page') }}" class="btn btn-outline-primary">新規スレッド作成</a>
 
 {% for thread in threads %}
-<a href="{{ url_for('forum_brows',thread_id=thread.id ) }}">
+<a href="{{ url_for('forum_brows',thread_id=thread.id,user='user') }}">
     <div style="border: 1px black solid;">
         {{ thread.title }}<br>
         最終更新：{{ thread.last_update }}

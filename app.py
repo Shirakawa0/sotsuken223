@@ -304,12 +304,13 @@ def forum_build():
 @app.route("/forum_brows")
 def forum_brows():
     thread_id = request.args.get("thread_id")
+    user = request.args.get("user")
 
     dbmg = db_manager()
     thread = dbmg.exec_query("select * from threads where id = %s",thread_id)
     comments = dbmg.exec_query("select * from comments where thread_id = %s",thread_id)
 
-    return render_template("forum_brows.html",thread=thread[0],comments=comments)
+    return render_template("forum_brows.html",thread=thread[0],comments=comments,user=user)
 
 @app.route("/forum_contribute")
 def forum_contribute():
@@ -443,11 +444,6 @@ def a_signup():
 
     return render_template("a_signup_3.html")
 
-
-
-
-
-
 @app.route("/a_all")
 def a_all_page():
     id = session["id"]
@@ -471,6 +467,33 @@ def a_student_page():
     schedules = dbmg.exec_query("select * from schedule as s1 where id = %s and s1.date_time = (select max(s2.date_time) from schedule as s2 where s1.company = s2.company group by s2.company) order by date_time asc",id)
 
     return render_template("a_student.html",student=student[0],schedules=schedules)
+
+@app.route("/a_forum")
+def a_forum_page():
+    dbmg = db_manager()
+    threads = dbmg.exec_query("select * from threads")
+
+    for thread in threads:
+        comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
+        thread["comment_num"] = comment_num[0]["num"]
+
+    return render_template("a_forum.html",threads=threads)
+
+@app.route("/a_thread")
+def a_thread_page():
+    id = request.args.get("id")
+    return render_template("a_thread_1.html",id=id)
+
+@app.route("/a_thread/done")
+def a_thread_delete():
+    id = request.args.get("id")
+    print(id)
+
+    dbmg = db_manager()
+    dbmg.exec_query("delete from threads where id = %s",id)
+    dbmg.exec_query("delete from comments where thread_id = %s",id)
+
+    return render_template("a_thread_2.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

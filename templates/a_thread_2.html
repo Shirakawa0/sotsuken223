@@ -2,7 +2,7 @@
 {% block content %}
 <h1>スレッド削除</h1><br>
 <h1>スレッドを削除しました</h1><br>
-<form action="">
+<form action="{{ url_for('a_forum_page') }}">
     <input type="submit" value="スレッド一覧へ戻る" class="btn btn-outline-secondary">
 </form>
 {% endblock %}

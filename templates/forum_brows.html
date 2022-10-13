@@ -1,7 +1,11 @@
 {% extends "template.html" %}
 {% block content %}
 <h1>スレッド</h1>
+{% if user == "user" %}
 <a href="{{ url_for('u_forum_page') }}" class="btn btn-outline-primary">スレッド一覧</a>
+{% elif user == "admin" %}
+<a href="{{ url_for('a_forum_page') }}" class="btn btn-outline-primary">スレッド一覧</a>
+{% endif %}
 <br>
 <h2>{{ thread.title }}</h2>
 <br>
