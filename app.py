@@ -437,12 +437,21 @@ def a_signup():
     class_id1 = dep1 + grade1 + class1
     class_id2 = dep2 + grade2 + class2
 
+
+
     dbmg.exec_query("insert into a_account(id,hash_pw,salt,name) values(%s,%s,%s,%s)",(id,hash_pw,salt,name))
     dbmg.exec_query("insert into teacher_class values(%s,%s)",(id,class_id1))
     dbmg.exec_query("insert into teacher_class values(%s,%s)",(id,class_id2))
 
     return render_template("a_signup_3.html")
 
+@app.route("/a_men")
+def a_men_page():
+    id = session["id"]
+    dbmg = db_manager()
+    myclass = dbmg.exec_query("select e.name as dep,d.grade as grade,d.class as class,c.name as name,a.date as date,a.time as time from practice a,teacher_class b,u_account c,class d,dep e where a.teacher = b.id and a.student = c.id and c.class_id = d.id and d.dep_id = e.id and a.teacher = %s and b.class_id = c.class_id",(id))
+    notclass = dbmg.exec_query("select e.name as dep,d.grade as grade,d.class as class,c.name as name,a.date as date,a.time as time from practice a,teacher_class b,u_account c,class d,dep e where a.teacher = b.id and a.student = c.id and c.class_id = d.id and d.dep_id = e.id and a.teacher = %s and not b.class_id = c.class_id",(id))
+    return render_template("a_men.html",myclass=myclass,notclass=notclass)
 
 
 

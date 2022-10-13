@@ -3,5 +3,21 @@
 <a href=""><img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る"></a><br>
 <h1>面接練習希望状況</h1><br>
 <h1>担任クラスの学生</h1><br><br>
+{% for res in myclass %}
+    {{res.dep}}
+    {{res.grade}}
+    {{res.class}}
+    {{res.name}}
+    {{res.date}}
+    {{res.time}}
+{% endfor %}
 <h1>担任クラス以外の学生</h1>
+{% for res in notclass %}
+    {{res.dep}}
+    {{res.grade}}
+    {{res.class}}
+    {{res.name}}
+    {{res.date}}
+    {{res.time}}
+{% endfor %}
 {% endblock %}

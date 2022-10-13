@@ -18,7 +18,7 @@
     {{res.name}}
     {{res.date}}<br>
 {% endfor %}
-<a href="" class="btn btn-outline-primary">希望状況を閲覧</a>
+<a href="{{url_for('a_men_page')}}" class="btn btn-outline-primary">希望状況を閲覧</a>
 <h1>文章チェック</h1>
 {% for res in reviews %}
     {{res.student}}
