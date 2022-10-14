@@ -2,5 +2,5 @@
 {% block content %}
 <img src="{{ url_for('static', filename='img/logo.png') }}" alt="就活帳" class="logo">
 <h1>登録が完了しました</h1>
-<a href="{{ url_for('u_login_page') }}">ログインへ進む</a>
+<a href="{{ url_for('u_login_page') }}" class="btn btn-outline-primary">ログインへ進む</a>
 {% endblock %}
