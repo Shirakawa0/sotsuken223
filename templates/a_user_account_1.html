@@ -1,0 +1,58 @@
+{% extends "template.html" %}
+{% block content %}
+<a href="{{ url_for('a_home_page') }}">
+    <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
+</a>
+<h1>利用者アカウント管理</h1><br>
+<h1>アカウント検索</h1><br>
+<form action="{{ url_for('a_user_account_page') }}" method="post">
+    学籍番号
+    <input type="text" name="id">
+    <input type="submit" value="検索" class="btn btn-outline-primary">
+    <button class="btn btn-outline-primary">学籍番号以外で検索</button>
+</form>
+<br>
+<form action="{{ url_for('a_user_account_page') }}" method="post">
+    学科
+    <select name="dep">
+        <option value="">学科を選択</option>
+        {% for dep in deps %}
+        <option value="{{ dep.id }}">{{ dep.name }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    学年・組
+    <select name="grade">
+        <option value="">学年を選択</option>
+        {% for grade in grades %}
+        <option value="{{ grade.grade }}">{{ grade.grade }}年</option>
+        {% endfor %}
+    </select>
+    <select name="class">
+        <option value="">組を選択</option>
+        {% for class in classes %}
+        <option value="{{ class.class }}">{{ class.class }}組</option>
+        {% endfor %}
+    </select>
+    <br>
+    名前
+    <input type="text" name="name">
+    <input type="submit" value="この条件で検索する" class="btn btn-outline-primary">
+</form>
+{% for user in users %}
+<div>
+    {{ user.id }}
+    {{ user.name }}
+    {{ user.dep }}
+    {{ user.grade + "年" + user.class + "組" }}
+    <form action="{{ url_for('a_user_account_confirm') }}" method="post">
+        <input type="hidden" name="id" value="{{ user.id }}">
+        <input type="hidden" name="name" value="{{ user.name }}">
+        <input type="hidden" name="dep" value="{{ user.dep }}">
+        <input type="hidden" name="grade" value="{{ user.grade }}">
+        <input type="hidden" name="class" value="{{ user.class }}">
+        <input type="submit" value="削除">
+    </form>
+</div>
+{% endfor %}
+{% endblock %}
