@@ -506,8 +506,8 @@ def a_forum_page():
 def a_men_page():
     id = session["id"]
     dbmg = db_manager()
-    myclass = dbmg.exec_query("select distinct e.name as dep,d.grade as grade,d.class as class,c.name as name,a.date as date,a.time as time from practice a,teacher_class b,u_account c,class d,dep e where a.teacher = b.id and a.student = c.id and c.class_id = d.id and d.dep_id = e.id and a.teacher = %s and exists(select * from teacher_class b,u_account c where b.class_id = c.class_id)",(id))
-    notclass = dbmg.exec_query("select distinct e.name as dep,d.grade as grade,d.class as class,c.name as name,a.date as date,a.time as time from practice a,teacher_class b,u_account c,class d,dep e where a.teacher = b.id and a.student = c.id and c.class_id = d.id and d.dep_id = e.id and a.teacher = %s and not exists(select * from teacher_class b,u_account c where b.class_id = c.class_id)",(id))
+    myclass = dbmg.exec_query("select distinct e.name as dep,d.grade as grade,d.class as class,c.name as name,a.date as date,a.time as time from practice a,teacher_class b,u_account c,class d,dep e where a.teacher = b.id and a.student = c.id and c.class_id = d.id and d.dep_id = e.id and b.id = %s and c.class_id in (select class_id from teacher_class where id = %s);",(id,id))
+    notclass = dbmg.exec_query("select distinct e.name as dep,d.grade as grade,d.class as class,c.name as name,a.date as date,a.time as time from practice a,teacher_class b,u_account c,class d,dep e where a.teacher = b.id and a.student = c.id and c.class_id = d.id and d.dep_id = e.id and b.id = %s and c.class_id not in (select class_id from teacher_class where id = %s);",(id,id))
     return render_template("a_men.html",myclass=myclass,notclass=notclass)
 
 @app.route("/a_check_all")
