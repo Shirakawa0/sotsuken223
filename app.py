@@ -283,7 +283,8 @@ def u_forum_page():
 
 @app.route("/forum_build")
 def forum_build_page():
-    return render_template("forum_build.html")
+    user = request.args.get("user")
+    return render_template("forum_build.html",user=user)
 
 @app.route("/forum_build/done")
 def forum_build():
@@ -291,6 +292,7 @@ def forum_build():
     date_time = datetime.datetime.now()
     title = request.args.get("title")
     body = request.args.get("body")
+    user = request.args.get("user")
 
     dbmg = db_manager()
     dbmg.exec_query("insert into threads(title,author,last_contributer,last_update) values(%s,%s,%s,%s)",(title,id,id,date_time))
@@ -300,7 +302,7 @@ def forum_build():
 
     dbmg.exec_query("insert into comments(thread_id,contributer,date_time,body) values(%s,%s,%s,%s)",(thread_id,id,date_time,body))
 
-    return redirect(url_for("forum_brows",thread_id=thread_id))
+    return redirect(url_for("forum_brows",thread_id=thread_id,user=user))
 
 @app.route("/forum_brows")
 def forum_brows():
@@ -479,7 +481,7 @@ def a_forum_page():
     for thread in threads:
         comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
         thread["comment_num"] = comment_num[0]["num"]
-        
+
     return render_template("a_forum.html",threads=threads)
 
 @app.route("/a_men")
