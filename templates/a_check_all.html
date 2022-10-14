@@ -1,5 +1,18 @@
 {% extends "template.html" %}
 {% block content %}
-<img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る">
+<a href="{{url_for('a_home_page')}}">
+    <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
+</a>
 <h1>文章チェック依頼一覧</h1>
+{% for res in result %}
+<a href="{{url_for('a_check',id = res.id)}}">
+    {{res.id}}
+    {{res.dep}}
+    {{res.grade}}
+    {{res.class}}
+    {{res.name}}
+    タイトル:{{res.title}}<br>
+{% endfor %}
+</a>
+
 {% endblock %}

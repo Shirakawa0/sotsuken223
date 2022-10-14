@@ -1,16 +1,19 @@
 {% extends "template.html" %}
 {% block content %}
-<a href=""><img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る"></a><br>
+<a href="{{url_for('a_check_page')}}">
+    <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
+</a>
+
 <h1>文章チェック</h1><br>
-<a href="{{ url_for('') }}"></a><br>
+{{result.dep}}
+{{result.grade}}
+{{result.class}}
+{{result.name}}
+<h1>タイトル:{{result.title}}</h1>
 
-<h1>タイトル:</h1>
-<a href="{{ url_for('') }}"></a><br>
+{{result.body}}
 
-<a href="{{ url_for('') }}"></a><br>
+<a href="{{url_for('a_check_flg',flg=1,id=result.id)}}" class="btn btn-outline-warning">修正が必要</a> 
+<a href="{{url_for('a_check_flg',flg=0,id=result.id)}}" class="btn btn-outline-primary">OK</a> 
 
-<form action="">
-    <input type="submit" value="修正が必要" class="btn btn-outline-warning"><br>
-    <input type="submit" value="OK" class="btn btn-outline-primary">
-</form>
 {% endblock %}

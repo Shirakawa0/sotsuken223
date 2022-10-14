@@ -1,3 +1,4 @@
+from unittest import result
 from flask import Flask, render_template, request, redirect, url_for, session
 import datetime
 import random, string
@@ -485,9 +486,38 @@ def a_forum_page():
 def a_men_page():
     id = session["id"]
     dbmg = db_manager()
-    myclass = dbmg.exec_query("select e.name as dep,d.grade as grade,d.class as class,c.name as name,a.date as date,a.time as time from practice a,teacher_class b,u_account c,class d,dep e where a.teacher = b.id and a.student = c.id and c.class_id = d.id and d.dep_id = e.id and a.teacher = %s and b.class_id = c.class_id",(id))
-    notclass = dbmg.exec_query("select e.name as dep,d.grade as grade,d.class as class,c.name as name,a.date as date,a.time as time from practice a,teacher_class b,u_account c,class d,dep e where a.teacher = b.id and a.student = c.id and c.class_id = d.id and d.dep_id = e.id and a.teacher = %s and not b.class_id = c.class_id",(id))
+    myclass = dbmg.exec_query("select distinct e.name as dep,d.grade as grade,d.class as class,c.name as name,a.date as date,a.time as time from practice a,teacher_class b,u_account c,class d,dep e where a.teacher = b.id and a.student = c.id and c.class_id = d.id and d.dep_id = e.id and a.teacher = %s and exists(select * from teacher_class b,u_account c where b.class_id = c.class_id)",(id))
+    notclass = dbmg.exec_query("select distinct e.name as dep,d.grade as grade,d.class as class,c.name as name,a.date as date,a.time as time from practice a,teacher_class b,u_account c,class d,dep e where a.teacher = b.id and a.student = c.id and c.class_id = d.id and d.dep_id = e.id and a.teacher = %s and not exists(select * from teacher_class b,u_account c where b.class_id = c.class_id)",(id))
     return render_template("a_men.html",myclass=myclass,notclass=notclass)
+
+@app.route("/a_check_all")
+def a_check_page():
+    id = session["id"]
+    dbmg = db_manager()
+    sql = "select a.id as id,d.name as dep,c.grade as grade,c.class as class,b.name as name,a.title as title from review a,u_account b,class c,dep d where a.student = b.id and b.class_id = c.id and c.dep_id = d.id and teacher = %s"
+    result = dbmg.exec_query(sql,(id))
+    return render_template("a_check_all.html",result=result)
+
+@app.route("/a_check")
+def a_check():
+    id = request.args.get("id")
+    print(id)
+    dbmg = db_manager()
+    sql = "select a.id as id,d.name as dep,c.grade as grade,c.class as class,b.name as name,a.title as title,a.body as body from review a,u_account b,class c,dep d where a.student = b.id and b.class_id = c.id and c.dep_id = d.id and a.id = %s"
+    result = dbmg.exec_query(sql,(id))
+    print(result[0])
+    return render_template("a_check.html",result=result[0])
+
+@app.route("/a_check_flg")
+def a_check_flg():
+    id = request.args.get("id")
+    flg = request.args.get("flg")
+    dbmg = db_manager()
+    sql = "update review set check_flg = %s where id = %s"
+    dbmg.exec_query(sql,(flg,id))
+    sql = "select a.id as id,d.name as dep,c.grade as grade,c.class as class,b.name as name,a.title as title,a.body as body from review a,u_account b,class c,dep d where a.student = b.id and b.class_id = c.id and c.dep_id = d.id and a.id = %s"
+    result = dbmg.exec_query(sql,(id))
+    return render_template("a_check.html",result=result[0])
 
 @app.route("/a_thread")
 def a_thread_page():
