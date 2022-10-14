@@ -421,7 +421,27 @@ def a_home_page():
 
 @app.route("/a_signup")
 def a_signup_page():
-    return render_template("a_signup_1.html")
+    dbmg = db_manager()
+
+    # プルダウンに表示する学科・学年・組を取得し、配列に格納する
+    dep_ids_dict = dbmg.exec_query("select distinct dep_id from class")
+    grades_dict = dbmg.exec_query("select distinct grade from class")
+    classes_dict = dbmg.exec_query("select distinct class from class")
+
+    deps = []
+    for dep_ids in dep_ids_dict:
+        dep = dbmg.exec_query("select * from dep where id=%s",dep_ids["dep_id"])
+        deps.append(dep[0])
+
+    grades = []
+    for grade in grades_dict:
+        grades.append(grade)
+
+    classes = []
+    for Class in classes_dict:
+        classes.append(Class)
+
+    return render_template("a_signup_1.html",deps=deps,grades=grades,classes=classes)
 
 @app.route("/a_signup",methods=["POST"])
 def a_signup():
@@ -440,8 +460,6 @@ def a_signup():
 
     class_id1 = dep1 + grade1 + class1
     class_id2 = dep2 + grade2 + class2
-
-
 
     dbmg.exec_query("insert into a_account(id,hash_pw,salt,name) values(%s,%s,%s,%s)",(id,hash_pw,salt,name))
     dbmg.exec_query("insert into teacher_class values(%s,%s)",(id,class_id1))
@@ -535,6 +553,120 @@ def a_thread_delete():
     dbmg.exec_query("delete from comments where thread_id = %s",id)
 
     return render_template("a_thread_2.html")
+
+@app.route("/a_account")
+def a_account_page():
+    id = session["id"]
+
+    dbmg = db_manager()
+
+    # プルダウンに表示する学科・学年・組を取得し、配列に格納する
+    dep_ids_dict = dbmg.exec_query("select distinct dep_id from class")
+    grades_dict = dbmg.exec_query("select distinct grade from class")
+    classes_dict = dbmg.exec_query("select distinct class from class")
+
+    deps = []
+    for dep_ids in dep_ids_dict:
+        dep = dbmg.exec_query("select * from dep where id=%s",dep_ids["dep_id"])
+        deps.append(dep[0])
+
+    grades = []
+    for grade in grades_dict:
+        grades.append(grade)
+
+    classes = []
+    for Class in classes_dict:
+        classes.append(Class)
+
+    return render_template("a_account_1.html",id=id,deps=deps,grades=grades,classes=classes)
+
+@app.route("/a_account",methods=["POST"])
+def a_account():
+    id = session["id"]
+    pw = request.form.get("pw")
+    name = request.form.get("name")
+    dep1 = request.form.get("dep1")
+    grade1 = request.form.get("grade1")
+    Class1 = request.form.get("class1") # 区別のためcは大文字
+    dep2 = request.form.get("dep2")
+    grade2 = request.form.get("grade2")
+    Class2 = request.form.get("class2") # 区別のためcは大文字
+
+    class_id1 = dep1 + grade1 + Class1
+    class_id2 = dep2 + grade2 + Class2
+
+    dbmg = db_manager()
+    hash_pw, salt = dbmg.calc_pw_hash(pw)
+
+    sql = "update a_account set hash_pw=%s, salt=%s, name=%s where id=%s"
+    dbmg.exec_query(sql, (hash_pw, salt, name, id))
+
+    dbmg.exec_query("delete from teacher_class where id = %s",id)
+    dbmg.exec_query("insert into teacher_class values(%s,%s)",(id,class_id1))
+    dbmg.exec_query("insert into teacher_class values(%s,%s)",(id,class_id2))
+
+    return render_template("a_account_3.html")
+
+@app.route("/a_user_account/search",methods=["get","POST"])
+def a_user_account_page():
+    dbmg = db_manager()
+
+    # プルダウンに表示する学科・学年・組を取得し、配列に格納する
+    dep_ids_dict = dbmg.exec_query("select distinct dep_id from class")
+    grades_dict = dbmg.exec_query("select distinct grade from class")
+    classes_dict = dbmg.exec_query("select distinct class from class")
+
+    deps = []
+    for dep_ids in dep_ids_dict:
+        dep = dbmg.exec_query("select * from dep where id=%s",dep_ids["dep_id"])
+        deps.append(dep[0])
+
+    grades = []
+    for grade in grades_dict:
+        grades.append(grade)
+
+    classes = []
+    for Class in classes_dict:
+        classes.append(Class)
+    
+    id = request.form.get("id")
+    dep = request.form.get("dep")
+    grade = request.form.get("grade")
+    Class = request.form.get("class")
+    name = request.form.get("name")
+    if not name:
+        name = ""
+
+    if request.method == "GET":
+        return render_template("a_user_account_1.html",deps=deps,grades=grades,classes=classes)
+
+
+    if id:
+        users = dbmg.exec_query("select u_account.id as id,u_account.name as name,dep.name as dep,grade,class from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where u_account.id = %s",id)
+        return render_template("a_user_account_1.html",deps=deps,grades=grades,classes=classes,users=users)
+    else:
+        users = dbmg.exec_query("select u_account.id as id,u_account.name as name,dep.name as dep,grade,class from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where dep.name = %s or class.grade = %s or class.class = %s or u_account.name like %s",(dep,grade,Class,"%" + name + "%"))
+        return render_template("a_user_account_1.html",deps=deps,grades=grades,classes=classes,users=users)
+
+@app.route("/a_user_account/confirm",methods=["POST"])
+def a_user_account_confirm():
+    user = {
+        "id":request.form.get("id"),
+        "name":request.form.get("name"),
+        "dep":request.form.get("dep"),
+        "grade":request.form.get("grade"),
+        "class":request.form.get("class")
+    }
+    return render_template("a_user_account_2.html",user=user)
+
+@app.route("/a_user_account/done")
+def a_user_account_done():
+    id = request.args.get("id")
+
+    dbmg = db_manager()
+    dbmg.exec_query("delete from u_account where id = %s",id)
+
+    return render_template("a_user_account_3.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

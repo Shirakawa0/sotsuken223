@@ -2,55 +2,59 @@
 {% block content %}
 <h1>管理者アカウント編集</h1><br>
 <h1>変更情報を入力してください</h1><br>
-<form action="">
-    ID<br>
-    パスワード<input type="password"><br>
-    名前<input type="text"><br>
+<form action="{{ url_for('a_account') }}" method="post">
+    ID
+    {{ id }}
+    <br>
+    パスワード
+    <input type="password" name="pw">
+    <br>
+    名前
+    <input type="text" name="name">
+    <br>
     担当クラス1
-    <select name="dep">
+    <select name="dep1">
         <option value="">学科を選択</option>
-        <option value="01">情報システム科</option>
-        <option value="02">ネットワークセキュリティ科</option>
-        <option value="03">総合システム工学科</option>
-        <option value="04">高度情報工学科</option>
-    </select><br>
-    学年<br>
-    <select name="grade">
-        <option value="1">1年</option>
-        <option value="2">2年</option>
-        <option value="3">3年</option>
-        <option value="4">4年</option>
-    </select><br>
-    組<br>
-    <select name="class">
-        <option value="1">1組</option>
-        <option value="2">2組</option>
-        <option value="3">3組</option>
-    </select><br>
-
+        {% for dep in deps %}
+        <option value="{{ dep.id }}">{{ dep.name }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <select name="grade1">
+        <option value="">学年を選択</option>
+        {% for grade in grades %}
+        <option value="{{ grade.grade }}">{{ grade.grade }}年</option>
+        {% endfor %}
+    </select>
+    <select name="class1">
+        <option value="">組を選択</option>
+        {% for class in classes %}
+        <option value="{{ class.class }}">{{ class.class }}組</option>
+        {% endfor %}
+    </select>
+    <br>
     担当クラス2
-    <select name="dep">
+    <select name="dep2">
         <option value="">学科を選択</option>
-        <option value="01">情報システム科</option>
-        <option value="02">ネットワークセキュリティ科</option>
-        <option value="03">総合システム工学科</option>
-        <option value="04">高度情報工学科</option>
-    </select><br>
-    学年<br>
-    <select name="grade">
-        <option value="1">1年</option>
-        <option value="2">2年</option>
-        <option value="3">3年</option>
-        <option value="4">4年</option>
-    </select><br>
-    組<br>
-    <select name="class">
-        <option value="1">1組</option>
-        <option value="2">2組</option>
-        <option value="3">3組</option>
-    </select><br>
-    <input type="submit" value="戻る">
-    <input type="submit" value="次へ進む">
-
+        {% for dep in deps %}
+        <option value="{{ dep.id }}">{{ dep.name }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <select name="grade2">
+        <option value="">学年を選択</option>
+        {% for grade in grades %}
+        <option value="{{ grade.grade }}">{{ grade.grade }}年</option>
+        {% endfor %}
+    </select>
+    <select name="class2">
+        <option value="">組を選択</option>
+        {% for class in classes %}
+        <option value="{{ class.class }}">{{ class.class }}組</option>
+        {% endfor %}
+    </select>
+    <br>
+    <a href="{{ url_for('a_home_page') }}" class="btn btn-outline-secondary">戻る</a>
+    <input type="submit" value="次へ進む" class="btn btn-outline-primary">
 </form>
 {% endblock %}
