@@ -31,7 +31,16 @@
 
 .input input{
     width: 100%;
-    background-image: url(../img/return.png);
+}
+
+.input .id{
+    background-image: url(../img/human.png);
+    background-size: 25px;
+    background-repeat: no-repeat;
+}
+
+.input .pw{
+    background-image: url(../img/lock.png);
     background-size: 25px;
     background-repeat: no-repeat;
 }
