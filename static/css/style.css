@@ -1,10 +1,53 @@
 @charset "utf-8";
 
 .logo{
-    width: 100px;
-    
+    height: 80px;
+    margin: 40px;
 }
 
 .return_btn{
     width: 50px;
+}
+
+.login{
+    height: 100vh;
+    background: #f0f0f0;
+    display: flex;
+    justify-content: center;
+}
+
+.login_content{
+    background: white;
+    height: 100%;
+    width: 500px;
+    text-align: center;
+}
+
+.input{
+    width: 80%;
+    margin: auto;
+    text-align: left;
+}
+
+.input input{
+    width: 100%;
+}
+
+.input p{
+    margin: 20px 0 0 0;
+}
+
+.login form .btn{
+    width: 80%;
+    height: 50px;
+    margin: 40px 0;
+    font-size: x-large;
+}
+
+.login .links{
+    margin: auto;
+    margin-top: 40px;
+    width: 80%;
+    display: flex;
+    justify-content: space-around;
 }
