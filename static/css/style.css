@@ -5,6 +5,10 @@
     margin: 40px;
 }
 
+.headlogo{
+    height: 35px;
+}
+
 .return_btn{
     width: 50px;
 }
@@ -31,6 +35,8 @@
 
 .input input{
     width: 100%;
+    border: 1px solid black;
+    border-radius: 3px;
 }
 
 .input .id{
