@@ -1,16 +1,16 @@
 {% extends "template.html" %}
 {% block content %}
 <img src="{{ url_for('static', filename='img/logo.png') }}" alt="就活帳" class="logo">
-<h1>利用者ログイン</h1>
-<form action="{{ url_for('u_login') }}" method="post">
-    <p>学籍番号</p>
-    <input type="number" name="id">
-    <br>
-    <p>パスワード</p>
-    <input type="password" name="pw">
-    <br>
-    <input type="submit" value="ログイン" class="btn btn-outline-primary">
-</form>
-<a href="{{ url_for('u_signup_page') }}">新規登録はこちら</a>
-<a href="{{ url_for('a_login_page') }}">管理者ログイン</a>
+    <h1>利用者ログイン</h1>
+    <form action="{{ url_for('u_login') }}" method="post">
+        <p>学籍番号</p>
+        <input type="number" name="id">
+        <br>
+        <p>パスワード</p>
+        <input type="password" name="pw">
+        <br>
+        <input type="submit" value="ログイン" class="btn btn-outline-primary">
+    </form>
+    <a href="{{ url_for('u_signup_page') }}">新規登録はこちら</a>
+    <a href="{{ url_for('a_login_page') }}">管理者ログイン</a>
 {% endblock %}
