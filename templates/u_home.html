@@ -1,7 +1,8 @@
 {% extends "template.html" %}
 {% block content %}
+
 <h1>選考中の企業</h1>
-<br>
+
 {% for schedule in schedules %}
 <a href="{{ url_for('u_company_page',company=schedule.company) }}">
     {{ schedule.company }}
@@ -11,7 +12,12 @@
 </a>
 <br>
 {% endfor %}
-<br>
+
+<!-- 選考中の企業がない場合 -->
+{% if not schedules %}
+<p>ありません</p>
+{% endif %}
+
 <a href="{{ url_for('u_add_page') }}" class="btn btn-outline-primary">企業追加</a>
 <br><br>
 
@@ -44,4 +50,5 @@
 <a href="{{ url_for('u_account_page') }}" class="btn btn-outline-secondary">利用者アカウント編集</a>
 <br><br>
 <a href="{{ url_for('logout') }}" class="btn btn-outline-secondary">ログアウト</a>
+
 {% endblock %}

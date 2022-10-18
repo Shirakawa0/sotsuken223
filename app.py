@@ -1,11 +1,43 @@
-from unittest import result
 from flask import Flask, render_template, request, redirect, url_for, session
 import datetime
 import random, string
+
+from pymysql import IntegrityError
 from db.db_manager import db_manager
 
 app = Flask(__name__)
 app.secret_key = "".join(random.choices(string.ascii_letters, k=256))
+
+# 定数
+
+## セッションの有効期限（単位：分）
+SESSION_LIFETIME_MINUTES = 30
+
+# 関数
+
+## 学科・学年・組を取得する関数
+def get_classes():
+    dbmg = db_manager()
+
+    # プルダウンに表示する学科・学年・組を取得し、配列に格納する
+    dep_ids_dict = dbmg.exec_query("select distinct dep_id from class")
+    grades_dict = dbmg.exec_query("select distinct grade from class")
+    classes_dict = dbmg.exec_query("select distinct class from class")
+
+    deps = []
+    for dep_ids in dep_ids_dict:
+        dep = dbmg.exec_query("select * from dep where id=%s",dep_ids["dep_id"])
+        deps.append(dep[0])
+
+    grades = []
+    for grade in grades_dict:
+        grades.append(grade)
+
+    classes = []
+    for Class in classes_dict:
+        classes.append(Class)
+
+    return deps,grades,classes
 
 @app.route("/")
 def u_login_page():
@@ -19,13 +51,17 @@ def u_login():
     dbmg = db_manager()
     user = dbmg.exec_query("select * from u_account where id=%s",id)
 
+    # 入力された id が存在しない場合
+    if len(user) == 0:
+        return redirect("/")
+
     hash_pw,_ = dbmg.calc_pw_hash(pw,user[0]["salt"])
 
     if hash_pw == user[0]["hash_pw"]:
         session["id"] = user[0]["id"]
-        # sessionの有効期限
+        # sessionの有効期限を設定
         session.permanent = True
-        app.permanent_session_lifetime = datetime.timedelta(minutes=30)
+        app.permanent_session_lifetime = datetime.timedelta(minutes=SESSION_LIFETIME_MINUTES)
         return redirect("/home")
     else:
         return redirect("/") 
@@ -33,7 +69,8 @@ def u_login():
 
 @app.route("/u_signup")
 def u_signup_page():
-    return render_template("u_signup_1.html")
+    deps,grades,classes = get_classes()
+    return render_template("u_signup_1.html",deps=deps,grades=grades,classes=classes)
 
 @app.route("/u_signup",methods=["POST"])
 def u_signup():
@@ -44,12 +81,19 @@ def u_signup():
     grade = request.form.get("grade")
     Class = request.form.get("class") # 区別のためcは大文字
 
+    # 未入力の項目がある場合
+    if not (id and pw and name and dep and grade and Class):
+        return redirect(url_for("u_signup_page"))
+
     dbmg = db_manager()
     hash_pw, salt = dbmg.calc_pw_hash(pw)
 
     class_id = dep + grade + Class
 
-    dbmg.exec_query("insert into u_account values(%s,%s,%s,%s,%s)",(id,hash_pw,salt,name,class_id))
+    try:
+        dbmg.exec_query("insert into u_account values(%s,%s,%s,%s,%s)",(id,hash_pw,salt,name,class_id))
+    except IntegrityError:
+        return redirect(url_for("u_signup_page"))
 
     return render_template("u_signup_3.html")
 
@@ -329,26 +373,7 @@ def forum_contribute():
 
 @app.route("/u_account")
 def u_account_page():
-    dbmg = db_manager()
-
-    # プルダウンに表示する学科・学年・組を取得し、配列に格納する
-    dep_ids_dict = dbmg.exec_query("select distinct dep_id from class")
-    grades_dict = dbmg.exec_query("select distinct grade from class")
-    classes_dict = dbmg.exec_query("select distinct class from class")
-
-    deps = []
-    for dep_ids in dep_ids_dict:
-        dep = dbmg.exec_query("select * from dep where id=%s",dep_ids["dep_id"])
-        deps.append(dep[0])
-
-    grades = []
-    for grade in grades_dict:
-        grades.append(grade)
-
-    classes = []
-    for Class in classes_dict:
-        classes.append(Class)
-
+    deps,grades,classes = get_classes()
     return render_template("u_account_1.html",deps=deps,grades=grades,classes=classes)
 
 @app.route("/u_account",methods=["POST"])
@@ -377,7 +402,6 @@ def logout():
     
     return redirect("/")
 
-#ここから管理者------------------------------------------------------------------------------------
 @app.route("/a_login")
 def a_login_page():
     return render_template("a_login.html")
@@ -390,13 +414,17 @@ def a_login():
     dbmg = db_manager()
     user = dbmg.exec_query("select * from a_account where id=%s",id)
 
+    # 入力された id が存在しない場合
+    if len(user) == 0:
+        return redirect("/a_login")
+
     hash_pw,_ = dbmg.calc_pw_hash(pw,user[0]["salt"])
 
     if hash_pw == user[0]["hash_pw"]:
         session["id"] = user[0]["id"]
         # sessionの有効期限
         session.permanent = True
-        app.permanent_session_lifetime = datetime.timedelta(minutes=30)
+        app.permanent_session_lifetime = datetime.timedelta(minutes=SESSION_LIFETIME_MINUTES)
         return redirect("/a_home")
     else:
         return redirect("/a_login") 
@@ -421,26 +449,7 @@ def a_home_page():
 
 @app.route("/a_signup")
 def a_signup_page():
-    dbmg = db_manager()
-
-    # プルダウンに表示する学科・学年・組を取得し、配列に格納する
-    dep_ids_dict = dbmg.exec_query("select distinct dep_id from class")
-    grades_dict = dbmg.exec_query("select distinct grade from class")
-    classes_dict = dbmg.exec_query("select distinct class from class")
-
-    deps = []
-    for dep_ids in dep_ids_dict:
-        dep = dbmg.exec_query("select * from dep where id=%s",dep_ids["dep_id"])
-        deps.append(dep[0])
-
-    grades = []
-    for grade in grades_dict:
-        grades.append(grade)
-
-    classes = []
-    for Class in classes_dict:
-        classes.append(Class)
-
+    deps,grades,classes = get_classes()
     return render_template("a_signup_1.html",deps=deps,grades=grades,classes=classes)
 
 @app.route("/a_signup",methods=["POST"])
@@ -557,27 +566,7 @@ def a_thread_delete():
 @app.route("/a_account")
 def a_account_page():
     id = session["id"]
-
-    dbmg = db_manager()
-
-    # プルダウンに表示する学科・学年・組を取得し、配列に格納する
-    dep_ids_dict = dbmg.exec_query("select distinct dep_id from class")
-    grades_dict = dbmg.exec_query("select distinct grade from class")
-    classes_dict = dbmg.exec_query("select distinct class from class")
-
-    deps = []
-    for dep_ids in dep_ids_dict:
-        dep = dbmg.exec_query("select * from dep where id=%s",dep_ids["dep_id"])
-        deps.append(dep[0])
-
-    grades = []
-    for grade in grades_dict:
-        grades.append(grade)
-
-    classes = []
-    for Class in classes_dict:
-        classes.append(Class)
-
+    deps,grades,classes = get_classes()
     return render_template("a_account_1.html",id=id,deps=deps,grades=grades,classes=classes)
 
 @app.route("/a_account",methods=["POST"])
@@ -611,23 +600,7 @@ def a_account():
 def a_user_account_page():
     dbmg = db_manager()
 
-    # プルダウンに表示する学科・学年・組を取得し、配列に格納する
-    dep_ids_dict = dbmg.exec_query("select distinct dep_id from class")
-    grades_dict = dbmg.exec_query("select distinct grade from class")
-    classes_dict = dbmg.exec_query("select distinct class from class")
-
-    deps = []
-    for dep_ids in dep_ids_dict:
-        dep = dbmg.exec_query("select * from dep where id=%s",dep_ids["dep_id"])
-        deps.append(dep[0])
-
-    grades = []
-    for grade in grades_dict:
-        grades.append(grade)
-
-    classes = []
-    for Class in classes_dict:
-        classes.append(Class)
+    deps,grades,classes = get_classes()
     
     id = request.form.get("id")
     dep = request.form.get("dep")
@@ -639,7 +612,6 @@ def a_user_account_page():
 
     if request.method == "GET":
         return render_template("a_user_account_1.html",deps=deps,grades=grades,classes=classes)
-
 
     if id:
         users = dbmg.exec_query("select u_account.id as id,u_account.name as name,dep.name as dep,grade,class from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where u_account.id = %s",id)
