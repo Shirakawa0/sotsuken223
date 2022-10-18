@@ -1,6 +1,12 @@
 {% extends "template.html" %}
 {% block content %}
-<img src="{{ url_for('static', filename='img/logo.png') }}" alt="就活帳" class="logo">
-<h1>登録が完了しました</h1>
-<a href="{{ url_for('u_login_page') }}" class="btn btn-outline-primary">ログインへ進む</a>
+<div id="u_signup_3" class="login">
+    <div class="login_content">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="就活帳" class="logo">
+        <div class="sign_content">
+            <h1>登録が完了しました</h1>
+            <a href="{{ url_for('u_login_page') }}" class="btn btn-outline-primary">ログインへ進む</a>
+        </div>
+    </div>
+</div>
 {% endblock %}

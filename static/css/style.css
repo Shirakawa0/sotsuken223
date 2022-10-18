@@ -1,10 +1,88 @@
 @charset "utf-8";
 
 .logo{
-    width: 100px;
-    
+    height: 80px;
+    margin: 40px;
 }
 
 .return_btn{
     width: 50px;
+}
+
+.login{
+    height: 100vh;
+    background: #f0f0f0;
+    display: flex;
+    justify-content: center;
+}
+
+.login_content{
+    background: white;
+    height: 100%;
+    width: 500px;
+    text-align: center;
+}
+
+.input{
+    width: 80%;
+    margin: auto;
+    text-align: left;
+}
+
+.input input{
+    width: 100%;
+}
+
+.input .id{
+    background-image: url(../img/human.png);
+    background-size: 27px;
+    background-repeat: no-repeat;
+    padding-left: 30px;
+}
+
+.input .pw{
+    background-image: url(../img/lock.png);
+    background-size: 25px;
+    background-repeat: no-repeat;
+    padding-left: 30px;
+}
+
+.input p{
+    margin: 20px 0 0 0;
+}
+
+.login form .btn{
+    width: 80%;
+    height: 50px;
+    margin: 40px 0;
+    font-size: x-large;
+}
+
+.login .links{
+    margin: auto;
+    margin-top: 40px;
+    width: 80%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.input .pull{
+    display: flex;
+    justify-content: space-between;
+}
+
+#u_signup_1 p{
+    margin-top: 5px;
+}
+
+#u_signup_1 .btn{
+    margin: 30px 0;
+}
+
+.sign_content{
+    margin-top: 100px;
+}
+
+.sign_content h1{
+    margin: 20px;
 }
