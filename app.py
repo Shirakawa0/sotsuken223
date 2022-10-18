@@ -147,7 +147,7 @@ def u_add():
     )
 
     dbmg = db_manager()
-    dbmg.exec_query("insert into schedule values(%s,%s,%s,%s,%s,%s)",schedule)
+    dbmg.exec_query("insert into schedule(id,company,date_time,step,detail,place) values(%s,%s,%s,%s,%s,%s)",schedule)
 
     return render_template("u_add_3.html")
 
