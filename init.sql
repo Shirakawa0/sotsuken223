@@ -17,6 +17,8 @@ CREATE TABLE schedule(
     step VARCHAR(16) NOT NULL,
     detail VARCHAR(16) NOT NULL,
     place VARCHAR(16) NOT NULL,
+    passed_flg BOOLEAN DEFAULT 0 NOT NULL,
+    finished_flg BOOLEAN DEFAULT 0 NOT NULL,
     PRIMARY KEY(id,company,date_time)
 );
 
