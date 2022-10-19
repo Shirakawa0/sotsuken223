@@ -113,6 +113,7 @@
     border-bottom: 1px solid black;
     font-size: xx-large;
     font-weight: 450;
+    margin-top: 20px;
 }
 
 .home_content .links{
@@ -123,9 +124,15 @@
     border-radius: 5px;
 }
 
+.home_content .links div{
+    width: 25%;
+}
+
 .home_content .box{
     text-decoration: none;
     color: black;
+    display: block;
+    height: 50px;
 }
 
 .home_content .container{
