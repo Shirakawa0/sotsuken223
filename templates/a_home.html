@@ -1,65 +1,87 @@
 {% extends "template3.html" %}
 {% block content %}
-<h1>本日選考予定の生徒</h1>
-{% for res in schedules %}
-    {{res.name}}
-    {{res.company}}
-    {{res.step}}
-    {{res.detail}}
-    {{res.date_time}}
-{% endfor %}
-<br>
-<a href="{{ url_for('a_all_page') }}" class="btn btn-outline-primary">選考状況一覧</a>
+<div id="a_home" class="home">
+<div class="home_content">
+    <h1 class="title">本日選考予定の生徒</h1>
+        {% for res in schedules %}
+        <div class="box">
+            <div class="links">
+                    <div>{{res.name}}</div>
+                    <div>{{res.company}}</div>
+                    <div>{{res.step}}</div>
+                    <div>{{res.detail}}</div>
+                    <div>{{res.date_time}}</div>
+            </div>
+        </div>
+        <br>
+        {% endfor %}
+    
+    <a href="{{ url_for('a_all_page') }}" class="btn btn-outline-primary">選考状況一覧</a>
+    <div class="container">
+        <div>
+            <h1 class="title">面接練習 {{practices|length}}件</h1>
+                {% for res in practices %}
+                        {{res.dep}}
+                        {{res.grade}}年
+                        {{res.class}}組
+                        {{res.name}}
+                        {{res.date}}
+                <br>
+                {% endfor %}
+            <a href="{{url_for('a_men_page')}}" class="btn btn-outline-primary">希望状況を閲覧</a>
+        </div>
+        
+        <div>
+            <h1 class="title">文章チェック</h1>
+            {% for res in reviews %}
+                {{res.student}}
+                {{res.title}}<br>
+            {% endfor %}
+            <a href="{{url_for('a_check_page')}}" class="btn btn-outline-primary">文章チェックを希望</a>
+        </div>
+        
+        <div>
+            <h1 class="title">内定率</h1>
+            <div style="position:relative; width:250px; height:250px;">
+                <canvas id="myChart" style="position: relative; height:150; width:150"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <br>
+    <!--
+        <a href="{{ url_for('a_forum_page') }}" class="btn btn-outline-secondary">掲示板</a>
+        <br><br>
+        <a href="{{ url_for('a_user_account_page') }}" class="btn btn-outline-secondary">利用者アカウント管理</a>
+        <br><br>
+        <a href="{{ url_for('a_account_page') }}" class="btn btn-outline-secondary">管理者アカウント編集</a>
+        <br><br>
+        <a href="{{ url_for('a_signup_page') }}" class="btn btn-outline-secondary">管理者アカウント新規登録</a>
+        <br><br>
+        <a href="{{ url_for('logout') }}" class="btn btn-outline-secondary">ログアウト</a>
+    -->
+    
 
-<h1>面接練習 {{practices|length}}件</h1>
-{% for res in practices %}
-    {{res.dep}}
-    {{res.grade}}年
-    {{res.class}}組
-    {{res.name}}
-    {{res.date}}<br>
-{% endfor %}
-<a href="{{url_for('a_men_page')}}" class="btn btn-outline-primary">希望状況を閲覧</a>
-<h1>文章チェック</h1>
-{% for res in reviews %}
-    {{res.student}}
-    {{res.title}}<br>
-{% endfor %}
-<a href="{{url_for('a_check_page')}}" class="btn btn-outline-primary">文章チェックを希望</a>
-
-<h1>内定率</h1>
-<div style="position:relative; width:250px; height:250px;">
-    <canvas id="myChart" style="position: relative; height:150; width:150"></canvas>
+</div>
 </div>
 
-<br>
-<a href="{{ url_for('a_forum_page') }}" class="btn btn-outline-secondary">掲示板</a>
-<br><br>
-<a href="{{ url_for('a_user_account_page') }}" class="btn btn-outline-secondary">利用者アカウント管理</a>
-<br><br>
-<a href="{{ url_for('a_account_page') }}" class="btn btn-outline-secondary">管理者アカウント編集</a>
-<br><br>
-<a href="{{ url_for('a_signup_page') }}" class="btn btn-outline-secondary">管理者アカウント新規登録</a>
-<br><br>
-<a href="{{ url_for('logout') }}" class="btn btn-outline-secondary">ログアウト</a>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-    new Chart(document.getElementById("myChart"), {
-        type: "doughnut",
-        data: {
-            labels: ["A", "B", "C"],
-            datasets: [
-                {
-                    data: [300, 50, 100],
-                    backgroundColor: [
-                        "rgb(255, 99, 132)",
-                        "rgb(54, 162, 235)",
-                        "rgb(255, 205, 86)"
-                    ]
-                }
-            ]
-        }
-    });
-</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        new Chart(document.getElementById("myChart"), {
+            type: "doughnut",
+            data: {
+                labels: ["A", "B", "C"],
+                datasets: [
+                    {
+                        data: [300, 50, 100],
+                        backgroundColor: [
+                            "rgb(255, 99, 132)",
+                            "rgb(54, 162, 235)",
+                            "rgb(255, 205, 86)"
+                        ]
+                    }
+                ]
+            }
+        });
+    </script>
 {% endblock %}
