@@ -180,7 +180,7 @@ def u_register():
     )
 
     dbmg = db_manager()
-    dbmg.exec_query("insert into schedule values(%s,%s,%s,%s,%s,%s)",schedule)
+    dbmg.exec_query("insert into schedule(id,company,date_time,step,detail,place) values(%s,%s,%s,%s,%s,%s)",schedule)
     return render_template("u_register_3.html",company=company)
 
 @app.route("/u_modify")
