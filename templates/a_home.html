@@ -5,7 +5,7 @@
     <h1 class="title">本日選考予定の生徒</h1>
         {% for res in schedules %}
         <div class="box">
-            <div class="links">
+            <div class="links btn btn-light">
                     <div>{{res.name}}</div>
                     <div>{{res.company}}</div>
                     <div>{{res.step}}</div>
@@ -21,11 +21,11 @@
         <div>
             <h1 class="title">面接練習 {{practices|length}}件</h1>
                 {% for res in practices %}
-                        {{res.dep}}
-                        {{res.grade}}年
-                        {{res.class}}組
-                        {{res.name}}
-                        {{res.date}}
+                    {{res.dep}}
+                    {{res.grade}}年
+                    {{res.class}}組
+                    {{res.name}}
+                    {{res.date}}  
                 <br>
                 {% endfor %}
             <a href="{{url_for('a_men_page')}}" class="btn btn-outline-primary">希望状況を閲覧</a>
