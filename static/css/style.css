@@ -117,13 +117,13 @@
 }
 
 .home_content .links{
-    border: 1px solid black;
+    border: 1px solid aliceblue;
+    color: black;
     display: flex;
     justify-content: space-around;
     padding: 20px;
     border-radius: 5px;
 }
-
 
 
 .home_content .links div{

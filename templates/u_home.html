@@ -5,7 +5,7 @@
     <h1 class="title">選考中の企業</h1>
         {% for schedule in schedules %}
         <a href="{{ url_for('u_company_page',company=schedule.company) }}" class="box">
-            <div class="links">
+            <div class="links btn btn-light">
                 <div>{{ schedule.company }}</div>
                 <div>{{ schedule.step }}</div>
                 <div>{{ schedule.detail }}</div>
