@@ -5,7 +5,7 @@
     <h1 class="title">選考中の企業</h1>
         {% for schedule in schedules %}
         <a href="{{ url_for('u_company_page',company=schedule.company) }}" class="box">
-            <div class="links">
+            <div class="links btn btn-light">
                 <div>{{ schedule.company }}</div>
                 <div>{{ schedule.step }}</div>
                 <div>{{ schedule.detail }}</div>
@@ -17,17 +17,32 @@
 
     <!-- 選考中の企業がない場合 -->
     {% if not schedules %}
-    <p>ありません</p>
+    <p>ありません。</p>
     {% endif %}
     
     <a href="{{ url_for('u_add_page') }}" class="btn btn-outline-primary">企業追加</a>
     <br><br>
     
     <h1 class="title">内定済みの企業</h1>
+    {% if passed_company %}
+    <div class="links_happy">
+        {{ passed_company[0].company }}
+    </div>
+    {% else %}
+    <p>ありません。</p>
+    {% endif %}
     <br><br>
 
     <h1 class="title">選考終了済みの企業</h1>
+    {% if finished_company %}
+    <div class="links_ns">
+        {{ finished_company[0].company }}
+    </div>
+    {% else %}
+    <p>ありません。</p>
+    {% endif %}
     <br><br>
+
     <div class="container">
         <div>
             <h1 class="title">面接練習</h1>
@@ -51,6 +66,17 @@
 
     <h1 class="title">掲示板</h1>
     <p>就活者どうしの雑談や１人ではわからない問題を解決する場として設置しています。コミュニティとして活用してください。</p>
+    {% for thread in threads %}
+    <a href="{{ url_for('forum_brows',thread_id=thread.id,user='user') }}">
+        <div style="border: 1px black solid;">
+            {{ thread.title }}<br>
+            最終更新：{{ thread.last_update }}
+            投稿数：{{ thread.comment_num }}
+            作成者：{{ thread.author }}
+            最終投稿者：{{ thread.last_contributer }}
+        </div>
+    </a>
+    {% endfor %}
     <a href="{{ url_for('u_forum_page') }}" class="btn btn-outline-primary">スレッド一覧・作成</a>
 
 </div>

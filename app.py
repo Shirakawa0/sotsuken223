@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import datetime
 import random, string
-
 from pymysql import IntegrityError
 from db.db_manager import db_manager
 
@@ -102,12 +101,29 @@ def u_home_page():
     if "id" not in session:
         return redirect("/")
 
-    # 選考中の企業表示
     dbmg = db_manager()
-    sql = "select * from schedule as s1 where id = %s and s1.date_time = (select max(s2.date_time) from schedule as s2 where s1.company = s2.company group by s2.company) order by date_time asc;"
+
+    # 選考中のスケジュール
+    sql = "select * from schedule as s1 where id = %s and s1.date_time = (select max(s2.date_time) from schedule as s2 where s1.company = s2.company group by s2.company) and finished_flg = 0 and passed_flg = 0 order by date_time asc;"
     schedules = dbmg.exec_query(sql,session["id"])
 
-    return render_template("u_home.html",schedules=schedules)
+    # 内定済の企業
+    sql = "select company from schedule as s1 where id = %s and s1.date_time = (select max(s2.date_time) from schedule as s2 where s1.company = s2.company group by s2.company) and passed_flg = 1 order by date_time asc;"
+    passed_company = dbmg.exec_query(sql,session["id"])
+
+    # 選考終了済の企業
+    sql = "select company from schedule as s1 where id = %s and s1.date_time = (select max(s2.date_time) from schedule as s2 where s1.company = s2.company group by s2.company) and finished_flg = 1 order by date_time asc;"
+    finished_company = dbmg.exec_query(sql,session["id"])
+
+    # 掲示板
+    sql = "select * from threads order by last_update desc limit 3"
+    threads = dbmg.exec_query(sql)
+
+    for thread in threads:
+        comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
+        thread["comment_num"] = comment_num[0]["num"]
+
+    return render_template("u_home.html",schedules=schedules,passed_company=passed_company,finished_company=finished_company,threads=threads)
 
 @app.route("/u_company")
 def u_company_page():

@@ -116,14 +116,41 @@
 }
 
 .home_content .links{
-    border: 1px solid black;
+    border: 1px solid aliceblue;
+    color: black;
     display: flex;
     justify-content: space-around;
     padding: 20px;
     border-radius: 5px;
 }
 
+.home_content .links_ns{
+    border: 1px solid aliceblue;
+    color: black;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    border-radius: 5px;
+}
 
+.home_content .links_happy{
+    border: 1px solid aliceblue;
+    color: black;
+    animation: gaming 0.3s linear infinite;;
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+@keyframes gaming {
+    /* 色の指定 */
+    0% { background-color: Magenta; }
+    33% { background-color: yellow; }
+    66% { background-color: Cyan; }
+    100% { background-color: Magenta; }
+}
 
 .home_content .links div{
     width: 25%;
