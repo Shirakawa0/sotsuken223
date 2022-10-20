@@ -66,6 +66,17 @@
 
     <h1 class="title">掲示板</h1>
     <p>就活者どうしの雑談や１人ではわからない問題を解決する場として設置しています。コミュニティとして活用してください。</p>
+    {% for thread in threads %}
+    <a href="{{ url_for('forum_brows',thread_id=thread.id,user='user') }}">
+        <div style="border: 1px black solid;">
+            {{ thread.title }}<br>
+            最終更新：{{ thread.last_update }}
+            投稿数：{{ thread.comment_num }}
+            作成者：{{ thread.author }}
+            最終投稿者：{{ thread.last_contributer }}
+        </div>
+    </a>
+    {% endfor %}
     <a href="{{ url_for('u_forum_page') }}" class="btn btn-outline-primary">スレッド一覧・作成</a>
 
 </div>
