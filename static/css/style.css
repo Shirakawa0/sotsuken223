@@ -216,6 +216,15 @@
     padding: 0px;
 }
 
+.input_display .input_area .row .input{
+    display: flex;
+    justify-content: space-between;
+}
+
+.input_display .input_area .row .input_child{
+    width: 48%;
+}
+
 .input_display .input_area .label{
     width: 25%;
     text-align: left;
