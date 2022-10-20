@@ -30,18 +30,24 @@
                     <option value="{{ dep.id }}">{{ dep.name }}</option>
                     {% endfor %}
                 </select>
-                <select name="grade1">
-                    <option value="">学年を選択</option>
-                    {% for grade in grades %}
-                    <option value="{{ grade.grade }}">{{ grade.grade }}年</option>
-                    {% endfor %}
-                </select>
-                <select name="class1">
-                    <option value="">組を選択</option>
-                    {% for class in classes %}
-                    <option value="{{ class.class }}">{{ class.class }}組</option>
-                    {% endfor %}
-                </select>
+            </div>
+
+            <div class="row">
+                <div class="label"></div>
+                <div class="input">
+                    <select name="grade1" class="input_child">
+                        <option value="">学年を選択</option>
+                        {% for grade in grades %}
+                        <option value="{{ grade.grade }}">{{ grade.grade }}年</option>
+                        {% endfor %}
+                    </select>
+                    <select name="class1" class="input_child">
+                        <option value="">組を選択</option>
+                        {% for class in classes %}
+                        <option value="{{ class.class }}">{{ class.class }}組</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
 
             <div class="row">
@@ -52,20 +58,26 @@
                     <option value="{{ dep.id }}">{{ dep.name }}</option>
                     {% endfor %}
                 </select>
-                <br>
-                <select name="grade2">
-                    <option value="">学年を選択</option>
-                    {% for grade in grades %}
-                    <option value="{{ grade.grade }}">{{ grade.grade }}年</option>
-                    {% endfor %}
-                </select>
-                <select name="class2">
-                    <option value="">組を選択</option>
-                    {% for class in classes %}
-                    <option value="{{ class.class }}">{{ class.class }}組</option>
-                    {% endfor %}
-                </select>
             </div>
+
+            <div class="row">
+                <div class="label"></div>
+                <div class="input">
+                    <select name="grade2" class="input_child">
+                        <option value="">学年を選択</option>
+                        {% for grade in grades %}
+                        <option value="{{ grade.grade }}">{{ grade.grade }}年</option>
+                        {% endfor %}
+                    </select>
+                    <select name="class2" class="input_child">
+                        <option value="">組を選択</option>
+                        {% for class in classes %}
+                        <option value="{{ class.class }}">{{ class.class }}組</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
             <div class="buttons">
                 <a href="{{url_for('a_home_page')}}" class="btn btn-outline-secondary">戻る</a>
                 <input type="submit" value="次へ進む" class="btn btn-outline-primary">
