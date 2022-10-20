@@ -1,30 +1,41 @@
 {% extends "template.html" %}
 {% block content %}
-<h1>面接練習</h1>
-<h1>面接練習の希望状況を入力してください</h1>
-<form action="{{ url_for('u_men_confirm') }}" method="post">
-    先生
-    <br>
-    <select name="id">
-        <option value="">先生を選択</option>
-        {% for teacher in teachers %}
-        <option value="{{ teacher.id }}">{{ teacher.name }}</option>
-        {% endfor %}
-    </select>
-    <br>
-    日付
-    <br>
-    <input type="date" name="date">
-    <br>
-    時間帯
-    <br>
-    <select name="time">
-        <option value="">時間帯を選択</option>
-        <option value="3コマ目終了時">3コマ目終了時</option>
-        <option value="その他">その他</option>
-    </select>
-    <br>
-    <a href="{{ url_for('u_home_page') }}" class="btn btn-outline-secondary">戻る</a>
-    <input type="submit" value="次へ進む" class="btn btn-outline-primary">
-</form>
+
+<div id="u_men_1" class="input_display">
+    <div class="content">
+        <h1 class="title">面接練習</h1>
+        <p>面接練習の希望状況を入力してください</p>
+        <form action="{{ url_for('u_men_confirm') }}" method="post">
+        <div class="input_area">
+            <div class="row">
+                <div class="label">先生</div>
+                <select name="id" class="input">
+                <option value="">先生を選択</option>
+                    {% for teacher in teachers %}
+                <option value="{{ teacher.id }}">{{ teacher.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        
+            <div class="row">
+                <div class="label">日付</div>
+                <input type="date" name="date" class="input">
+            </div>
+
+            <div class="row">
+                <div class="label">時間帯</div>
+                    <select name="time" class="input">
+                    <option value="">時間帯を選択</option>
+                    <option value="3コマ目終了時">3コマ目終了時</option>
+                    <option value="その他">その他</option>
+                    </select>
+            </div>
+            
+            <div class="buttons">
+                <a href="{{ url_for('u_home_page') }}" class="btn btn-outline-secondary">戻る</a>
+                <input type="submit" value="次へ進む" class="btn btn-outline-primary">
+            </div>
+        </div>
+    </form>
+</div>
 {% endblock %}
