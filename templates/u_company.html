@@ -7,9 +7,9 @@
     {{ schedules[0].detail }}
     {{ schedules[0].place }}
     {{ schedules[0].date_time }}
-    <a href="{{ url_for('u_register_page', company=schedules[0].company) }}">通過</a>
-    <a href="{{ url_for('u_delete_page', company=schedules[0].company) }}">落選</a>
-    <a href="{{ url_for('u_modify_page', company=schedules[0].company) }}">変更</a>
+    <a href="{{ url_for('u_register_page',company=schedules[0].company) }}">通過</a>
+    <a href="{{ url_for('u_delete_page',company=schedules[0].company) }}">落選</a>
+    <a href="{{ url_for('u_modify_page',company=schedules[0].company) }}">変更</a>
 </div>
 <h1>これまでの選考状況</h1>
 {% if schedules|length <= 1 %}
@@ -27,4 +27,5 @@
 {% endif %}
 {% endfor %}
 <a href="{{ url_for('u_home_page') }}" class="btn btn-outline-secondary">戻る</a>
+<a href="{{ url_for('u_passed_page',company=schedules[0].company) }}" class="btn btn-outline-primary">内定GET</a>
 {% endblock %}
