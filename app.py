@@ -229,11 +229,26 @@ def u_delete_page():
 def u_delete():
     id = session["id"]
     company = request.args.get("company")
-
+    
     dbmg = db_manager()
-    dbmg.exec_query("delete from schedule where id=%s and company=%s",(id,company))
+    dbmg.exec_query("update schedule set finished_flg = %s where id = %s and company = %s and date_time = (select max(date_time) from (select date_time from schedule where id=%s and company=%s) as sch)",(1,id,company,id,company))
 
     return render_template("u_delete_2.html",company=company)
+
+@app.route("/u_passed")
+def u_passed_page():
+    company = request.args.get("company")
+    return render_template("u_passed_1.html",company=company)
+
+@app.route("/u_passed/done")
+def u_passed():
+    id = session["id"]
+    company = request.args.get("company")
+
+    dbmg = db_manager()
+    dbmg.exec_query("update schedule set passed_flg = %s where id = %s and company = %s and date_time = (select max(date_time) from (select date_time from schedule where id=%s and company=%s) as sch)",(1,id,company,id,company))
+
+    return render_template("u_passed_2.html",company=company)
 
 @app.route("/u_men")
 def u_men_page():
