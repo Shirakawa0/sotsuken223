@@ -9,22 +9,22 @@
         <div class="input_area">
             <div class="row">
                 <div class="label">ID</div>
-                <input type="text" name="id">
+                <input type="text" name="id" class="input">
             </div>
 
             <div class="row">
                 <div class="label">パスワード</div>
-                <input type="password" name="pw">
+                <input type="password" name="pw" class="input">
             </div>
 
             <div class="row">
                 <div class="label">名前</div>
-                <input type="text" name="name">
+                <input type="text" name="name" class="input">
             </div>
                 
             <div class="row">
                 <div class="label">担当クラス1</div>
-                <select name="dep1">
+                <select name="dep1" class="input">
                     <option value="">学科を選択</option>
                     {% for dep in deps %}
                     <option value="{{ dep.id }}">{{ dep.name }}</option>
@@ -46,7 +46,7 @@
 
             <div class="row">
                 <div class="label">担当クラス2</div>
-                <select name="dep2">
+                <select name="dep2" class="input">
                     <option value="">学科を選択</option>
                     {% for dep in deps %}
                     <option value="{{ dep.id }}">{{ dep.name }}</option>
