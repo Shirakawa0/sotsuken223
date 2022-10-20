@@ -17,17 +17,32 @@
 
     <!-- 選考中の企業がない場合 -->
     {% if not schedules %}
-    <p>ありません</p>
+    <p>ありません。</p>
     {% endif %}
     
     <a href="{{ url_for('u_add_page') }}" class="btn btn-outline-primary">企業追加</a>
     <br><br>
     
     <h1 class="title">内定済みの企業</h1>
+    {% if passed_company %}
+    <div class="links">
+        {{ passed_company[0].company }}
+    </div>
+    {% else %}
+    <p>ありません。</p>
+    {% endif %}
     <br><br>
 
     <h1 class="title">選考終了済みの企業</h1>
+    {% if finished_company %}
+    <div class="links">
+        {{ finished_company[0].company }}
+    </div>
+    {% else %}
+    <p>ありません。</p>
+    {% endif %}
     <br><br>
+
     <div class="container">
         <div>
             <h1 class="title">面接練習</h1>
