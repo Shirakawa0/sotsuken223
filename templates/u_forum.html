@@ -5,7 +5,7 @@
 </a>
 <h1>スレッド一覧</h1><br>
 <h1>就活者同士の雑談や1人ではわからない問題を解決する場として設置しています。<br>コミュニティとして活用してください</h1><br>
-<a href="{{ url_for('forum_build_page') }}" class="btn btn-outline-primary">新規スレッド作成</a>
+<a href="{{ url_for('forum_build_page',user='user') }}" class="btn btn-outline-primary">新規スレッド作成</a>
 
 {% for thread in threads %}
 <a href="{{ url_for('forum_brows',thread_id=thread.id,user='user') }}">
