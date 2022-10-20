@@ -1,19 +1,54 @@
 {% extends "template.html" %}
 {% block content %}
-<h1>受験企業追加</h1>
-<h1>登録内容を確認してください</h1>
-<p>企業名　：{{ schedule["company"] }}</p>
-<p>選考段階：{{ schedule["step"] }}</p>
-<p>内容　　：{{ schedule["detail"] }}</p>
-<p>場所　　：{{ schedule["place"] }}</p>
-<p>日時　　：{{ schedule["date_time"] }}</p>
-<form action="{{url_for('u_add')}}" method="post">
-    <input type="hidden" name="company" value="{{ schedule.company }}">
-    <input type="hidden" name="step" value="{{ schedule.step }}">
-    <input type="hidden" name="detail" value="{{ schedule.detail }}">
-    <input type="hidden" name="place" value="{{ schedule.place }}">
-    <input type="hidden" name="date_time" value="{{ schedule.date_time }}">
-    <a href="{{url_for('u_add_page')}}" class="btn btn-outline-secondary">戻る</a>
-    <input type="submit" value="登録する" class="btn btn-outline-primary">
-</form>
+
+<div id="u_add_2" class="input_display">
+    <div class="content">
+
+        <h1 class="title">{{ company }}</h1>
+        <p>登録内容を確認してください</p>
+
+        <div class="confirm_area">
+
+            <div class="row">
+                <div class="label">企業名</div>
+                <div class="input">{{ schedule["company"] }}</div>
+            </div>
+
+            <div class="row">
+                <div class="label">選考段階</div>
+                <div class="input">{{ schedule["step"] }}</div>
+            </div>
+
+            <div class="row">
+                <div class="label">内容</div>
+                <div class="input">{{ schedule["detail"] }}</div>
+            </div>
+
+            <div class="row">
+                <div class="label">場所</div>
+                <div class="input">{{ schedule["place"] }}</div>
+            </div>
+
+            <div class="row">
+                <div class="label">日時</div>
+                <div class="input">{{ schedule["date_time"] }}</div>
+            </div>
+
+        </div>
+
+        <form action="{{url_for('u_add')}}" method="post">
+            <input type="hidden" name="company" value="{{ schedule.company }}">
+            <input type="hidden" name="step" value="{{ schedule.step }}">
+            <input type="hidden" name="detail" value="{{ schedule.detail }}">
+            <input type="hidden" name="place" value="{{ schedule.place }}">
+            <input type="hidden" name="date_time" value="{{ schedule.date_time }}">
+
+            <div class="buttons">
+                <a href="{{url_for('u_add_page')}}" class="btn btn-outline-secondary">戻る</a>
+                <input type="submit" value="登録する" class="btn btn-outline-primary">
+            </div>
+        </form>
+    </div>
+</div>
+        
 {% endblock %}

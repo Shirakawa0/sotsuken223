@@ -1,6 +1,12 @@
 {% extends "template.html" %}
 {% block content %}
-<h1>{{ company }}</h1>
-<h1>登録が完了しました</h1>
-<a href="{{ url_for('u_home_page',company=company) }}" class="btn btn-outline-primary">企業ページへ戻る</a>
+<div id="u_register_3" class="input_display">
+    <div class="content">
+        <h1 class="title">{{ company }}</h1>
+        <div class="done">
+            <p>登録が完了しました。</p>
+            <a href="{{ url_for('u_company_page',company=company) }}" class="btn btn-outline-primary">企業ページへ戻る</a>
+        </div>
+    </div>
+</div>
 {% endblock %}

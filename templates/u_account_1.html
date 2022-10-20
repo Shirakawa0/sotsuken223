@@ -1,35 +1,57 @@
 {% extends "template.html" %}
 {% block content %}
-<h1>利用者アカウント編集</h1>
-<h1>変更情報を入力してください</h1><br>
-<form action="{{ url_for('u_account') }}" method="post">
-    <p>パスワード</p>
-    <input type="password" name="pw">
-    <p>名前</p>
-    <input type="text" name="name">
-    <p>学科</p>
-    <select name="dep">
-        <option value="">学科を選択</option>
-        {% for dep in deps %}
-        <option value="{{ dep.id }}">{{ dep.name }}</option>
-        {% endfor %}
-    </select>
-    <p>学年</p>
-    <select name="grade">
-        <option value="">学年を選択</option>
-        {% for grade in grades %}
-        <option value="{{ grade.grade }}">{{ grade.grade }}年</option>
-        {% endfor %}
-    </select>
-    <p>組</p>
-    <select name="class">
-        <option value="">組を選択</option>
-        {% for class in classes %}
-        <option value="{{ class.class }}">{{ class.class }}組</option>
-        {% endfor %}
-    </select>
-    <br>
-    <a href="{{ url_for('u_home_page') }}" class="btn btn-outline-secondary">戻る</a>
-    <input type="submit" value="次へ進む" class="btn btn-outline-primary">
-</form>
+
+<div id="u_account_1" class="input_display">
+    <div class="content">
+        <h1 class="title">利用者アカウント編集</h1>
+        <p>変更情報を入力してください</p>
+        <form action="{{ url_for('u_account') }}" method="post">
+            <div class="input_area">
+                <div class="row">
+                    <div class="label">パスワード</div>
+                        <input type="password" name="pw" class="input">
+                </div>
+                
+                <div class="row">
+                    <div class="label">名前</div>
+                        <input type="text" name="name" class="input">
+                </div>
+
+                <div class="row">
+                    <div class="label">学科</div>
+                        <select name="dep" class="input">
+                        <option value="">学科を選択</option>
+                            {% for dep in deps %}
+                        <option value="{{ dep.id }}">{{ dep.name }}</option>
+                            {% endfor %}
+                        </select>
+                </div>
+
+                <div class="row">
+                    <div class="label">学年</div>
+                    <select name="grade" class="input">
+                    <option value="">学年を選択</option>
+                        {% for grade in grades %}
+                    <option value="{{ grade.grade }}">{{ grade.grade }}年</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="row">
+                    <div class="label">組</div>
+                    <select name="class" class="input">
+                    <option value="">組を選択</option>
+                        {% for class in classes %}
+                    <option value="{{ class.class }}">{{ class.class }}組</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="buttons">
+                    <a href="{{ url_for('u_home_page') }}" class="btn btn-outline-secondary">戻る</a>
+                    <input type="submit" value="次へ進む" class="btn btn-outline-primary">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}
