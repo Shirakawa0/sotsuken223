@@ -10,7 +10,10 @@
 }
 
 .return_btn{
-    width: 50px;
+    width: 38px;
+    position: absolute;
+    top: 95px;
+    left: 10px;
 }
 
 .login{
@@ -183,7 +186,7 @@
 }
 
 .input_display .content{
-    width: 800px;
+    width: 60%;
     margin: auto;
     text-align: center;
     position: relative;
@@ -208,7 +211,9 @@
 }
 
 .input_display .input_area .row{
+    width: 100%;
     display: flex;
+    margin: auto;
     margin-bottom: 15px;
 }
 
@@ -216,7 +221,13 @@
     padding: 0px;
 }
 
+.input_display .input_area .label{
+    width: 25%;
+    text-align: left;
+}
+
 .input_display .input_area .row .input{
+    width: 75%;
     display: flex;
     justify-content: space-between;
 }
@@ -225,13 +236,12 @@
     width: 48%;
 }
 
-.input_display .input_area .label{
-    width: 25%;
-    text-align: left;
-}
-
 .input_display .input_area .input{
     width: 75%;
+}
+
+.input_display textarea{
+    font-size: x-small;
 }
 
 .input_display .buttons{
@@ -251,6 +261,7 @@
 
 .input_display .confirm_area .row{
     display: flex;
+    margin: auto;
     margin-bottom: 15px;
     border-bottom: 1px black solid;
 }
@@ -275,4 +286,54 @@
 
 .input_display .done p{
     font-size: x-large;
+}
+
+.wide .input_area{
+    width: 60%;
+    margin: auto;
+}
+
+/* .wide .input_area .label{
+    width: 20%;
+} */
+
+.wide .input_area .block{
+    width: 100%;
+}
+
+.wide .input_area .block .input{
+    width: 100%;
+}
+
+.wide .input_area .block .label{
+    width: 100%;
+}
+
+.wide .confirm_area{
+    width: 60%;
+    margin: auto;
+}
+
+.wide .confirm_area .row{
+    border: none;
+}
+
+.wide .confirm_area .label{
+    width: 25%;
+}
+
+.wide .confirm_area .input{
+    width: 75%;
+}
+
+.wide .confirm_area .block{
+    width: 100%;
+}
+
+.wide .confirm_area .block .input{
+    width: 100%;
+}
+
+.wide .confirm_area .block .label{
+    width: 100%;
 }

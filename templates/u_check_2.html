@@ -1,15 +1,32 @@
 {% extends "template.html" %}
 {% block content %}
-<h1>文章チェック</h1>
-<h1>入力内容を確認してください</h1><br>
-先生{{ check.name }}<br>
-タイトル{{ check.title }}<br>
-本文{{ check.body }}
-<form action="{{ url_for('u_check') }}" method="post">
-    <input type="hidden" name="id" value="{{ check.id }}">
-    <input type="hidden" name="title" value="{{ check.title }}">
-    <input type="hidden" name="body" value="{{ check.body }}">
-    <a href="{{ url_for('u_check_page') }}" class="btn btn-outline-secondary">戻る</a>
-    <input type="submit" value="確定する" class="btn btn-outline-primary">
-</form>
+<div id="u_check_2" class="input_display">
+    <div class="content wide">
+        <h1 class="title">文章チェック</h1>
+        <p>入力内容を確認してください</p>
+        <div class="confirm_area">
+            <div class="row">
+                <div class="label">依頼先</div>
+                <div class="input">{{ check.name }}先生</div>
+            </div>
+            <div class="row">
+                <div class="label">タイトル</div>
+                <div class="input">{{ check.title }}</div>
+            </div>
+            <div class="block">
+                <div class="label">本文</div>
+                <textarea name="body" cols="30" rows="10" class="input" readonly>{{ check.body }}</textarea>
+            </div>
+            <form action="{{ url_for('u_check') }}" method="post">
+                <input type="hidden" name="id" value="{{ check.id }}">
+                <input type="hidden" name="title" value="{{ check.title }}">
+                <input type="hidden" name="body" value="{{ check.body }}">
+                <div class="buttons">
+                    <a href="{{ url_for('u_check_page') }}" class="btn btn-outline-secondary">戻る</a>
+                    <input type="submit" value="確定する" class="btn btn-outline-primary">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

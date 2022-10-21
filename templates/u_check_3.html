@@ -1,6 +1,12 @@
 {% extends "template.html" %}
 {% block content %}
-<h1>文章チェック</h1>
-<h1>文章チェックを依頼しました</h1>
-<a href="{{ url_for('u_home_page') }}" class="btn btn-outline-primary">マイページへ戻る</a>
+<div id="u_add_3" class="input_display">
+    <div class="content">
+        <h1 class="title">文章チェック</h1>
+        <div class="done">
+            <p>文章チェックを依頼しました</p>
+            <a href="{{ url_for('u_home_page') }}" class="btn btn-outline-primary">マイページへ戻る</a>
+        </div>
+    </div>
+</div>
 {% endblock %}
