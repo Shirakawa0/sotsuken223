@@ -5,18 +5,25 @@
 </a>
 
 <div id="a_account_1" class="input_display">
-    <div class="content">
+    <div class="content wide">
         <h1 class="title">新規スレッド作成</h1>
-
-        <form action="{{ url_for('forum_build') }}">
-            <input type="hidden" name="user" value="{{ user }}">
-            <p>スレッドタイトル</p>
-            <input type="text" name="title">
-            <p>本文</p>
-            <input type="text" name="body">
-            <br><br>
-            <input type="submit" value="この内容で作成" class="btn btn-outline-primary">
-        </form>
+        <p>以下の項目を入力して、スレッドを作成できます。</p>
+        <div class="input_area">
+            <form action="{{ url_for('forum_build') }}">
+                <input type="hidden" name="user" value="{{ user }}">
+                <div class="block">
+                    <div class="label">スレッドタイトル</div>
+                    <input type="text" name="title" class="input">
+                </div>
+                <div class="block">
+                    <div class="label">本文</div>
+                    <textarea name="body" cols="30" rows="10" class="input"></textarea>
+                </div>
+                <div class="buttons">
+                    <input type="submit" value="この内容で作成" class="btn btn-outline-primary">
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

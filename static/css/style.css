@@ -12,10 +12,11 @@
 .return_btn{
     width: 38px;
     position: absolute;
-    top: 95px;
+    top: 90px;
     left: 10px;
 }
 
+/* ログイン関係の画面に共通するレイアウト */
 .login{
     height: 100vh;
     background: #f0f0f0;
@@ -30,33 +31,33 @@
     text-align: center;
 }
 
-.input{
+.login_content .input{
     width: 80%;
     margin: auto;
     text-align: left;
 }
 
-.input input{
+.login_content .input input{
     width: 100%;
     border: 1px solid black;
     border-radius: 3px;
 }
 
-.input .id{
+.login_content .input .id{
     background-image: url(../img/human.png);
     background-size: 27px;
     background-repeat: no-repeat;
     padding-left: 30px;
 }
 
-.input .pw{
+.login_content .input .pw{
     background-image: url(../img/lock.png);
     background-size: 25px;
     background-repeat: no-repeat;
     padding-left: 30px;
 }
 
-.input p{
+.login_content .input p{
     margin: 20px 0 0 0;
 }
 
@@ -238,7 +239,8 @@
 }
 
 .input_display textarea{
-    font-size: x-small;
+    font-size: small;
+    height: 156px;
 }
 
 .input_display .buttons{
@@ -248,7 +250,7 @@
 
 .input_display .buttons * {
     margin: 10px;
-    width: 120px;
+    min-width: 120px;
 }
 
 .input_display .confirm_area{
