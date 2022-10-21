@@ -119,7 +119,7 @@
 }
 
 .home_content .links{
-    border: 1px solid aliceblue;
+    text-decoration: none;
     color: black;
     display: flex;
     justify-content: space-around;
@@ -147,23 +147,20 @@
     border-radius: 5px;
 }
 
-@keyframes gaming {
-    /* 色の指定 */
-    0% { background-color: Magenta; }
-    33% { background-color: yellow; }
-    66% { background-color: Cyan; }
-    100% { background-color: Magenta; }
-}
+
 
 .home_content .links div{
+    overflow: hidden;
+    white-space: nowrap;
     width: 25%;
+    text-overflow: ellipsis;
 }
 
 .home_content .box{
-    text-decoration: none;
-    color: black;
+    border: 1px solid aliceblue;
     display: block;
-    height: 66px;
+    padding: 0%;
+    margin-bottom: 10px;
 }
 
 
@@ -286,6 +283,51 @@
 
 .input_display .done p{
     font-size: x-large;
+}
+
+.scrollArea{
+	height: 200px;
+	overflow-y: scroll;
+	padding-right: 20px;
+}
+/*スクロールバーの横幅指定*/
+.scrollArea::-webkit-scrollbar {
+    width: 15px;
+}
+/*スクロールバーの背景色・角丸指定*/
+.scrollArea::-webkit-scrollbar-track {
+    border-radius: 10px;
+	background: #f2f2f2;
+}
+/*スクロールバーの色・角丸指定*/
+.scrollArea::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+	background:#09C9D9;
+}
+
+.home_content .forum{
+    display: block;
+    justify-content: center;
+}
+
+.home_content .forum .sub{
+    font-size: xx-small;
+    color: cornflowerblue;
+    width: max-content;
+}
+
+.home_content .forum .main{
+    font-size: large;
+    color: black;
+    width: max-content;
+}
+
+@keyframes gaming {
+    /* 色の指定 */
+    0% { background-color: Magenta; }
+    33% { background-color: yellow; }
+    66% { background-color: Cyan; }
+    100% { background-color: Magenta; }
 }
 
 .wide .input_area{

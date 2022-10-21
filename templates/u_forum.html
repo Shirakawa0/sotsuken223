@@ -1,22 +1,28 @@
 {% extends "template.html" %}
 {% block content %}
-<a href="{{ url_for('u_home_page') }}">
-    <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
-</a>
-<h1>スレッド一覧</h1><br>
-<h1>就活者同士の雑談や1人ではわからない問題を解決する場として設置しています。<br>コミュニティとして活用してください</h1><br>
-<a href="{{ url_for('forum_build_page',user='user') }}" class="btn btn-outline-primary">新規スレッド作成</a>
-
-{% for thread in threads %}
-<a href="{{ url_for('forum_brows',thread_id=thread.id,user='user') }}">
-    <div style="border: 1px black solid;">
-        {{ thread.title }}<br>
-        最終更新：{{ thread.last_update }}
-        投稿数：{{ thread.comment_num }}
-        作成者：{{ thread.author }}
-        最終投稿者：{{ thread.last_contributer }}
+<div id="u_forum" class="home">
+    <div class="home_content">
+        <a href="{{ url_for('u_home_page') }}">
+            <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
+        </a>
+        <h1 class="title">スレッド一覧</h1>
+        <p style="text-align:left">就活者同士の雑談や1人ではわからない問題を解決する場として設置しています。<br>コミュニティとして活用してください</p>
+        <a href="{{ url_for('forum_build_page',user='user') }}" class="btn btn-outline-primary m-4">新規スレッド作成</a>
+        
+        {% for thread in threads %}
+        <div class="btn btn-light box">
+            <a href="{{ url_for('forum_brows',thread_id=thread.id,user='user') }}" class="links forum">
+                <div class="sub">
+                    最終更新：{{ thread.last_update }}
+                    投稿数：{{ thread.comment_num }}
+                    作成者：{{ thread.author }}
+                    最終投稿者：{{ thread.last_contributer }}
+                </div>
+                <div class="main">{{ thread.title }}</div>
+            </a>
+        </div>
+        {% endfor %}
     </div>
-</a>
-{% endfor %}
+</div>
 
 {% endblock %}
