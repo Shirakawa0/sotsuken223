@@ -154,7 +154,7 @@
     text-decoration: none;
     color: black;
     display: block;
-    height: 50px;
+    height: 66px;
 }
 
 
@@ -203,11 +203,20 @@
 
 .input_display .input_area .row{
     display: flex;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .input_display .input_area .row * {
     padding: 0px;
+}
+
+.input_display .input_area .row .input{
+    display: flex;
+    justify-content: space-between;
+}
+
+.input_display .input_area .row .input_child{
+    width: 48%;
 }
 
 .input_display .input_area .label{
@@ -236,7 +245,7 @@
 
 .input_display .confirm_area .row{
     display: flex;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     border-bottom: 1px black solid;
 }
 
