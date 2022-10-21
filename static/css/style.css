@@ -322,12 +322,31 @@
     width: max-content;
 }
 
+#a_forum .home_content .box{
+    border: 1px solid aliceblue;
+    display:flex;
+    justify-content: space-between;
+    padding: 0%;
+    margin-bottom: 10px;
+}
+
+
 @keyframes gaming {
     /* 色の指定 */
     0% { background-color: Magenta; }
     33% { background-color: yellow; }
     66% { background-color: Cyan; }
     100% { background-color: Magenta; }
+}
+
+.gaming {
+    /* 横長で虹色を作る */
+    background: linear-gradient(to right, Magenta, yellow, Cyan, Magenta) 0% center/200%;
+    animation: gamingg 2s linear infinite;
+}
+@keyframes gamingg {
+    /* backgroundを移動させる */
+    100% { background-position-x: 200%; }
 }
 
 .wide .input_area{

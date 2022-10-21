@@ -1,24 +1,28 @@
 {% extends "template3.html" %}
 {% block content %}
-<a href="{{ url_for('a_home_page') }}">
-    <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
-</a>
-<h1>スレッド一覧</h1><br>
-<h1>管理者は新規スレッド作成、スレッドのコメント、スレッドの削除ができます。</h1><br>
-<a href="{{ url_for('forum_build_page',user='admin') }}" class="btn btn-outline-primary">新規スレッド作成</a>
-{% for thread in threads %}
-<a href="{{ url_for('forum_brows',thread_id=thread.id,user='admin') }}">
-    <div style="border: 1px black solid;">
-        {{ thread.title }}<br>
-        最終更新：{{ thread.last_update }}
-        投稿数：{{ thread.comment_num }}
-        作成者：{{ thread.author }}
-        最終投稿者：{{ thread.last_contributer }}
-        <form action="{{ url_for('a_thread_page') }}">
-            <input type="hidden" value="{{ thread.id }}" name="id">
-            <input type="submit" value="削除">
-        </form>
+<div id="a_forum" class="home">
+    <div class="home_content">
+        <a href="{{ url_for('a_home_page') }}">
+            <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
+        </a>
+        <h1 class="title">スレッド一覧</h1><br>
+        <p style="text-align:left">管理者は新規スレッド作成、スレッドのコメント、スレッドの削除ができます。</p>
+        <a href="{{ url_for('forum_build_page',user='admin') }}" class="btn btn-outline-primary m-4">新規スレッド作成</a>
+        {% for thread in threads %}
+        <div class="btn btn-light box">
+            <a href="{{ url_for('forum_brows',thread_id=thread.id,user='admin') }}" class="links forum">
+                    <div class="sub">
+                        最終更新：{{ thread.last_update }}
+                        投稿数：{{ thread.comment_num }}
+                        作成者：{{ thread.author }}
+                        最終投稿者：{{ thread.last_contributer }}
+                    </div>
+                    <div class="main">{{ thread.title }}</div>
+            </a>
+        </div>
+        <a href="{{ url_for('a_thread_page',id=thread.id)}}" class="btn btn-outline-primary">削除</a>
+        {% endfor %}
     </div>
-</a>
-{% endfor %}
+</div>
+
 {% endblock %}
