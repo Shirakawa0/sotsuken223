@@ -5,15 +5,14 @@
     <h1 class="title">選考中の企業</h1>
     <div class="scrollArea">
         {% for schedule in schedules %}
-        <a href="{{ url_for('u_company_page',company=schedule.company) }}" class="box">
-            <div class="links btn btn-light">
-                <div>{{ schedule.company }}</div>
-                <div>{{ schedule.step }}</div>
-                <div>{{ schedule.detail }}</div>
-                <div>{{ schedule.date_time }}</div>
-            </div>
-        </a>
-        <br>
+        <div class=" btn btn-light box ">
+            <a href="{{ url_for('u_company_page',company=schedule.company) }}" class="links">
+                    <div>{{ schedule.company }}</div>
+                    <div>{{ schedule.step }}</div>
+                    <div>{{ schedule.detail }}</div>
+                    <div>{{ schedule.date_time }}</div>
+            </a> 
+        </div>
         {% endfor %}
     </div>
 
@@ -68,8 +67,8 @@
     <h1 class="title">掲示板</h1>
     <p>就活者どうしの雑談や１人ではわからない問題を解決する場として設置しています。コミュニティとして活用してください。</p>
     {% for thread in threads %}
-        <a href="{{ url_for('forum_brows',thread_id=thread.id,user='user') }}" class="box">
-            <div class="links btn btn-light forum">
+        <div class="box btn btn-light">
+            <a href="{{ url_for('forum_brows',thread_id=thread.id,user='user') }}" class="links forum">
                 <div class="sub">
                     最終更新：{{ thread.last_update }}
                     投稿数：{{ thread.comment_num }}
@@ -77,9 +76,8 @@
                     最終投稿者：{{ thread.last_contributer }}
                 </div>
                 <div class="main">{{ thread.title }}</div>
-            </div>
-        </a>
-    <br>
+            </a>
+        </div>
     {% endfor %}
     <a href="{{ url_for('u_forum_page') }}" class="btn btn-outline-primary mt-4">スレッド一覧・作成</a>
 </div>

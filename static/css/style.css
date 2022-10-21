@@ -116,7 +116,7 @@
 }
 
 .home_content .links{
-    border: 1px solid aliceblue;
+    text-decoration: none;
     color: black;
     display: flex;
     justify-content: space-around;
@@ -147,14 +147,17 @@
 
 
 .home_content .links div{
+    overflow: hidden;
+    white-space: nowrap;
     width: 25%;
+    text-overflow: ellipsis;
 }
 
 .home_content .box{
-    text-decoration: none;
-    color: black;
+    border: 1px solid aliceblue;
     display: block;
-    height: 66px;
+    padding: 0%;
+    margin-bottom: 10px;
 }
 
 
@@ -294,7 +297,6 @@
 .home_content .forum{
     display: block;
     justify-content: center;
-    margin: 20px;
 }
 
 .home_content .forum .sub{
