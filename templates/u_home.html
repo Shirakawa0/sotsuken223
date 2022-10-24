@@ -35,18 +35,18 @@
     <p>ありません。</p>
     {% endif %}
     <br><br>
-
-    <h1 class="title">選考終了済みの企業</h1>
-    {% if finished_companies %}
-        {% for finished_company in finished_companies %}
-        <div class="non_link">
-            {{ finished_company.company }}
+    <details>
+        <summary style=" list-style: none;"><h1 class="title">選考終了済みの企業</h1></summary>
+        {% if finished_company %}
+        <div class="links_ns">
+            {{ finished_company[0].company }}
         </div>
-        {% endfor %}
-    {% else %}
-    <p>ありません。</p>
-    {% endif %}
-    <br><br>
+        {% else %}
+        <p>ありません。</p>
+        {% endif %}
+        <br><br>
+    </details>
+    
 
     <div class="container">
         <div>
