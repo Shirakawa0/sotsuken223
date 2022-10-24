@@ -109,11 +109,11 @@ def u_home_page():
 
     # 内定済の企業
     sql = "select company from schedule as s1 where id = %s and s1.date_time = (select max(s2.date_time) from schedule as s2 where s1.company = s2.company group by s2.company) and passed_flg = 1 order by date_time asc;"
-    passed_company = dbmg.exec_query(sql,session["id"])
+    passed_companies = dbmg.exec_query(sql,session["id"])
 
     # 選考終了済の企業
     sql = "select company from schedule as s1 where id = %s and s1.date_time = (select max(s2.date_time) from schedule as s2 where s1.company = s2.company group by s2.company) and finished_flg = 1 order by date_time asc;"
-    finished_company = dbmg.exec_query(sql,session["id"])
+    finished_companies = dbmg.exec_query(sql,session["id"])
 
     # 掲示板
     sql = "select * from threads order by last_update desc limit 3"
@@ -123,7 +123,7 @@ def u_home_page():
         comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
         thread["comment_num"] = comment_num[0]["num"]
 
-    return render_template("u_home.html",schedules=schedules,passed_company=passed_company,finished_company=finished_company,threads=threads)
+    return render_template("u_home.html",schedules=schedules,passed_companies=passed_companies,finished_companies=finished_companies,threads=threads)
 
 @app.route("/u_company")
 def u_company_page():
@@ -386,7 +386,7 @@ def forum_brows():
 
     dbmg = db_manager()
     thread = dbmg.exec_query("select * from threads where id = %s",thread_id)
-    comments = dbmg.exec_query("select * from comments where thread_id = %s",thread_id)
+    comments = dbmg.exec_query("select comments.id as id,thread_id,name as contributer,date_time,body from comments inner join u_account on contributer = u_account.id where thread_id = %s",thread_id)
 
     return render_template("forum_brows.html",thread=thread[0],comments=comments,user=user)
 
@@ -399,7 +399,7 @@ def forum_contribute():
 
     dbmg = db_manager()
     dbmg.exec_query("insert into comments(thread_id,contributer,date_time,body) values(%s,%s,%s,%s)",(thread_id,id,date_time,body))
-
+    
     return redirect(url_for("forum_brows",thread_id=thread_id))
 
 @app.route("/u_account")

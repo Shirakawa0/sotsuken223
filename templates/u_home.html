@@ -5,12 +5,12 @@
     <h1 class="title">選考中の企業</h1>
     <div class="scrollArea">
         {% for schedule in schedules %}
-        <div class=" btn btn-light box ">
+        <div class=" btn btn-light box">
             <a href="{{ url_for('u_company_page',company=schedule.company) }}" class="links">
-                    <div class="text_over">{{ schedule.company }}</div>
-                    <div class="text_over">{{ schedule.step }}</div>
-                    <div class="text_over">{{ schedule.detail }}</div>
-                    <div class="text_over">{{ schedule.date_time }}</div>
+                <div class="text_over">{{ schedule.company }}</div>
+                <div class="text_over">{{ schedule.step }}</div>
+                <div class="text_over">{{ schedule.detail }}</div>
+                <div class="text_over">{{ schedule.date_time }}</div>
             </a> 
         </div>
         {% endfor %}
@@ -25,20 +25,24 @@
     <br><br>
     
     <h1 class="title">内定済みの企業</h1>
-    {% if passed_company %}
-    <div class="links_happy">
-        {{ passed_company[0].company }}
-    </div>
+    {% if passed_companies %}
+        {% for passed_company in passed_companies %}
+        <div class="non_link">
+            {{ passed_company.company }}
+        </div>
+        {% endfor %}
     {% else %}
     <p>ありません。</p>
     {% endif %}
     <br><br>
 
     <h1 class="title">選考終了済みの企業</h1>
-    {% if finished_company %}
-    <div class="links_ns">
-        {{ finished_company[0].company }}
-    </div>
+    {% if finished_companies %}
+        {% for finished_company in finished_companies %}
+        <div class="non_link">
+            {{ finished_company.company }}
+        </div>
+        {% endfor %}
     {% else %}
     <p>ありません。</p>
     {% endif %}
@@ -47,13 +51,13 @@
     <div class="container">
         <div>
             <h1 class="title">面接練習</h1>
-            <p class="explanation">面接練習を希望する際は<br>こちらから申し込んでください。</p>
+            <p class="explanation">面接練習を希望する際はこちらから申し込んでください。</p>
             <a href="{{ url_for('u_men_page') }}" class="btn btn-outline-primary">面接練習を希望</a>
         </div>
         
         <div>
             <h1 class="title">文章チェック</h1>
-            <p class="explanation">ESの文章を提出する前などに、<br>文章のチェックを依頼できます。</p>
+            <p class="explanation">ESの文章を提出する前などに、文章のチェックを依頼できます。</p>
             <a href="{{ url_for('u_check_page') }}" class="btn btn-outline-primary">文章チェックを依頼</a>
         </div>
         <div>

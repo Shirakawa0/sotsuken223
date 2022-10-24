@@ -106,7 +106,7 @@
 .home_content{
     background: white;
     height: 100%;
-    width: 70%;
+    width: 800px;
     text-align: center;
     margin-bottom: 50px;
 }
@@ -138,15 +138,18 @@
     border-radius: 5px;
 }
 
-.home_content .links_happy{
+.home_content .non_link{
     border: 1px solid aliceblue;
     color: black;
     background-color: #f8f9fa;
-    /* animation: gaming 0.3s linear infinite;; */
     display: flex;
     justify-content: space-around;
     padding: 20px;
     border-radius: 5px;
+}
+
+.home_content .happy{
+    animation: gaming 0.3s linear infinite;;
 }
 
 .text_over{
@@ -181,8 +184,28 @@
     width: 30%;
 }
 
+.home_content .container h1{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.home_content .container p{
+    height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+
+}
+
 .home_content .explanation{
     text-align: left;
+}
+
+.home_content .non_link{
+    margin-bottom: 10px;
 }
 
 .scroll{
@@ -190,7 +213,7 @@
 }
 
 .input_display .content{
-    width: 60%;
+    width: 750px;
     margin: auto;
     text-align: center;
     position: relative;
