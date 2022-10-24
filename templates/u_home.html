@@ -33,16 +33,18 @@
     <p>ありません。</p>
     {% endif %}
     <br><br>
-
-    <h1 class="title">選考終了済みの企業</h1>
-    {% if finished_company %}
-    <div class="links_ns">
-        {{ finished_company[0].company }}
-    </div>
-    {% else %}
-    <p>ありません。</p>
-    {% endif %}
-    <br><br>
+    <details>
+        <summary style=" list-style: none;"><h1 class="title">選考終了済みの企業</h1></summary>
+        {% if finished_company %}
+        <div class="links_ns">
+            {{ finished_company[0].company }}
+        </div>
+        {% else %}
+        <p>ありません。</p>
+        {% endif %}
+        <br><br>
+    </details>
+    
 
     <div class="container">
         <div>
