@@ -1,8 +1,15 @@
 {% extends "template.html" %}
 {% block content %}
+
+{% if user == "user" %}
 <a href="{{ url_for('u_forum_page') }}">
     <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
 </a>
+{% elif user == "admin" %}
+<a href="{{ url_for('a_forum_page') }}">
+    <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
+</a>
+{% endif %}
 
 <div id="a_account_1" class="input_display">
     <div class="content wide">

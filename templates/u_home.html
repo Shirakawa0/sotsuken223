@@ -49,25 +49,25 @@
     <div class="container">
         <div>
             <h1 class="title">面接練習</h1>
-            <p>面接練習を希望する際は<br>こちらから申し込んでください。</p>
+            <p class="explanation">面接練習を希望する際は<br>こちらから申し込んでください。</p>
             <a href="{{ url_for('u_men_page') }}" class="btn btn-outline-primary">面接練習を希望</a>
         </div>
         
         <div>
             <h1 class="title">文章チェック</h1>
-            <p>ESの文章を提出する前などに、<br>文章のチェックを依頼できます。</p>
+            <p class="explanation">ESの文章を提出する前などに、<br>文章のチェックを依頼できます。</p>
             <a href="{{ url_for('u_check_page') }}" class="btn btn-outline-primary">文章チェックを依頼</a>
         </div>
         <div>
             <h1 class="title">報告書検索</h1>
-            <p>先輩の報告書を検索し、閲覧できます。</p>
+            <p class="explanation">先輩の報告書を検索し、閲覧できます。</p>
             <a href="{{ url_for('u_search_page') }}" class="btn btn-outline-primary">報告書を閲覧</a>
         </div>
         
     </div>
     
     <h1 class="title">掲示板</h1>
-    <p>就活者どうしの雑談や１人ではわからない問題を解決する場として設置しています。コミュニティとして活用してください。</p>
+    <p class="explanation">就活者どうしの雑談や１人ではわからない問題を解決する場として設置しています。コミュニティとして活用してください。</p>
     {% for thread in threads %}
         <div class="box btn btn-light">
             <a href="{{ url_for('forum_brows',thread_id=thread.id,user='user') }}" class="links forum">
