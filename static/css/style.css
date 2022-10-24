@@ -141,7 +141,8 @@
 .home_content .links_happy{
     border: 1px solid aliceblue;
     color: black;
-    animation: gaming 0.3s linear infinite;;
+    background-color: #f8f9fa;
+    /* animation: gaming 0.3s linear infinite;; */
     display: flex;
     justify-content: space-around;
     padding: 20px;
@@ -326,12 +327,11 @@
 
 #a_forum .home_content .box{
     border: 1px solid aliceblue;
-    display:flex;
-    justify-content: space-between;
+    /* display:flex; */
+    /* justify-content: space-between; */
     padding: 0%;
     margin-bottom: 10px;
 }
-
 
 @keyframes gaming {
     /* 色の指定 */

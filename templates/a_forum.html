@@ -11,16 +11,18 @@
         {% for thread in threads %}
         <div class="btn btn-light box">
             <a href="{{ url_for('forum_brows',thread_id=thread.id,user='admin') }}" class="links forum">
-                    <div class="sub">
-                        最終更新：{{ thread.last_update }}
-                        投稿数：{{ thread.comment_num }}
-                        作成者：{{ thread.author }}
-                        最終投稿者：{{ thread.last_contributer }}
-                    </div>
-                    <div class="main">{{ thread.title }}</div>
+                <div class="sub">
+                    最終更新：{{ thread.last_update }}
+                    投稿数：{{ thread.comment_num }}
+                    作成者：{{ thread.author }}
+                    最終投稿者：{{ thread.last_contributer }}
+                </div>
+                <div class="main">{{ thread.title }}</div>
+                <object>
+                    <a href="{{ url_for('a_thread_page',id=thread.id)}}" class="btn btn-outline-primary">削除</a>
+                </object>
             </a>
         </div>
-        <a href="{{ url_for('a_thread_page',id=thread.id)}}" class="btn btn-outline-primary">削除</a>
         {% endfor %}
     </div>
 </div>
