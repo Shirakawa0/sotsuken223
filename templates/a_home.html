@@ -6,18 +6,18 @@
         {% for res in schedules %}
         <div class="box">
             <div class="links btn btn-light">
-                    <div>{{res.name}}</div>
-                    <div>{{res.company}}</div>
-                    <div>{{res.step}}</div>
-                    <div>{{res.detail}}</div>
-                    <div>{{res.date_time}}</div>
+                    <div class="text_over">{{res.name}}</div>
+                    <div class="text_over">{{res.company}}</div>
+                    <div class="text_over">{{res.step}}</div>
+                    <div class="text_over">{{res.detail}}</div>
+                    <div class="text_over">{{res.date_time}}</div>
             </div>
         </div>
         {% endfor %}
     
     <a href="{{ url_for('a_all_page') }}" class="btn btn-outline-primary">選考状況一覧</a>
     <div class="container">
-        <div>
+        <div class="text_over">
             <h1 class="title">面接練習 {{practices|length}}件</h1>
                 {% for res in practices %}
                     {{res.dep}}
@@ -30,7 +30,7 @@
             <a href="{{url_for('a_men_page')}}" class="btn btn-outline-primary">希望状況を閲覧</a>
         </div>
         
-        <div>
+        <div class="text_over">
             <h1 class="title">文章チェック</h1>
             {% for res in reviews %}
                 {{res.student}}
