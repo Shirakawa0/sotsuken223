@@ -149,7 +149,12 @@
     border-radius: 5px;
 }
 
-
+.text_over{
+    overflow: hidden;
+    white-space: nowrap;
+    width: 25%;
+    text-overflow: ellipsis;
+}
 
 .home_content .links div{
     overflow: hidden;

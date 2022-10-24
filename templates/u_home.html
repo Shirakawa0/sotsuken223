@@ -7,10 +7,10 @@
         {% for schedule in schedules %}
         <div class=" btn btn-light box ">
             <a href="{{ url_for('u_company_page',company=schedule.company) }}" class="links">
-                    <div>{{ schedule.company }}</div>
-                    <div>{{ schedule.step }}</div>
-                    <div>{{ schedule.detail }}</div>
-                    <div>{{ schedule.date_time }}</div>
+                    <div class="text_over">{{ schedule.company }}</div>
+                    <div class="text_over">{{ schedule.step }}</div>
+                    <div class="text_over">{{ schedule.detail }}</div>
+                    <div class="text_over">{{ schedule.date_time }}</div>
             </a> 
         </div>
         {% endfor %}
@@ -69,13 +69,13 @@
     {% for thread in threads %}
         <div class="box btn btn-light">
             <a href="{{ url_for('forum_brows',thread_id=thread.id,user='user') }}" class="links forum">
-                <div class="sub">
+                <div class="sub text_over">
                     最終更新：{{ thread.last_update }}
                     投稿数：{{ thread.comment_num }}
                     作成者：{{ thread.author }}
                     最終投稿者：{{ thread.last_contributer }}
                 </div>
-                <div class="main">{{ thread.title }}</div>
+                <div class="main text_over">{{ thread.title }}</div>
             </a>
         </div>
     {% endfor %}
