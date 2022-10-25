@@ -477,7 +477,7 @@ def a_home_page():
     sql = "select d.name as dep,c.grade as grade,c.class as class,b.name as name,right(date,5) as date from practice a,u_account b,class c,dep d where a.student = b.id and b.class_id = c.id and c.dep_id = d.id and a.teacher = %s"
     practices = dbmg.exec_query(sql,(id))
     #文章チェック
-    sql = "select student,title from review where teacher = %s"
+    sql = "select student,title from review where teacher = %s and check_flg = 0"
     reviews = dbmg.exec_query(sql,(id))
     return render_template("a_home.html",schedules=schedules,practices=practices,reviews=reviews)
 
@@ -557,7 +557,7 @@ def a_men_page():
 def a_check_page():
     id = session["id"]
     dbmg = db_manager()
-    sql = "select a.id as id,d.name as dep,c.grade as grade,c.class as class,b.name as name,a.title as title from review a,u_account b,class c,dep d where a.student = b.id and b.class_id = c.id and c.dep_id = d.id and teacher = %s"
+    sql = "select a.id as id,d.name as dep,c.grade as grade,c.class as class,b.name as name,a.title as title from review a,u_account b,class c,dep d where a.student = b.id and b.class_id = c.id and c.dep_id = d.id and teacher = %s and check_flg = 0"
     result = dbmg.exec_query(sql,(id))
     return render_template("a_check_all.html",result=result)
 
@@ -580,7 +580,8 @@ def a_check_flg():
     dbmg.exec_query(sql,(flg,id))
     sql = "select a.id as id,d.name as dep,c.grade as grade,c.class as class,b.name as name,a.title as title,a.body as body from review a,u_account b,class c,dep d where a.student = b.id and b.class_id = c.id and c.dep_id = d.id and a.id = %s"
     result = dbmg.exec_query(sql,(id))
-    return render_template("a_check.html",result=result[0])
+    # return render_template("a_check.html",result=result[0])
+    return redirect("/a_check_all")
 
 @app.route("/a_thread")
 def a_thread_page():
