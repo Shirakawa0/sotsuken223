@@ -3,6 +3,7 @@ import datetime
 import random, string
 from pymysql import IntegrityError
 from db.db_manager import db_manager
+#from plyer import notification
 
 app = Flask(__name__)
 app.secret_key = "".join(random.choices(string.ascii_letters, k=256))
@@ -469,6 +470,16 @@ def a_home_page():
     date = str(datetime.date.today())
     date_time_s = date + " " + "00:00:00"
     date_time_e = date + " " + "23:59:59"
+    """
+    notification.notify(
+        title="予定",
+        message="選考予定の生徒がいます",
+        app_name="就活帳",
+        app_icon="",
+        timeout=10
+    )
+    """
+
     #本日選考予定(sql変更予定)
     sql = "select u_account.name as name,schedule.company as company,schedule.step as step,schedule.detail as detail,substring(schedule.date_time,12,5) as date_time from schedule left join u_account on schedule.id = u_account.id where date_time <= %s and date_time >= %s"
     schedules = dbmg.exec_query(sql,(date_time_e,date_time_s))

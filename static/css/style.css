@@ -316,6 +316,24 @@
     font-size: x-large;
 }
 
+.input_display .box{
+    border: 1px solid aliceblue;
+    display: block;
+    padding: 0%;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.input_display .non_link{
+    border: 1px solid aliceblue;
+    color: black;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    border-radius: 5px;
+}
+
 .scrollArea{
 	height: 200px;
 	overflow-y: scroll;
