@@ -386,6 +386,7 @@ def forum_brows():
 
     dbmg = db_manager()
     thread = dbmg.exec_query("select * from threads where id = %s",thread_id)
+    # sql修正必要
     comments = dbmg.exec_query("select comments.id as id,thread_id,name as contributer,date_time,body from comments inner join u_account on contributer = u_account.id where thread_id = %s",thread_id)
 
     return render_template("forum_brows.html",thread=thread[0],comments=comments,user=user)
@@ -397,6 +398,7 @@ def forum_contribute():
     body = request.args.get("body")
     date_time = datetime.datetime.now()
 
+    # commentsテーブルのcontributerをcontributer_idに変更、contributer_nameを追加する必要がある
     dbmg = db_manager()
     dbmg.exec_query("insert into comments(thread_id,contributer,date_time,body) values(%s,%s,%s,%s)",(thread_id,id,date_time,body))
     

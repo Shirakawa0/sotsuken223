@@ -24,7 +24,7 @@
     <a href="{{ url_for('u_add_page') }}" class="btn btn-outline-primary mt-4">企業追加</a>
     <br><br>
     
-    <h1 class="title">内定済みの企業</h1>
+    <!-- <h1 class="title">内定済みの企業</h1>
     {% if passed_companies %}
         {% for passed_company in passed_companies %}
         <div class="non_link">
@@ -34,19 +34,47 @@
     {% else %}
     <p>ありません。</p>
     {% endif %}
-    <br><br>
+    <br><br> -->
+
     <details>
-        <summary style=" list-style: none;"><h1 class="title">選考終了済みの企業</h1></summary>
-        {% if finished_company %}
-        <div class="links_ns">
-            {{ finished_company[0].company }}
+        <summary style=" list-style: none;"><h1 class="title">内定済みの企業</h1></summary>
+        {% if passed_companies %}
+        {% for passed_company in passed_companies %}
+        <div class="non_link links_ns">
+            {{ passed_company.company }}
         </div>
+        {% endfor %}
         {% else %}
         <p>ありません。</p>
         {% endif %}
-        <br><br>
     </details>
-    
+    <br><br>
+
+    <!-- <h1 class="title">選考終了済みの企業</h1>
+    {% if finished_companies %}
+        {% for finished_company in finished_companies %}
+        <div class="non_link">
+            {{ finished_company.company }}
+        </div>
+        {% endfor %}
+    {% else %}
+    <p>ありません。</p>
+    {% endif %}
+    <br><br> -->
+
+    <details>
+        <summary style=" list-style: none;"><h1 class="title">選考終了済みの企業</h1></summary>
+        {% if finished_companies %}
+        {% for finished_company in finished_companies %}
+        <div class="non_link links_ns">
+            {{ finished_company.company }}
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>ありません。</p>
+        {% endif %}
+    </details>
+    <br><br>
 
     <div class="container">
         <div>
