@@ -458,15 +458,47 @@
 }
 
 #forum_brows .home_content .comment .body{
-    padding: 0.5em 1em;
+    padding: 10px 20px;
     margin: 2em 0;
     margin-top: 0;
     background: -webkit-repeating-linear-gradient(-45deg, #f0f8ff, #f0f8ff 3px,#e9f4ff 3px, #e9f4ff 7px);
     background: repeating-linear-gradient(-45deg, #f0f8ff, #f0f8ff 3px,#e9f4ff 3px, #e9f4ff 7px);
+    display: flex;
+    justify-content: space-between;
 }
 
 #forum_brows .home_content .comment .date_time{
     text-align: right;
     font-size: x-small;
     color: gray;
+    display: flex;
+    align-items: flex-end;
+}
+
+#forum_brows .body p{
+    white-space: pre-wrap;
+    margin-bottom: 0;
+}
+
+#forum_brows .reply_area{
+    text-align: left;
+    width: 60%;
+    margin: auto;
+}
+
+#forum_brows .reply_area textarea{
+    width: 100%;
+}
+
+#forum_brows .button_area{
+    width: 100%;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.sub_title{
+    text-align: left;
+    font-size: 22px;
+    font-weight: 450;
+    margin: 30px 0 10px 0;
 }
