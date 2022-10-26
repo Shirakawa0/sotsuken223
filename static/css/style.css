@@ -360,11 +360,42 @@
 }
 
 .home_content .forum .sub{
-    font-size: xx-small;
-    color: cornflowerblue;
-    width: max-content;
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
 }
 
+.home_content .forum .sub p{
+    font-size: xx-small;
+    color: cornflowerblue;
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-right: 20px;
+}
+
+.home_content .forum .sub .last_update{
+    width: 20%;
+}
+
+.home_content .forum .sub .comment_num{
+    width: 10%;
+}
+
+.home_content .forum .sub .author{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 20%;
+}
+
+.home_content .forum .sub .last_contributer{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 20%;
+}
 .home_content .forum .main{
     font-size: large;
     color: black;

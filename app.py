@@ -104,16 +104,16 @@ def u_home_page():
 
     dbmg = db_manager()
 
-    # 選考中のスケジュール
-    sql = "select * from schedule as s1 where id = %s and s1.date_time = (select max(s2.date_time) from schedule as s2 where s1.company = s2.company group by s2.company) and finished_flg = 0 and passed_flg = 0 order by date_time asc;"
+    # 企業ごとの最新の選考予定を表示
+    sql = "select * from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company group by company) and finished_flg = 0 and passed_flg = 0 order by date_time asc;"
     schedules = dbmg.exec_query(sql,session["id"])
 
     # 内定済の企業
-    sql = "select company from schedule as s1 where id = %s and s1.date_time = (select max(s2.date_time) from schedule as s2 where s1.company = s2.company group by s2.company) and passed_flg = 1 order by date_time asc;"
+    sql = "select company from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company group by company) and passed_flg = 1 order by date_time asc;"
     passed_companies = dbmg.exec_query(sql,session["id"])
 
     # 選考終了済の企業
-    sql = "select company from schedule as s1 where id = %s and s1.date_time = (select max(s2.date_time) from schedule as s2 where s1.company = s2.company group by s2.company) and finished_flg = 1 order by date_time asc;"
+    sql = "select company from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company group by company) and finished_flg = 1 order by date_time asc;"
     finished_companies = dbmg.exec_query(sql,session["id"])
 
     # 掲示板
