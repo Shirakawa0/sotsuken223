@@ -3,31 +3,37 @@
 <div id="forum_brows" class="home">
 <div class="home_content">
     <h1 class="title">スレッド</h1>
-    {% if user == "user" %}
-    <a href="{{ url_for('u_forum_page') }}" class="btn btn-outline-primary">スレッド一覧</a>
-    {% elif user == "admin" %}
-    <a href="{{ url_for('a_forum_page') }}" class="btn btn-outline-primary">スレッド一覧</a>
-    {% endif %}
-    <br>
+    <div class="button_area">
+        {% if user == "user" %}
+        <a href="{{ url_for('u_forum_page') }}" class="btn btn-outline-primary">スレッド一覧</a>
+        {% elif user == "admin" %}
+        <a href="{{ url_for('a_forum_page') }}" class="btn btn-outline-primary">スレッド一覧</a>
+        {% endif %}
+    </div>
     <h2 style="text-align: left; color: orange;">{{ thread.title }}</h2>
     <br>
     {% for comment in comments %}
     <div class="comment">
         <div class="contributer">{{ comment.contributer }}<br></div>
         <div class="body">
-            {{ comment.body }}<br>
+            <p>{{ comment.body }}</p>
             <div class="date_time">{{ comment.date_time }}<br> </div>
         </div>
     </div>
     {% endfor %}
-    <p>【返信投稿用フォーム】</p>
-    <form action="{{ url_for('forum_contribute') }}">
-        <input type="hidden" name="thread_id" value="{{ thread.id }}">
-        本文（600文字以内）<br>
-        <textarea name="body" cols="60" rows="10"></textarea>
-        <br>
-        <input type="submit" value="返信する" class="btn btn-outline-primary">
-    </form>
+    <div class="reply_area">
+        <p>【返信投稿用フォーム】</p>
+        <form action="{{ url_for('forum_contribute') }}">
+            <input type="hidden" name="thread_id" value="{{ thread.id }}">
+            <input type="hidden" name="user" value="{{ user }}">
+            本文（600文字以内）<br>
+            <textarea name="body" cols="60" rows="10"></textarea>
+            <br>
+            <div class="button_area">
+                <input type="submit" value="返信する" class="btn btn-outline-primary">
+            </div>
+        </form>
+    </div>
 </div>
 </div>
 {% endblock %}

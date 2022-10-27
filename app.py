@@ -104,16 +104,16 @@ def u_home_page():
 
     dbmg = db_manager()
 
-    # 選考中のスケジュール
-    sql = "select * from schedule as s1 where id = %s and s1.date_time = (select max(s2.date_time) from schedule as s2 where s1.company = s2.company group by s2.company) and finished_flg = 0 and passed_flg = 0 order by date_time asc;"
+    # 企業ごとの最新の選考予定を表示
+    sql = "select * from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company group by company) and finished_flg = 0 and passed_flg = 0 order by date_time asc;"
     schedules = dbmg.exec_query(sql,session["id"])
 
     # 内定済の企業
-    sql = "select company from schedule as s1 where id = %s and s1.date_time = (select max(s2.date_time) from schedule as s2 where s1.company = s2.company group by s2.company) and passed_flg = 1 order by date_time asc;"
+    sql = "select company from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company group by company) and passed_flg = 1 order by date_time asc;"
     passed_companies = dbmg.exec_query(sql,session["id"])
 
     # 選考終了済の企業
-    sql = "select company from schedule as s1 where id = %s and s1.date_time = (select max(s2.date_time) from schedule as s2 where s1.company = s2.company group by s2.company) and finished_flg = 1 order by date_time asc;"
+    sql = "select company from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company group by company) and finished_flg = 1 order by date_time asc;"
     finished_companies = dbmg.exec_query(sql,session["id"])
 
     # 掲示板
@@ -349,7 +349,7 @@ def u_search_page():
 def u_forum_page():
 
     dbmg = db_manager()
-    threads = dbmg.exec_query("select * from threads")
+    threads = dbmg.exec_query("select * from threads order by last_update desc")
 
     for thread in threads:
         comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
@@ -371,12 +371,18 @@ def forum_build():
     user = request.args.get("user")
 
     dbmg = db_manager()
-    dbmg.exec_query("insert into threads(title,author,last_contributer,last_update) values(%s,%s,%s,%s)",(title,id,id,date_time))
+    name = dbmg.exec_query("select name from u_account where id = %s",id)
+    if name:
+        name = name[0]["name"]
+    else:
+        name = dbmg.exec_query("select name from a_account where id = %s",id)
+        name = name[0]["name"]
+    dbmg.exec_query("insert into threads(title,author_id,author,last_contributer_id,last_contributer,last_update) values(%s,%s,%s,%s,%s,%s)",(title,id,name,id,name,date_time))
     
-    thread_id = dbmg.exec_query("select id from threads where author=%s order by last_update desc limit 1",id)
+    thread_id = dbmg.exec_query("select id from threads where author_id=%s order by last_update desc limit 1",id)
     thread_id = thread_id[0]["id"]
 
-    dbmg.exec_query("insert into comments(thread_id,contributer,date_time,body) values(%s,%s,%s,%s)",(thread_id,id,date_time,body))
+    dbmg.exec_query("insert into comments(thread_id,contributer_id,contributer,date_time,body) values(%s,%s,%s,%s,%s)",(thread_id,id,name,date_time,body))
 
     return redirect(url_for("forum_brows",thread_id=thread_id,user=user))
 
@@ -388,7 +394,7 @@ def forum_brows():
     dbmg = db_manager()
     thread = dbmg.exec_query("select * from threads where id = %s",thread_id)
     # sql修正必要
-    comments = dbmg.exec_query("select comments.id as id,thread_id,name as contributer,date_time,body from comments inner join u_account on contributer = u_account.id where thread_id = %s",thread_id)
+    comments = dbmg.exec_query("select * from comments where thread_id = %s",thread_id)
 
     return render_template("forum_brows.html",thread=thread[0],comments=comments,user=user)
 
@@ -396,14 +402,22 @@ def forum_brows():
 def forum_contribute():
     id = session["id"]
     thread_id = request.args.get("thread_id")
+    user = request.args.get("user")
     body = request.args.get("body")
     date_time = datetime.datetime.now()
 
     # commentsテーブルのcontributerをcontributer_idに変更、contributer_nameを追加する必要がある
     dbmg = db_manager()
-    dbmg.exec_query("insert into comments(thread_id,contributer,date_time,body) values(%s,%s,%s,%s)",(thread_id,id,date_time,body))
-    
-    return redirect(url_for("forum_brows",thread_id=thread_id))
+    name = dbmg.exec_query("select name from u_account where id = %s",id)
+    if name:
+        name = name[0]["name"]
+    else:
+        name = dbmg.exec_query("select name from a_account where id = %s",id)
+        name = name[0]["name"]
+    dbmg.exec_query("insert into comments(thread_id,contributer_id,contributer,date_time,body) values(%s,%s,%s,%s,%s)",(thread_id,id,name,date_time,body))
+    dbmg.exec_query("update threads set last_contributer_id = %s,last_contributer = %s where id = %s",(id,name,thread_id))
+
+    return redirect(url_for("forum_brows",thread_id=thread_id,user=user))
 
 @app.route("/u_account")
 def u_account_page():
@@ -548,7 +562,7 @@ def a_student_page():
 @app.route("/a_forum")
 def a_forum_page():
     dbmg = db_manager()
-    threads = dbmg.exec_query("select * from threads")
+    threads = dbmg.exec_query("select * from threads order by last_update desc")
 
     for thread in threads:
         comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])

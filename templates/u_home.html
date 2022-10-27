@@ -102,10 +102,10 @@
         <div class="box btn btn-light">
             <a href="{{ url_for('forum_brows',thread_id=thread.id,user='user') }}" class="links forum">
                 <div class="sub text_over">
-                    最終更新：{{ thread.last_update }}
-                    投稿数：{{ thread.comment_num }}
-                    作成者：{{ thread.author }}
-                    最終投稿者：{{ thread.last_contributer }}
+                    <p class="last_update">最終更新：{{ thread.last_update }}</p>
+                    <p class="comment_num">投稿数：{{ thread.comment_num }}</p>
+                    <p class="author">作成者：{{ thread.author }}</p>
+                    <p class="last_contributer">最終投稿者：{{ thread.last_contributer }}</p>
                 </div>
                 <div class="main text_over">{{ thread.title }}</div>
             </a>
