@@ -373,6 +373,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     margin-right: 20px;
+    margin-bottom: 0;
 }
 
 .home_content .forum .sub .last_update{
