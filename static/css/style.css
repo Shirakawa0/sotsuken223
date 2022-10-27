@@ -387,14 +387,14 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    width: 20%;
+    width: 13%;
 }
 
 .home_content .forum .sub .last_contributer{
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    width: 20%;
+    width: 16%;
 }
 .home_content .forum .main{
     font-size: large;

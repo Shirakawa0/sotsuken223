@@ -415,7 +415,7 @@ def forum_contribute():
         name = dbmg.exec_query("select name from a_account where id = %s",id)
         name = name[0]["name"]
     dbmg.exec_query("insert into comments(thread_id,contributer_id,contributer,date_time,body) values(%s,%s,%s,%s,%s)",(thread_id,id,name,date_time,body))
-    dbmg.exec_query("update threads set last_contributer_id = %s,last_contributer = %s",(id,name))
+    dbmg.exec_query("update threads set last_contributer_id = %s,last_contributer = %s where id = %s",(id,name,thread_id))
 
     return redirect(url_for("forum_brows",thread_id=thread_id,user=user))
 
