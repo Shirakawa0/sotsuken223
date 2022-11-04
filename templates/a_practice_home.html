@@ -1,4 +1,15 @@
 {% extends "template3.html" %}
+
 {% block content %}
+
 <a href="{{ url_for('a_practice_1') }}">日程追加</a>
+{% for schedule in schedules %}
+<div class="btn btn-light box">
+    <a href="" class="links">
+        <div>{{ schedule.date }}</div>
+        <div class="text_over">{{ schedule.comment }}</div>
+    </a>
+</div>
+{% endfor %}
+
 {% endblock %}

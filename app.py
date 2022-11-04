@@ -580,7 +580,12 @@ def a_forum_page():
 
 @app.route("/a_men")
 def a_men_page():
-    return render_template("a_practice_home.html")
+    teacher = session["id"]
+
+    dbmg = db_manager()
+    schedules = dbmg.exec_query("select * from practice where teacher = %s order by date asc",(teacher))
+
+    return render_template("a_practice_home.html",schedules=schedules)
 
 @app.route("/a_practice_1")
 def a_practice_1():
