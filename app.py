@@ -580,11 +580,29 @@ def a_forum_page():
 
 @app.route("/a_men")
 def a_men_page():
-    id = session["id"]
+    return render_template("a_practice_home.html")
+
+@app.route("/a_practice_1")
+def a_practice_1():
+    return render_template("a_practice_1.html")
+
+@app.route("/a_practice_2")
+def a_practice_2():
+    date = request.args.get("date")
+    comment = request.args.get("comment")
+
+    return render_template("a_practice_2.html",date=date,comment=comment)
+
+@app.route("/a_practice_3",methods=["POST"])
+def a_practice_3():
+    teacher = session["id"]
+    date = request.form.get("date")
+    comment = request.form.get("comment")
+
     dbmg = db_manager()
-    myclass = dbmg.exec_query("select distinct e.name as dep,d.grade as grade,d.class as class,c.name as name,a.date as date,a.time as time from practice a,teacher_class b,u_account c,class d,dep e where a.teacher = b.id and a.student = c.id and c.class_id = d.id and d.dep_id = e.id and b.id = %s and c.class_id in (select class_id from teacher_class where id = %s);",(id,id))
-    notclass = dbmg.exec_query("select distinct e.name as dep,d.grade as grade,d.class as class,c.name as name,a.date as date,a.time as time from practice a,teacher_class b,u_account c,class d,dep e where a.teacher = b.id and a.student = c.id and c.class_id = d.id and d.dep_id = e.id and b.id = %s and c.class_id not in (select class_id from teacher_class where id = %s);",(id,id))
-    return render_template("a_men.html",myclass=myclass,notclass=notclass)
+    dbmg.exec_query("insert into practice(teacher,date,comment) values(%s,%s,%s)",(teacher,date,comment))
+
+    return render_template("a_practice_3.html")
 
 @app.route("/a_check_all")
 def a_check_page():

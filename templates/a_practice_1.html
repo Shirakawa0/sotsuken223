@@ -1,0 +1,10 @@
+{% extends "template3.html" %}
+{% block content %}
+<form action="{{ url_for('a_practice_2') }}">
+    <p>日付</p>
+    <input type="date" name="date">
+    <p>詳細（時間帯・場所など）</p>
+    <textarea cols="30" rows="10" name="comment"></textarea>
+    <input type="submit" value="次へ進む">
+</form>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "template3.html" %}
+{% block content %}
+<div>日付</div>
+<div>{{ date }}</div>
+<div>コメント</div>
+<div>{{ comment }}</div>
+<form action="{{ url_for('a_practice_3') }}" method="post">
+    <input type="hidden" name="date" value="{{ date }}">
+    <input type="hidden" name="comment" value="{{ comment }}">
+    <a href="{{ url_for('a_practice_1') }}" class="btn btn-outline-secoundary">戻る</a>
+    <input type="submit" value="登録する" class="btn btn-outline-primary">
+</form>
+{% endblock %}
