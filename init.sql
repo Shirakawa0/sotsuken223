@@ -40,8 +40,9 @@ CREATE TABLE practice(
 );
 
 CREATE TABLE practice_attendance(
-    schedule_id int PRIMARY KEY,
-    student VARCHAR(7) PRIMARY KEY
+    schedule_id int,
+    student VARCHAR(7),
+    PRIMARY KEY(schedule_id,student)
 );
 
 -- CREATE TABLE review(
