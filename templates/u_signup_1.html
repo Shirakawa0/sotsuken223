@@ -16,30 +16,22 @@
                 <input type="text" name="name">
                 <br>
                 <div class="pull">
-                    <div class="dep">
+                    <div>
+                        <p>卒業年</p>
+                        <input type="number" name="graduation">
+                        <!-- <select name="class">
+                            <option value="">卒業年を選択</option>
+                            {% for class in classes %}
+                            <option value="{{ class.class }}">{{ class.class }}組</option>
+                            {% endfor %}
+                        </select> -->
+                    </div>
+                    <div>
                         <p>学科</p>
                         <select name="dep">
                             <option value="">学科を選択</option>
                             {% for dep in deps %}
                             <option value="{{ dep.id }}">{{ dep.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="grade">
-                        <p>学年</p>
-                        <select name="grade">
-                            <option value="">学年を選択</option>
-                            {% for grade in grades %}
-                            <option value="{{ grade.grade }}">{{ grade.grade }}年</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="class">
-                        <p>組</p>
-                        <select name="class">
-                            <option value="">組を選択</option>
-                            {% for class in classes %}
-                            <option value="{{ class.class }}">{{ class.class }}組</option>
                             {% endfor %}
                         </select>
                     </div>

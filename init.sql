@@ -22,14 +22,37 @@ CREATE TABLE schedule(
     PRIMARY KEY(id,company,date_time)
 );
 
+-- CREATE TABLE practice(
+--     id int AUTO_INCREMENT PRIMARY KEY,
+--     student VARCHAR(7) NOT NULL,
+--     teacher VARCHAR(128) NOT NULL,
+--     date date NOT NULL,
+--     time VARCHAR(16) NOT NULL,
+--     check_flg BOOLEAN DEFAULT 0 NOT NULL
+-- );
+
 CREATE TABLE practice(
     id int AUTO_INCREMENT PRIMARY KEY,
-    student VARCHAR(7) NOT NULL,
     teacher VARCHAR(128) NOT NULL,
     date date NOT NULL,
     time VARCHAR(16) NOT NULL,
-    check_flg BOOLEAN DEFAULT 0 NOT NULL
+    comment VARCHAR(200)
 );
+
+CREATE TABLE practice_attendance(
+    schedule_id int PRIMARY KEY,
+    student VARCHAR(7) PRIMARY KEY
+);
+
+-- CREATE TABLE review(
+--     id int AUTO_INCREMENT PRIMARY KEY,
+--     student VARCHAR(7) NOT NULL,
+--     teacher VARCHAR(128) NOT NULL,
+--     title VARCHAR(32) NOT NULL,
+--     body VARCHAR(600) NOT NULL,
+--     check_flg BOOLEAN NOT NULL DEFAULT 0,
+--     propriety_flg BOOLEAN NOT NULL DEFAULT 0
+-- );
 
 CREATE TABLE review(
     id int AUTO_INCREMENT PRIMARY KEY,
@@ -37,8 +60,10 @@ CREATE TABLE review(
     teacher VARCHAR(128) NOT NULL,
     title VARCHAR(32) NOT NULL,
     body VARCHAR(600) NOT NULL,
+    date date,
     check_flg BOOLEAN NOT NULL DEFAULT 0,
-    propriety_flg BOOLEAN NOT NULL DEFAULT 0
+    propriety_flg BOOLEAN NOT NULL DEFAULT 0,
+    comment VARCHAR(300)
 );
 
 CREATE TABLE threads(
@@ -76,12 +101,12 @@ CREATE TABLE teacher_class(
 
 CREATE TABLE class(
     id VARCHAR(4) PRIMARY KEY,
-    dep_id VARCHAR(2),
-    grade VARCHAR(1),
-    class VARCHAR(1)
+    graduation int,
+    dep_id VARCHAR(2)
 );
 
 CREATE TABLE dep(
     id VARCHAR(2) PRIMARY KEY NOT NULL,
-    name VARCHAR(32) NOT NULL
+    name VARCHAR(32) NOT NULL,
+    grade int NOT NULL
 );
