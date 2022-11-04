@@ -1,5 +1,6 @@
 from pymysql import IntegrityError
 from db.db_manager import db_manager
+import datetime
 
 dbmg = db_manager()
 
@@ -29,6 +30,18 @@ for d in dep:
         dbmg.exec_query("insert into dep values(%s,%s,%s)",(d[0],d[1],d[2]))
     except IntegrityError:
         continue
+
+this_year = datetime.date.today().year
+this_year2 = this_year - 2000
+graduation_years = [this_year2 + 1,this_year2 + 2, this_year2 + 3, this_year2 + 4]
+
+for g in graduation_years:
+    for d in dep:  
+        class_id = str(g) + d[0]
+        try:
+            dbmg.exec_query("insert into class values(%s,%s,%s)",(class_id,g,d[0]))
+        except IntegrityError:
+            pass
 
 # dep_ids = dep.keys()
 

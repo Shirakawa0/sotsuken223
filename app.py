@@ -20,24 +20,30 @@ def get_classes():
     dbmg = db_manager()
 
     # プルダウンに表示する学科・学年・組を取得し、配列に格納する
-    dep_ids_dict = dbmg.exec_query("select distinct dep_id from class")
-    grades_dict = dbmg.exec_query("select distinct grade from class")
-    classes_dict = dbmg.exec_query("select distinct class from class")
+    # dep_ids_dict = dbmg.exec_query("select distinct dep_id from class")
+    # grades_dict = dbmg.exec_query("select distinct grade from class")
+    # classes_dict = dbmg.exec_query("select distinct class from class")
 
-    deps = []
-    for dep_ids in dep_ids_dict:
-        dep = dbmg.exec_query("select * from dep where id=%s",dep_ids["dep_id"])
-        deps.append(dep[0])
+    # deps = []
+    # for dep_ids in dep_ids_dict:
+    #     dep = dbmg.exec_query("select * from dep where id=%s",dep_ids["dep_id"])
+    #     deps.append(dep[0])
+    
+    deps = dbmg.exec_query("select * from dep")
+
+    this_year = datetime.date.today().year
+    this_year2 = this_year - 2000
+    graduation_years = [this_year2 + 1,this_year2 + 2, this_year2 + 3, this_year2 + 4]
 
     grades = []
-    for grade in grades_dict:
-        grades.append(grade)
+    # for grade in grades_dict:
+    #     grades.append(grade)
 
     classes = []
-    for Class in classes_dict:
-        classes.append(Class)
+    # for Class in classes_dict:
+    #     classes.append(Class)
 
-    return deps,grades,classes
+    return deps,graduation_years,grades,classes
 
 @app.route("/")
 def u_login_page():
@@ -69,8 +75,8 @@ def u_login():
 
 @app.route("/u_signup")
 def u_signup_page():
-    deps,grades,classes = get_classes()
-    return render_template("u_signup_1.html",deps=deps,grades=grades,classes=classes)
+    deps,years,grades,classes = get_classes()
+    return render_template("u_signup_1.html",deps=deps,years=years,grades=grades,classes=classes)
 
 @app.route("/u_signup",methods=["POST"])
 def u_signup():
@@ -78,17 +84,16 @@ def u_signup():
     pw = request.form.get("pw")
     name = request.form.get("name")
     dep = request.form.get("dep")
-    grade = request.form.get("grade")
-    Class = request.form.get("class") # 区別のためcは大文字
+    graduation = request.form.get("graduation")
 
     # 未入力の項目がある場合
-    if not (id and pw and name and dep and grade and Class):
+    if not (id and pw and name and dep and graduation):
         return redirect(url_for("u_signup_page"))
 
     dbmg = db_manager()
     hash_pw, salt = dbmg.calc_pw_hash(pw)
 
-    class_id = dep + grade + Class
+    class_id = graduation + dep
 
     try:
         dbmg.exec_query("insert into u_account values(%s,%s,%s,%s,%s)",(id,hash_pw,salt,name,class_id))

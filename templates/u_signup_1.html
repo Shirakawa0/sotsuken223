@@ -18,13 +18,12 @@
                 <div class="pull">
                     <div>
                         <p>卒業年</p>
-                        <input type="number" name="graduation">
-                        <!-- <select name="class">
+                        <select name="graduation">
                             <option value="">卒業年を選択</option>
-                            {% for class in classes %}
-                            <option value="{{ class.class }}">{{ class.class }}組</option>
+                            {% for year in years %}
+                            <option value="{{ year }}">{{ year }}卒</option>
                             {% endfor %}
-                        </select> -->
+                        </select>
                     </div>
                     <div>
                         <p>学科</p>
