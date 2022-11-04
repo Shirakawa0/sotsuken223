@@ -43,7 +43,7 @@ def get_classes():
     # for Class in classes_dict:
     #     classes.append(Class)
 
-    return deps,graduation_years,grades,classes
+    return deps,graduation_years
 
 @app.route("/")
 def u_login_page():
@@ -76,7 +76,7 @@ def u_login():
 @app.route("/u_signup")
 def u_signup_page():
     deps,years,grades,classes = get_classes()
-    return render_template("u_signup_1.html",deps=deps,years=years,grades=grades,classes=classes)
+    return render_template("u_signup_1.html",deps=deps,years=years)
 
 @app.route("/u_signup",methods=["POST"])
 def u_signup():
@@ -427,7 +427,7 @@ def forum_contribute():
 @app.route("/u_account")
 def u_account_page():
     deps,grades,classes = get_classes()
-    return render_template("u_account_1.html",deps=deps,grades=grades,classes=classes)
+    return render_template("u_account_1.html",deps=deps)
 
 @app.route("/u_account",methods=["POST"])
 def u_account():
@@ -516,7 +516,7 @@ def a_home_page():
 @app.route("/a_signup")
 def a_signup_page():
     deps,grades,classes = get_classes()
-    return render_template("a_signup_1.html",deps=deps,grades=grades,classes=classes)
+    return render_template("a_signup_1.html",deps=deps)
 
 @app.route("/a_signup",methods=["POST"])
 def a_signup():
@@ -634,7 +634,7 @@ def a_thread_delete():
 def a_account_page():
     id = session["id"]
     deps,grades,classes = get_classes()
-    return render_template("a_account_1.html",id=id,deps=deps,grades=grades,classes=classes)
+    return render_template("a_account_1.html",id=id,deps=deps)
 
 @app.route("/a_account",methods=["POST"])
 def a_account():
@@ -678,14 +678,14 @@ def a_user_account_page():
         name = ""
 
     if request.method == "GET":
-        return render_template("a_user_account_1.html",deps=deps,grades=grades,classes=classes)
+        return render_template("a_user_account_1.html",deps=deps)
 
     if id:
         users = dbmg.exec_query("select u_account.id as id,u_account.name as name,dep.name as dep,grade,class from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where u_account.id = %s",id)
-        return render_template("a_user_account_1.html",deps=deps,grades=grades,classes=classes,users=users)
+        return render_template("a_user_account_1.html",deps=deps,users=users)
     else:
         users = dbmg.exec_query("select u_account.id as id,u_account.name as name,dep.name as dep,grade,class from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where dep.name = %s or class.grade = %s or class.class = %s or u_account.name like %s",(dep,grade,Class,"%" + name + "%"))
-        return render_template("a_user_account_1.html",deps=deps,grades=grades,classes=classes,users=users)
+        return render_template("a_user_account_1.html",deps=deps,users=users)
 
 @app.route("/a_user_account/confirm",methods=["POST"])
 def a_user_account_confirm():
