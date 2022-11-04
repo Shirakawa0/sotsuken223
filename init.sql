@@ -35,7 +35,6 @@ CREATE TABLE practice(
     id int AUTO_INCREMENT PRIMARY KEY,
     teacher VARCHAR(128) NOT NULL,
     date date NOT NULL,
-    time VARCHAR(16) NOT NULL,
     comment VARCHAR(200)
 );
 
