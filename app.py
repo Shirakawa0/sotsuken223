@@ -272,12 +272,17 @@ def u_passed():
 
     return render_template("u_passed_2.html",company=company)
 
-@app.route("/u_men")
+@app.route("/u_men",methods=["GET","POST"])
 def u_men_page():
     dbmg = db_manager()
     teachers = dbmg.exec_query("select id,name from a_account")
 
-    return render_template("u_men_1.html",teachers=teachers)
+    teacher = request.form.get("teacher")
+    date = request.form.get("date")
+
+    search_result = dbmg.exec_query("select * from practice where teacher = %s and date <= %s order by date asc",(teacher,date))
+
+    return render_template("u_men_1.html",teachers=teachers,search_result=search_result)
 
 @app.route("/u_men/confirm",methods=["POST"])
 def u_men_confirm():
