@@ -18,32 +18,13 @@ SESSION_LIFETIME_MINUTES = 30
 ## 学科・学年・組を取得する関数
 def get_classes():
     dbmg = db_manager()
-
-    # プルダウンに表示する学科・学年・組を取得し、配列に格納する
-    # dep_ids_dict = dbmg.exec_query("select distinct dep_id from class")
-    # grades_dict = dbmg.exec_query("select distinct grade from class")
-    # classes_dict = dbmg.exec_query("select distinct class from class")
-
-    # deps = []
-    # for dep_ids in dep_ids_dict:
-    #     dep = dbmg.exec_query("select * from dep where id=%s",dep_ids["dep_id"])
-    #     deps.append(dep[0])
     
     deps = dbmg.exec_query("select * from dep")
 
-    this_year = datetime.date.today().year
-    this_year2 = this_year - 2000
-    graduation_years = [this_year2 + 1,this_year2 + 2, this_year2 + 3, this_year2 + 4]
+    this_year = datetime.date.today().year - 2000
+    grad_years = [this_year + 1,this_year + 2, this_year + 3, this_year + 4]
 
-    grades = []
-    # for grade in grades_dict:
-    #     grades.append(grade)
-
-    classes = []
-    # for Class in classes_dict:
-    #     classes.append(Class)
-
-    return deps,graduation_years
+    return deps,grad_years
 
 @app.route("/")
 def u_login_page():
@@ -75,8 +56,8 @@ def u_login():
 
 @app.route("/u_signup")
 def u_signup_page():
-    deps,years,grades,classes = get_classes()
-    return render_template("u_signup_1.html",deps=deps,years=years)
+    deps,grad_years = get_classes()
+    return render_template("u_signup_1.html",deps=deps,grad_years=grad_years)
 
 @app.route("/u_signup",methods=["POST"])
 def u_signup():
@@ -272,47 +253,70 @@ def u_passed():
 
     return render_template("u_passed_2.html",company=company)
 
-@app.route("/u_men",methods=["GET","POST"])
-def u_men_page():
+@app.route("/u_practice",methods=["GET","POST"])
+def u_practice_page():
+    student = session["id"]
+
     dbmg = db_manager()
+    schedules = dbmg.exec_query("select practice.id as id,name as teacher,date,comment from practice inner join a_account on teacher = a_account.id where practice.id in (select schedule_id from practice_attendance where student=%s) order by date asc",student)
     teachers = dbmg.exec_query("select id,name from a_account")
 
     teacher = request.form.get("teacher")
     date = request.form.get("date")
 
-    search_result = dbmg.exec_query("select * from practice where teacher = %s and date <= %s order by date asc",(teacher,date))
+    if request.method == "GET":
+        return render_template("u_practice_home.html",teachers=teachers,schedules=schedules)
+    
+    if teacher:
+        if date:
+            search_result = dbmg.exec_query("select * from practice where teacher = %s and date <= %s and id not in (select schedule_id from practice_attendance where student=%s) order by date asc",(teacher,date,student))
+        else:
+            search_result = dbmg.exec_query("select * from practice where teacher = %s and id not in (select schedule_id from practice_attendance where student=%s) order by date asc",(teacher,student))
+    else:
+        if date:
+            search_result = dbmg.exec_query("select * from practice where date <= %s and id not in (select schedule_id from practice_attendance where student=%s) order by date asc",(date,student))
+        else:
+            search_result = dbmg.exec_query("select * from practice where id not in (select schedule_id from practice_attendance where student=%s) order by date asc",student)
 
-    return render_template("u_men_1.html",teachers=teachers,search_result=search_result)
+    return render_template("u_practice_home.html",teachers=teachers,search_result=search_result,schedules=schedules)
 
-@app.route("/u_men/confirm",methods=["POST"])
-def u_men_confirm():
-    id = request.form.get("id")
+@app.route("/u_practice/confirm",methods=["GET","POST"])
+def u_practice_confirm():
+    id = request.args.get("id")
 
     dbmg = db_manager()
-    teacher = dbmg.exec_query("select name from a_account where id=%s",id)
 
-    practice = {
-        "id":id,
-        "name":teacher[0]["name"],
-        "date":request.form.get("date"),
-        "time":request.form.get("time")
-    }
+    practice = dbmg.exec_query("select practice.id,name as teacher,date,comment from practice inner join a_account on teacher = a_account.id where practice.id=%s",id)
 
-    return render_template("u_men_2.html",practice=practice)
+    return render_template("u_practice_1.html",practice=practice[0])
 
-@app.route("/u_men/done",methods=["POST"])
-def u_men():
-    practice = (
-        session["id"],
-        request.form.get("id"),
-        request.form.get("date"),
-        request.form.get("time")
-    )
-    
+@app.route("/u_practice/done")
+def u_practice():
+    id = request.args.get("id")
+    student = session["id"]
+
     dbmg = db_manager()
-    dbmg.exec_query("insert into practice(student,teacher,date,time) values(%s,%s,%s,%s)",practice)
+    dbmg.exec_query("insert into practice_attendance values(%s,%s)",(id,student))
     
-    return render_template("u_men_3.html")
+    return render_template("u_practice_2.html")
+
+@app.route("/u_practice/detail")
+def u_practice_detail():
+    practice_id = request.args.get("id")
+
+    dbmg = db_manager()
+    practice = dbmg.exec_query("select practice.id as id,name as teacher,date,comment from practice inner join a_account on teacher=a_account.id where practice.id=%s",practice_id)
+    
+    return render_template("u_practice_detail.html",practice=practice[0])
+
+@app.route("/u_practice/cancel")
+def u_practice_cancel():
+    practice_id = request.args.get("id")
+
+    dbmg = db_manager()
+    dbmg.exec_query("delete from practice_attendance where schedule_id=%s",practice_id)
+
+    return render_template("u_practice_canceled.html")
 
 @app.route("/u_check")
 def u_check_page():
@@ -431,19 +435,18 @@ def forum_contribute():
 
 @app.route("/u_account")
 def u_account_page():
-    deps,grades,classes = get_classes()
-    return render_template("u_account_1.html",deps=deps)
+    deps,grad_years = get_classes()
+    return render_template("u_account_1.html",deps=deps,grad_years=grad_years)
 
 @app.route("/u_account",methods=["POST"])
 def u_account():
     id = session["id"]
     pw = request.form.get("pw")
     name = request.form.get("name")
+    grad_year = request.form.get("grad_year")
     dep = request.form.get("dep")
-    grade = request.form.get("grade")
-    Class = request.form.get("class") # 区別のためcは大文字
 
-    class_id = dep + grade + Class
+    class_id = grad_year + dep
 
     dbmg = db_manager()
     hash_pw, salt = dbmg.calc_pw_hash(pw)
@@ -521,26 +524,24 @@ def a_home_page():
 
 @app.route("/a_signup")
 def a_signup_page():
-    deps,grades,classes = get_classes()
-    return render_template("a_signup_1.html",deps=deps)
+    deps,grad_years = get_classes()
+    return render_template("a_signup_1.html",deps=deps,grad_years=grad_years)
 
 @app.route("/a_signup",methods=["POST"])
 def a_signup():
     id = request.form.get("id")
     pw = request.form.get("pw")
     name = request.form.get("name")
+    grad_year1 = request.form.get("grad_year1")
     dep1 = request.form.get("dep1")
-    grade1 = request.form.get("grade1")
-    class1 = request.form.get("class1") 
+    grad_year2 = request.form.get("grad_year2")
     dep2 = request.form.get("dep2")
-    grade2 = request.form.get("grade2")
-    class2 = request.form.get("class2") 
 
     dbmg = db_manager()
     hash_pw, salt = dbmg.calc_pw_hash(pw)
 
-    class_id1 = dep1 + grade1 + class1
-    class_id2 = dep2 + grade2 + class2
+    class_id1 = grad_year1 + dep1
+    class_id2 = grad_year2 + dep2
 
     dbmg.exec_query("insert into a_account(id,hash_pw,salt,name) values(%s,%s,%s,%s)",(id,hash_pw,salt,name))
     dbmg.exec_query("insert into teacher_class values(%s,%s)",(id,class_id1))
@@ -583,8 +584,8 @@ def a_forum_page():
 
     return render_template("a_forum.html",threads=threads)
 
-@app.route("/a_men")
-def a_men_page():
+@app.route("/a_practice")
+def a_practice_page():
     teacher = session["id"]
 
     dbmg = db_manager()
@@ -613,6 +614,20 @@ def a_practice_3():
     dbmg.exec_query("insert into practice(teacher,date,comment) values(%s,%s,%s)",(teacher,date,comment))
 
     return render_template("a_practice_3.html")
+
+@app.route("/a_practice/detail",methods=["GET","POST"])
+def a_practice_detail():
+    id = request.args.get("id")
+
+    dbmg = db_manager()
+
+    if request.method == "POST":
+        comment = request.form.get("comment")
+        dbmg.exec_query("update practice set comment=%s where id=%s",(comment,id))
+
+    practice = dbmg.exec_query("select * from practice where id=%s",id)
+
+    return render_template("a_practice_detail.html",practice=practice[0])
 
 @app.route("/a_check_all")
 def a_check_page():
@@ -662,23 +677,21 @@ def a_thread_delete():
 @app.route("/a_account")
 def a_account_page():
     id = session["id"]
-    deps,grades,classes = get_classes()
-    return render_template("a_account_1.html",id=id,deps=deps)
+    deps,grad_years = get_classes()
+    return render_template("a_account_1.html",id=id,deps=deps,grad_years=grad_years)
 
 @app.route("/a_account",methods=["POST"])
 def a_account():
     id = session["id"]
     pw = request.form.get("pw")
     name = request.form.get("name")
+    grad_year1 = request.form.get("grad_year1")
     dep1 = request.form.get("dep1")
-    grade1 = request.form.get("grade1")
-    Class1 = request.form.get("class1") # 区別のためcは大文字
+    grad_year2 = request.form.get("grad_year2")
     dep2 = request.form.get("dep2")
-    grade2 = request.form.get("grade2")
-    Class2 = request.form.get("class2") # 区別のためcは大文字
 
-    class_id1 = dep1 + grade1 + Class1
-    class_id2 = dep2 + grade2 + Class2
+    class_id1 = grad_year1 + dep1
+    class_id2 = grad_year2 + dep2
 
     dbmg = db_manager()
     hash_pw, salt = dbmg.calc_pw_hash(pw)
@@ -692,38 +705,42 @@ def a_account():
 
     return render_template("a_account_3.html")
 
-@app.route("/a_user_account/search",methods=["get","POST"])
+@app.route("/a_user_account/search",methods=["GET","POST"])
 def a_user_account_page():
     dbmg = db_manager()
 
-    deps,grades,classes = get_classes()
+    deps,grad_years = get_classes()
     
     id = request.form.get("id")
+    grad_year = request.form.get("grad_year")
     dep = request.form.get("dep")
-    grade = request.form.get("grade")
-    Class = request.form.get("class")
     name = request.form.get("name")
-    if not name:
-        name = ""
+
+    # DBで検索するために変形
+    if grad_year != None:
+        grad_year = grad_year + "%"
+    if dep != None:
+        dep = "%" + dep
+    if name != None:
+        name = "%" + name + "%"
 
     if request.method == "GET":
-        return render_template("a_user_account_1.html",deps=deps)
+        return render_template("a_user_account_1.html",deps=deps,grad_years=grad_years)
 
     if id:
-        users = dbmg.exec_query("select u_account.id as id,u_account.name as name,dep.name as dep,grade,class from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where u_account.id = %s",id)
-        return render_template("a_user_account_1.html",deps=deps,users=users)
+        users = dbmg.exec_query("select u_account.id as id,u_account.name as name,dep.name as dep from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where u_account.id = %s",id)
     else:
-        users = dbmg.exec_query("select u_account.id as id,u_account.name as name,dep.name as dep,grade,class from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where dep.name = %s or class.grade = %s or class.class = %s or u_account.name like %s",(dep,grade,Class,"%" + name + "%"))
-        return render_template("a_user_account_1.html",deps=deps,users=users)
+        users = dbmg.exec_query("select u_account.id as id,u_account.name as name,graduation as grad_year,dep.name as dep from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where class_id like %s and class_id like %s and dep.name like %s",(grad_year,dep,name))
+
+    return render_template("a_user_account_1.html",deps=deps,users=users)
 
 @app.route("/a_user_account/confirm",methods=["POST"])
 def a_user_account_confirm():
     user = {
         "id":request.form.get("id"),
         "name":request.form.get("name"),
-        "dep":request.form.get("dep"),
-        "grade":request.form.get("grade"),
-        "class":request.form.get("class")
+        "grad_year":request.form.get("grad_year"),
+        "dep":request.form.get("dep")
     }
     return render_template("a_user_account_2.html",user=user)
 

@@ -1,0 +1,19 @@
+{% extends "template.html" %}
+
+{% block content %}
+<div id="u_practice_detail" class="input_display">
+    <div class="content">
+        <h1 class="title">面接練習詳細</h1>
+        <p>先生</p>
+        <div>{{ practice.teacher }}</div>
+        <p>日付</p>
+        <div>{{ practice.date }}</div>
+        <p>コメント</p>
+        <div>{{ practice.comment }}</div>
+
+        <div class="buttons">
+            <a href="{{ url_for('u_practice_cancel',id=practice.id) }}" class="btn btn-outline-primary">キャンセルする</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
