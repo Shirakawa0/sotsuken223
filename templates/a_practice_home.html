@@ -2,14 +2,19 @@
 
 {% block content %}
 
-<a href="{{ url_for('a_practice_1') }}">日程追加</a>
-{% for schedule in schedules %}
-<div class="btn btn-light box">
-    <a href="" class="links">
-        <div>{{ schedule.date }}</div>
-        <div class="text_over">{{ schedule.comment }}</div>
-    </a>
+<div id="a_practice_home" class="input_display">
+    <div class="content">
+        <h1 class="title">面接練習</h1>
+        <a href="{{ url_for('a_practice_1') }}" class="btn btn-outline-primary">日程追加</a>
+        {% for schedule in schedules %}
+        <div class="btn btn-light box">
+            <a href="{{ url_for('a_practice_detail',id=schedule.id) }}" class="links">
+                <div>{{ schedule.date }}</div>
+                <div class="text_over">{{ schedule.comment }}</div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
 </div>
-{% endfor %}
 
 {% endblock %}

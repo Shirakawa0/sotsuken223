@@ -1,11 +1,23 @@
 {% extends "template.html" %}
 {% block content %}
 
-<div id="u_men_1" class="input_display">
+<div id="u_practice_home" class="input_display">
     <div class="content">
         <h1 class="title">参加予定の面接練習</h1>
+        {% if not schedules %}
+        <p>ありません。</p>
+        {% endif %}
+        {% for schedule in schedules %}
+        <div>
+            <a href="{{ url_for('u_practice_detail',id=schedule.id) }}">
+                <div>{{ schedule.teacher }}</div>
+                <div>{{ schedule.date }}</div>
+                <div>{{ schedule.comment }}</div>
+            </a>
+        </div>
+        {% endfor %}
         <h1 class="title">面接練習検索</h1>
-        <form action="{{ url_for('u_men_page') }}" method="post">
+        <form action="{{ url_for('u_practice_page') }}" method="post">
             <select name="teacher">
                 <option value="">先生を選択</option>
                 {% for teacher in teachers %}
@@ -17,7 +29,7 @@
         </form>
         {% for result in search_result %}
         <div>
-            <a href="">
+            <a href="{{ url_for('u_practice_confirm',id=result.id) }}">
                 <div>{{ result.date }}</div>
                 <div>{{ result.comment }}</div>
             </a>

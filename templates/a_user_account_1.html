@@ -13,25 +13,19 @@
 </form>
 <br>
 <form action="{{ url_for('a_user_account_page') }}" method="post">
+    卒業年
+    <select name="grad_year">
+        <option value="">卒業年を選択</option>
+        {% for grad_year in grad_years %}
+        <option value="{{ grad_year }}">{{ grad_year }}卒</option>
+        {% endfor %}
+    </select>
+    <br>
     学科
     <select name="dep">
         <option value="">学科を選択</option>
         {% for dep in deps %}
         <option value="{{ dep.id }}">{{ dep.name }}</option>
-        {% endfor %}
-    </select>
-    <br>
-    学年・組
-    <select name="grade">
-        <option value="">学年を選択</option>
-        {% for grade in grades %}
-        <option value="{{ grade.grade }}">{{ grade.grade }}年</option>
-        {% endfor %}
-    </select>
-    <select name="class">
-        <option value="">組を選択</option>
-        {% for class in classes %}
-        <option value="{{ class.class }}">{{ class.class }}組</option>
         {% endfor %}
     </select>
     <br>
@@ -43,14 +37,13 @@
 <div>
     {{ user.id }}
     {{ user.name }}
+    {{ user.grad_year }}卒
     {{ user.dep }}
-    {{ user.grade + "年" + user.class + "組" }}
     <form action="{{ url_for('a_user_account_confirm') }}" method="post">
         <input type="hidden" name="id" value="{{ user.id }}">
         <input type="hidden" name="name" value="{{ user.name }}">
+        <input type="hidden" name="grad_year" value="{{ user.grad_year }}">
         <input type="hidden" name="dep" value="{{ user.dep }}">
-        <input type="hidden" name="grade" value="{{ user.grade }}">
-        <input type="hidden" name="class" value="{{ user.class }}">
         <input type="submit" value="削除">
     </form>
 </div>
