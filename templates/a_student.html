@@ -3,7 +3,7 @@
 <a href="{{ url_for('a_all_page') }}">
     <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
 </a>
-<h1>{{ student.dep + student.grade + "年" + student.class + "組" + student.name }}</h1>
+<h1>{{ student.grad_year + "卒" + " " + student.dep + " " + student.name }}</h1>
 <h1>選考中の企業</h1>
 {% for schedule in schedules %}
 <div>
