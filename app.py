@@ -660,6 +660,10 @@ def a_check():
     dbmg = db_manager()
     sql = "select a.id as id,b.name as name,a.title as title,a.check_flg as check_flg,a.date as date,a.body as body,a.comment as comment from review a,u_account b where a.student=b.id and a.id=%s"
     result = dbmg.exec_query(sql,(id))
+    print(result)
+    if result[0]["check_flg"]==0:
+        sql = "update review set check_flg=1 where id=%s"
+        dbmg.exec_query(sql,(id))
     print(result[0])
     return render_template("a_check.html",result=result)
 

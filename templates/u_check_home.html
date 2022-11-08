@@ -6,18 +6,24 @@
             <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
         </a>
         <h1 class="title">文章チェック</h1>
+        <a href="{{ url_for('u_check_page') }}" class="btn btn-outline-primary m-3">文章チェックを依頼</a>
         {% for check in check%}
         <div class=" btn btn-light box">
             <a href="{{url_for('u_check_eva',id=check.id)}}" class="links">
                 <div class="text_over">{{ check.date }}</div>
                 <div class="text_over">{{ check.title }}</div>
                 <div class="text_over">{{ check.name }}</div>
-                <div class="text_over">{{ check.check_flg }}</div>
+                <div class="text_over">
+                    {% if check.check_flg==0 %}
+                        コメント待ち
+                    {% else %}
+                        <span style="color: blue;">コメントが来ています</span>
+                    {% endif %}
+                </div>
             </a> 
         </div>
         {% endfor %}
 
-        <a href="{{ url_for('u_check_page') }}" class="btn btn-outline-primary">文章チェックを依頼</a>
     </div>
 </div>
 {% endblock %}

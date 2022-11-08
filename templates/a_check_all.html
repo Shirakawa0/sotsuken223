@@ -12,7 +12,13 @@
                 <div class="text_over">{{ check.date }}</div>
                 <div class="text_over">{{ check.title }}</div>
                 <div class="text_over">{{ check.name }}</div>
-                <div class="text_over">{{ check.check_flg }}</div>
+                <div class="text_over">
+                    {% if check.check_flg==0 %}
+                        <span style="color:blue ;">未読</span>
+                    {% else %}
+                        既読
+                    {% endif %}
+                </div>
             </a> 
         </div>
         {% endfor %}
