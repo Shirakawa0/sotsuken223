@@ -19,7 +19,8 @@
             </div>
 
             <div class="buttons">
-                <a href="{{ url_for('u_practice_cancel',id=practice.id) }}" class="btn btn-outline-primary">キャンセルする</a>
+                <a href="{{ url_for('u_practice_page') }}" class="btn btn-outline-primary">戻る</a>
+                <a href="{{ url_for('u_practice_cancel',id=practice.id) }}" class="btn btn-outline-secondary">キャンセルする</a>
             </div>
         </div>
     </div>

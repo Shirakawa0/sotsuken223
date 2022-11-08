@@ -576,6 +576,9 @@
     margin: 10px 0;
 }
 
+#a_practice_home .content{
+    margin-bottom: 50px;
+}
 
 #a_practice_detail .content{
     width: 60%;
@@ -613,4 +616,78 @@
 #a_practice_detail .comment textarea{
     width: 100%;
     margin-top: 5px;
+}
+
+#u_practice_1 .content{
+    width: 60%;
+    margin: auto;
+}
+
+#u_practice_1 .row_noborder{
+    margin: 15px 0;
+    width: 100%;
+    display: flex;
+    background-color: #fafafa;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#u_practice_1 .label{
+    width: 25%;
+    text-align: left;
+}
+
+#u_practice_1 .value{
+    width: 75%;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+#a_practice_1 form{
+    width: 60%;
+    margin: auto;
+    margin-top: 50px;
+}
+
+#a_practice_1 .content{
+    width: 60%;
+}
+
+#a_practice_1 .row_input{
+    display: flex;
+    margin: 20px 0;
+}
+
+#a_practice_1 .label{
+    width: 25%;
+    text-align: left;
+}
+
+#a_practice_1 .value{
+    width: 75%;
+}
+
+#a_practice_2 .content{
+    width: 60%;
+    margin: auto;
+}
+
+#a_practice_2 .row_noborder{
+    margin: 15px 0;
+    width: 100%;
+    display: flex;
+    background-color: #fafafa;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#a_practice_2 .label{
+    width: 25%;
+    text-align: left;
+}
+
+#a_practice_2 .value{
+    width: 75%;
+    text-align: left;
+    word-wrap: break-word;
 }

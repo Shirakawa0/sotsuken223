@@ -3,6 +3,9 @@
 {% block content %}
 
 <div id="a_practice_home" class="input_display">
+    <a href="{{ url_for('a_home_page') }}">
+        <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
+    </a>
     <div class="home_content content">
         <h1 class="title">面接練習</h1>
         <a href="{{ url_for('a_practice_1') }}" class="btn btn-outline-primary">日程追加</a>

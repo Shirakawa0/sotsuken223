@@ -2,6 +2,9 @@
 {% block content %}
 
 <div id="u_practice_home" class="input_display">
+    <a href="{{ url_for('u_home_page') }}">
+        <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
+    </a>
     <div class="content home_content">
         <h1 class="title">参加予定の面接練習</h1>
         {% if not schedules %}
