@@ -9,7 +9,7 @@
 <form action="{{ url_for('a_all_page') }}">
     <select name="class_id">
         {% for class in classes %}
-        <option value="{{ class.class_id }}">{{ class.name + class.grade + "年" + class.class + "組" }}</option>
+        <option value="{{ class.class_id }}">{{ class.grad_year + "卒" + class.dep }}</option>
         {% endfor %}
         <input type="submit" value="検索">
     </select>
@@ -17,7 +17,7 @@
 <h1>選考中の学生</h1>
 {% for schedule in schedules %}
 <a href="{{ url_for('a_student_page',id = schedule.id) }}">
-    {{ classes[0].name + classes[0].grade + "年" + classes[0].class + "組　" + schedule.name + "　" + schedule.num + "社受検中" }}
+    {{ schedule.name + "　" + schedule.num + "社受検中" }}
 </a>
 {% endfor %}
 <h1>選考終了済みの学生</h1>
