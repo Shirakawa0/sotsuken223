@@ -265,7 +265,7 @@ def u_practice_page():
     date = request.form.get("date")
 
     if request.method == "GET":
-        return render_template("u_practice_home.html",teachers=teachers,schedules=schedules)
+        return render_template("u_practice_home.html",teachers=teachers,schedules=schedules,method="get")
     
     if teacher:
         if date:

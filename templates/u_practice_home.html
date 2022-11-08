@@ -2,14 +2,14 @@
 {% block content %}
 
 <div id="u_practice_home" class="input_display">
-    <div class="content">
+    <div class="content home_content">
         <h1 class="title">参加予定の面接練習</h1>
         {% if not schedules %}
         <p>ありません。</p>
         {% endif %}
         {% for schedule in schedules %}
-        <div>
-            <a href="{{ url_for('u_practice_detail',id=schedule.id) }}">
+        <div class="btn btn-light box">
+            <a href="{{ url_for('u_practice_detail',id=schedule.id) }}" class="links">
                 <div>{{ schedule.teacher }}</div>
                 <div>{{ schedule.date }}</div>
                 <div>{{ schedule.comment }}</div>
@@ -25,11 +25,14 @@
                 {% endfor %}
             </select>
             <input type="date" name="date">
-            <input type="submit" value="検索">
+            <input type="submit" value="検索" class="btn btn-outline-primary btn-sm">
         </form>
+        {% if not search_result and method != "get" %}
+        <p>ありません。</p>
+        {% endif %}
         {% for result in search_result %}
-        <div>
-            <a href="{{ url_for('u_practice_confirm',id=result.id) }}">
+        <div class="btn btn-light box">
+            <a href="{{ url_for('u_practice_confirm',id=result.id) }}" class="links">
                 <div>{{ result.date }}</div>
                 <div>{{ result.comment }}</div>
             </a>

@@ -2,17 +2,25 @@
 
 {% block content %}
 <div id="u_practice_detail" class="input_display">
-    <div class="content">
+    <div class="home_content content">
         <h1 class="title">面接練習詳細</h1>
-        <p>先生</p>
-        <div>{{ practice.teacher }}</div>
-        <p>日付</p>
-        <div>{{ practice.date }}</div>
-        <p>コメント</p>
-        <div>{{ practice.comment }}</div>
+        <div class="content">
+            <div class="row_noborder">
+                <div class="label">先生</div>
+                <div class="value">{{ practice.teacher }}</div>
+            </div>
+            <div class="row_noborder">
+                <div class="label">日付</div>
+                <div class="value">{{ practice.date }}</div>
+            </div>
+            <div class="row_noborder">
+                <div class="label">コメント</div>
+                <div class="value">{{ practice.comment }}</div>
+            </div>
 
-        <div class="buttons">
-            <a href="{{ url_for('u_practice_cancel',id=practice.id) }}" class="btn btn-outline-primary">キャンセルする</a>
+            <div class="buttons">
+                <a href="{{ url_for('u_practice_cancel',id=practice.id) }}" class="btn btn-outline-primary">キャンセルする</a>
+            </div>
         </div>
     </div>
 </div>
