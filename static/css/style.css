@@ -534,3 +534,83 @@
     font-weight: 450;
     margin: 30px 0 10px 0;
 }
+
+#u_practice_home form{
+    margin: 20px 0;
+}
+
+#u_practice_home .home_content{
+    margin-bottom: 50px;
+}
+
+#u_practice_home .title{
+    margin-bottom: 20px;
+}
+
+#u_practice_detail .content{
+    width: 60%;
+    margin: auto;
+}
+
+#u_practice_detail .row_noborder{
+    margin: 15px 0;
+    width: 100%;
+    display: flex;
+    background-color: #fafafa;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#u_practice_detail .label{
+    width: 25%;
+    text-align: left;
+}
+
+#u_practice_detail .value{
+    width: 75%;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+#a_practice_home .btn{
+    margin: 10px 0;
+}
+
+
+#a_practice_detail .content{
+    width: 60%;
+    margin: auto;
+}
+
+#a_practice_detail .row_noborder{
+    margin: 15px 0;
+    width: 100%;
+    display: flex;
+    background-color: #fafafa;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#a_practice_detail .label{
+    width: 25%;
+    text-align: left;
+}
+
+#a_practice_detail .value{
+    width: 75%;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+#a_practice_detail .comment{
+    background-color: #fafafa;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: left;
+    margin-top: 20px;
+}
+
+#a_practice_detail .comment textarea{
+    width: 100%;
+    margin-top: 5px;
+}
