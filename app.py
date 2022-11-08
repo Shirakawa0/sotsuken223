@@ -3,28 +3,28 @@ import datetime
 import random, string
 from pymysql import IntegrityError
 from db.db_manager import db_manager
-#from plyer import notification
+# from plyer import notification
 
 app = Flask(__name__)
 app.secret_key = "".join(random.choices(string.ascii_letters, k=256))
 
-# 定数
+# 定数 --------------------------------------------------------------------------
 
-## セッションの有効期限（単位：分）
 SESSION_LIFETIME_MINUTES = 30
 
-# 関数
+# 関数 --------------------------------------------------------------------------
 
-## 学科・学年・組を取得する関数
 def get_classes():
     dbmg = db_manager()
-    
-    deps = dbmg.exec_query("select * from dep")
 
     this_year = datetime.date.today().year - 2000
     grad_years = [this_year + 1,this_year + 2, this_year + 3, this_year + 4]
+    
+    deps = dbmg.exec_query("select * from dep")
 
-    return deps,grad_years
+    return grad_years,deps
+
+# 利用者の処理 ---------------------------------------------------------
 
 @app.route("/")
 def u_login_page():
@@ -32,58 +32,106 @@ def u_login_page():
 
 @app.route("/",methods=["POST"])
 def u_login():
+    dbmg = db_manager()
+
     id = request.form.get("id")
     pw = request.form.get("pw")
     
-    dbmg = db_manager()
-    user = dbmg.exec_query("select * from u_account where id=%s",id)
+    account = dbmg.exec_query("select * from u_account where id=%s",id)
 
     # 入力された id が存在しない場合
-    if len(user) == 0:
+    if len(account) == 0:
         return redirect("/")
 
-    hash_pw,_ = dbmg.calc_pw_hash(pw,user[0]["salt"])
+    hash_pw,_ = dbmg.calc_pw_hash(pw,account[0]["salt"])
 
-    if hash_pw == user[0]["hash_pw"]:
-        session["id"] = user[0]["id"]
-        # sessionの有効期限を設定
+    if hash_pw == account[0]["hash_pw"]:
+        session["id"] = account[0]["id"]
         session.permanent = True
         app.permanent_session_lifetime = datetime.timedelta(minutes=SESSION_LIFETIME_MINUTES)
-        return redirect("/home")
+        return redirect("/u_home")
     else:
-        return redirect("/") 
-
+        return redirect("/")
 
 @app.route("/u_signup")
 def u_signup_page():
-    deps,grad_years = get_classes()
-    return render_template("u_signup_1.html",deps=deps,grad_years=grad_years)
+    grad_years,deps = get_classes()
+    return render_template("u_signup_1.html",grad_years=grad_years,deps=deps)
 
-@app.route("/u_signup",methods=["POST"])
-def u_signup():
+@app.route("/u_signup/confirm",methods=["POST"])
+def u_signup_confirm():
+    dbmg = db_manager()
+
     id = request.form.get("id")
     pw = request.form.get("pw")
     name = request.form.get("name")
-    dep = request.form.get("dep")
-    graduation = request.form.get("graduation")
+    grad_year = request.form.get("grad_year")
+    dep_id = request.form.get("dep")
 
     # 未入力の項目がある場合
-    if not (id and pw and name and dep and graduation):
+    if not (id and pw and name and grad_year and dep_id):
         return redirect(url_for("u_signup_page"))
 
-    dbmg = db_manager()
-    hash_pw, salt = dbmg.calc_pw_hash(pw)
+    # id の入力チェック
+    ## 既に使われている場合
+    id_check = dbmg.exec_query("select * from u_account where id=%s",id)
+    if len(id_check) != 0:
+        return redirect(url_for("u_signup_page"))
+    
+    ## 文字数が7文字でない場合
+    if len(id) != 7:
+        return redirect(url_for("u_signup_page"))
 
-    class_id = graduation + dep
-
+    ## 学籍番号が文字列の場合
     try:
-        dbmg.exec_query("insert into u_account values(%s,%s,%s,%s,%s)",(id,hash_pw,salt,name,class_id))
-    except IntegrityError:
+        int(id)
+    except ValueError:
         return redirect(url_for("u_signup_page"))
+
+    ## 学籍番号が不正な場合
+    if int(id) < 1000000:
+        return redirect(url_for("u_signup_page"))
+
+    # pw の入力チェック
+    ## 文字数が不正な場合
+    if len(pw) < 8 or len(pw) > 20:
+        return redirect(url_for("u_signup_page"))
+
+    # name の入力チェック
+    ## 文字数が不正な場合
+    if len(name) > 16:
+        return redirect(url_for("u_signup_page"))
+
+    dep = dbmg.exec_query("select * from dep where id=%s",dep_id)[0]
+
+    account = {
+        "id":id,
+        "pw":pw,
+        "name":name,
+        "grad_year":grad_year,
+        "dep":dep
+    }
+
+    return render_template("u_signup_2.html",account=account)
+
+@app.route("/u_signup/done",methods=["POST"])
+def u_signup():
+    dbmg = db_manager()
+
+    id = request.form.get("id")
+    pw = request.form.get("pw")
+    name = request.form.get("name")
+    grad_year = request.form.get("grad_year")
+    dep_id = request.form.get("dep")
+
+    hash_pw,salt = dbmg.calc_pw_hash(pw)
+    class_id = grad_year + dep_id
+
+    dbmg.exec_query("insert into u_account values(%s,%s,%s,%s,%s)",(id,hash_pw,salt,name,class_id))
 
     return render_template("u_signup_3.html")
 
-@app.route("/home")
+@app.route("/u_home")
 def u_home_page():
     if "id" not in session:
         return redirect("/")
@@ -387,71 +435,9 @@ def u_forum_page():
 
     return render_template("u_forum.html",threads=threads)
 
-@app.route("/forum_build")
-def forum_build_page():
-    user = request.args.get("user")
-    return render_template("forum_build.html",user=user)
-
-@app.route("/forum_build/done")
-def forum_build():
-    id = session["id"]
-    date_time = datetime.datetime.now()
-    title = request.args.get("title")
-    body = request.args.get("body")
-    user = request.args.get("user")
-
-    dbmg = db_manager()
-    name = dbmg.exec_query("select name from u_account where id = %s",id)
-    if name:
-        name = name[0]["name"]
-    else:
-        name = dbmg.exec_query("select name from a_account where id = %s",id)
-        name = name[0]["name"]
-    dbmg.exec_query("insert into threads(title,author_id,author,last_contributer_id,last_contributer,last_update) values(%s,%s,%s,%s,%s,%s)",(title,id,name,id,name,date_time))
-    
-    thread_id = dbmg.exec_query("select id from threads where author_id=%s order by last_update desc limit 1",id)
-    thread_id = thread_id[0]["id"]
-
-    dbmg.exec_query("insert into comments(thread_id,contributer_id,contributer,date_time,body) values(%s,%s,%s,%s,%s)",(thread_id,id,name,date_time,body))
-
-    return redirect(url_for("forum_brows",thread_id=thread_id,user=user))
-
-@app.route("/forum_brows")
-def forum_brows():
-    thread_id = request.args.get("thread_id")
-    user = request.args.get("user")
-
-    dbmg = db_manager()
-    thread = dbmg.exec_query("select * from threads where id = %s",thread_id)
-    # sql修正必要
-    comments = dbmg.exec_query("select * from comments where thread_id = %s",thread_id)
-
-    return render_template("forum_brows.html",thread=thread[0],comments=comments,user=user)
-
-@app.route("/forum_contribute")
-def forum_contribute():
-    id = session["id"]
-    thread_id = request.args.get("thread_id")
-    user = request.args.get("user")
-    body = request.args.get("body")
-    date_time = datetime.datetime.now()
-
-    # commentsテーブルのcontributerをcontributer_idに変更、contributer_nameを追加する必要がある
-    dbmg = db_manager()
-    name = dbmg.exec_query("select name from u_account where id = %s",id)
-    if name:
-        name = name[0]["name"]
-    else:
-        name = dbmg.exec_query("select name from a_account where id = %s",id)
-        name = name[0]["name"]
-    dbmg.exec_query("insert into comments(thread_id,contributer_id,contributer,date_time,body) values(%s,%s,%s,%s,%s)",(thread_id,id,name,date_time,body))
-    dbmg.exec_query("update threads set last_contributer_id = %s,last_contributer = %s where id = %s",(id,name,thread_id))
-
-    return redirect(url_for("forum_brows",thread_id=thread_id,user=user))
-
 @app.route("/u_account")
 def u_account_page():
-    deps,grad_years = get_classes()
+    grad_years,deps = get_classes()
     return render_template("u_account_1.html",deps=deps,grad_years=grad_years)
 
 @app.route("/u_account",methods=["POST"])
@@ -472,12 +458,7 @@ def u_account():
 
     return render_template("u_account_3.html")
 
-@app.route("/logout")
-def logout():
-    if "id" in session:
-        session.pop("id",None)   # セッションを空にする
-    
-    return redirect("/")
+# 管理者の処理 -------------------------------------------------------------------
 
 @app.route("/a_login")
 def a_login_page():
@@ -540,7 +521,7 @@ def a_home_page():
 
 @app.route("/a_signup")
 def a_signup_page():
-    deps,grad_years = get_classes()
+    grad_years,deps = get_classes()
     return render_template("a_signup_1.html",deps=deps,grad_years=grad_years)
 
 @app.route("/a_signup",methods=["POST"])
@@ -705,7 +686,7 @@ def a_thread_delete():
 @app.route("/a_account")
 def a_account_page():
     id = session["id"]
-    deps,grad_years = get_classes()
+    grad_years,deps = get_classes()
     return render_template("a_account_1.html",id=id,deps=deps,grad_years=grad_years)
 
 @app.route("/a_account",methods=["POST"])
@@ -737,7 +718,7 @@ def a_account():
 def a_user_account_page():
     dbmg = db_manager()
 
-    deps,grad_years = get_classes()
+    grad_years,deps = get_classes()
     
     id = request.form.get("id")
     grad_year = request.form.get("grad_year")
@@ -780,6 +761,79 @@ def a_user_account_done():
     dbmg.exec_query("delete from u_account where id = %s",id)
 
     return render_template("a_user_account_3.html")
+
+# 利用者・管理者で共通の処理 ------------------------------------------------------
+
+@app.route("/logout")
+def logout():
+    if "id" in session:
+        session.pop("id",None)   # セッションを空にする
+    
+    return redirect("/")
+
+@app.route("/forum_build")
+def forum_build_page():
+    user = request.args.get("user")
+    return render_template("forum_build.html",user=user)
+
+@app.route("/forum_build/done")
+def forum_build():
+    id = session["id"]
+    date_time = datetime.datetime.now()
+    title = request.args.get("title")
+    body = request.args.get("body")
+    user = request.args.get("user")
+
+    dbmg = db_manager()
+    name = dbmg.exec_query("select name from u_account where id = %s",id)
+    if name:
+        name = name[0]["name"]
+    else:
+        name = dbmg.exec_query("select name from a_account where id = %s",id)
+        name = name[0]["name"]
+    dbmg.exec_query("insert into threads(title,author_id,author,last_contributer_id,last_contributer,last_update) values(%s,%s,%s,%s,%s,%s)",(title,id,name,id,name,date_time))
+    
+    thread_id = dbmg.exec_query("select id from threads where author_id=%s order by last_update desc limit 1",id)
+    thread_id = thread_id[0]["id"]
+
+    dbmg.exec_query("insert into comments(thread_id,contributer_id,contributer,date_time,body) values(%s,%s,%s,%s,%s)",(thread_id,id,name,date_time,body))
+
+    return redirect(url_for("forum_brows",thread_id=thread_id,user=user))
+
+@app.route("/forum_brows")
+def forum_brows():
+    thread_id = request.args.get("thread_id")
+    user = request.args.get("user")
+
+    dbmg = db_manager()
+    thread = dbmg.exec_query("select * from threads where id = %s",thread_id)
+    # sql修正必要
+    comments = dbmg.exec_query("select * from comments where thread_id = %s",thread_id)
+
+    return render_template("forum_brows.html",thread=thread[0],comments=comments,user=user)
+
+@app.route("/forum_contribute")
+def forum_contribute():
+    id = session["id"]
+    thread_id = request.args.get("thread_id")
+    user = request.args.get("user")
+    body = request.args.get("body")
+    date_time = datetime.datetime.now()
+
+    # commentsテーブルのcontributerをcontributer_idに変更、contributer_nameを追加する必要がある
+    dbmg = db_manager()
+    name = dbmg.exec_query("select name from u_account where id = %s",id)
+    if name:
+        name = name[0]["name"]
+    else:
+        name = dbmg.exec_query("select name from a_account where id = %s",id)
+        name = name[0]["name"]
+    dbmg.exec_query("insert into comments(thread_id,contributer_id,contributer,date_time,body) values(%s,%s,%s,%s,%s)",(thread_id,id,name,date_time,body))
+    dbmg.exec_query("update threads set last_contributer_id = %s,last_contributer = %s where id = %s",(id,name,thread_id))
+
+    return redirect(url_for("forum_brows",thread_id=thread_id,user=user))
+
+# -------------------------------------------------------------------------------
 
 if __name__ == "__main__":
     app.run(debug=True)

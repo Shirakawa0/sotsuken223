@@ -1,21 +1,27 @@
-{% extends "template2.html" %}
+{% extends "temp_login.html" %}
+
 {% block content %}
 <div id="u_login" class="login">
-    <div class="login_content">
-        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="就活帳" class="logo">
+    <div class="content_area">
+        <img src="{{ url_for('static',filename='img/logo.png') }}" alt="JBRecruit" class="logo">
         <h3 class="title">利用者ログイン</h3>
-        <form action="{{ url_for('u_login') }}" method="post">
-            <div class="input">
-                <p>学籍番号</p>
-                <input type="number" name="id">
-                <p>パスワード</p>
-                <input type="password" name="pw">
+        <div class="content">
+            <form action="{{ url_for('u_login') }}" method="post">
+                <div class="row_input">
+                    <p class="label">学籍番号</p>
+                    <input type="text" name="id" class="value">
+                </div>
+                <div class="row_input">
+                    <p class="label">パスワード</p>
+                    <input type="password" name="pw" class="value">
+                </div>
+                <input type="submit" value="ログイン" class="btn btn-primary btn_wide">
+            </form>
+    
+            <div class="link_area">
+                <a href="{{ url_for('u_signup_page') }}">新規登録はこちら</a>
+                <a href="{{ url_for('a_login_page') }}">管理者ログイン</a>
             </div>
-            <input type="submit" value="ログイン" class="btn btn-outline-primary">
-        </form>
-        <div class="links">
-            <a href="{{ url_for('u_signup_page') }}">新規登録はこちら</a>
-            <a href="{{ url_for('a_login_page') }}">管理者ログイン</a>
         </div>
     </div>
 </div>
