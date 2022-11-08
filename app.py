@@ -314,6 +314,20 @@ def u_men():
     
     return render_template("u_men_3.html")
 
+@app.route("/u_check_home")
+def u_check_home():
+    id = session["id"]
+    dbmg = db_manager()
+    check = dbmg.exec_query("select a.id as id,b.name as name,a.title as title,a.check_flg as check_flg,a.date as date from review a,a_account b where a.teacher=b.id and a.student=%s",id)
+    return render_template("u_check_home.html",check=check)
+
+@app.route("/u_check_eva")
+def u_check_eva():
+    id = request.args.get("id")
+    dbmg = db_manager()
+    check = dbmg.exec_query("select a.id as id,b.name as name,a.title as title,a.check_flg as check_flg,a.date as date,a.body as body,a.comment as comment from review a,a_account b where a.teacher=b.id and a.id=%s",id)
+    return render_template("u_check_eva.html",check=check)
+
 @app.route("/u_check")
 def u_check_page():
     dbmg = db_manager()
@@ -330,6 +344,7 @@ def u_check_confirm():
 
     check = {
         "id":id,
+        "date":request.form.get("date"),
         "name":teacher[0]["name"],
         "title":request.form.get("title"),
         "body":request.form.get("body")
@@ -343,11 +358,12 @@ def u_check():
         session["id"],
         request.form.get("id"),
         request.form.get("title"),
-        request.form.get("body")
+        request.form.get("body"),
+        request.form.get("date")
     )
 
     dbmg = db_manager()
-    dbmg.exec_query("insert into review(student,teacher,title,body) values(%s,%s,%s,%s)",check)
+    dbmg.exec_query("insert into review(student,teacher,title,body,date) values(%s,%s,%s,%s,%s)",check)
 
     return render_template("u_check_3.html")
 
@@ -618,7 +634,7 @@ def a_practice_3():
 def a_check_page():
     id = session["id"]
     dbmg = db_manager()
-    sql = "select a.id as id,d.name as dep,c.grade as grade,c.class as class,b.name as name,a.title as title from review a,u_account b,class c,dep d where a.student = b.id and b.class_id = c.id and c.dep_id = d.id and teacher = %s and check_flg = 0"
+    sql = "select a.id as id,b.name as name,a.title as title,a.check_flg as check_flg,a.date as date from review a,u_account b where a.student=b.id and a.teacher=%s"
     result = dbmg.exec_query(sql,(id))
     return render_template("a_check_all.html",result=result)
 
@@ -627,10 +643,21 @@ def a_check():
     id = request.args.get("id")
     print(id)
     dbmg = db_manager()
-    sql = "select a.id as id,d.name as dep,c.grade as grade,c.class as class,b.name as name,a.title as title,a.body as body from review a,u_account b,class c,dep d where a.student = b.id and b.class_id = c.id and c.dep_id = d.id and a.id = %s"
+    sql = "select a.id as id,b.name as name,a.title as title,a.check_flg as check_flg,a.date as date,a.body as body,a.comment as comment from review a,u_account b where a.student=b.id and a.id=%s"
     result = dbmg.exec_query(sql,(id))
     print(result[0])
-    return render_template("a_check.html",result=result[0])
+    return render_template("a_check.html",result=result)
+
+@app.route("/a_check_comment",methods=["POST"])
+def a_check_comment():
+    comment = request.form.get("comment")
+    id = request.form.get("id")
+    dbmg = db_manager()
+    sql = "update review set comment=%s where id=%s"
+    dbmg.exec_query(sql,(comment,id))
+    sql = "select a.id as id,b.name as name,a.title as title,a.check_flg as check_flg,a.date as date,a.body as body,a.comment as comment from review a,u_account b where a.student=b.id and a.id=%s"
+    result = dbmg.exec_query(sql,(id))
+    return render_template("a_check.html",result=result)
 
 @app.route("/a_check_flg")
 def a_check_flg():

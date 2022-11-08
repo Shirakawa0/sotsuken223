@@ -16,6 +16,10 @@
                     </select>
                 </div>
                 <div class="row">
+                    <div class="label">提出日</div>
+                    <input type="date" name="date" class="input">
+                </div>
+                <div class="row">
                     <div class="label">タイトル</div>
                     <input type="text" name="title" class="input">
                 </div>
@@ -24,7 +28,7 @@
                     <textarea name="body" cols="30" rows="10" class="input"></textarea>
                 </div>
                 <div class="buttons">
-                    <a href="{{ url_for('u_home_page') }}" class="btn btn-outline-secondary">戻る</a>
+                    <a href="{{ url_for('u_check_home') }}" class="btn btn-outline-secondary">戻る</a>
                     <input type="submit" value="次へ進む" class="btn btn-outline-primary">
                 </div>
             </form>
