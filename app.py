@@ -1,9 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask,render_template,request,redirect,url_for,session
 import datetime
-import random, string
-from pymysql import IntegrityError
+import random,string
 from db.db_manager import db_manager
-# from plyer import notification
 
 app = Flask(__name__)
 app.secret_key = "".join(random.choices(string.ascii_letters, k=256))
