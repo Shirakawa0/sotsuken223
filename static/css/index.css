@@ -1,0 +1,166 @@
+@charset "utf-8";
+
+/* 全体に共通する部分 ------------------------------------  */
+
+.row_input{
+    display: flex;
+    width: 100%;
+}
+
+.row_input *{
+    margin: 0;
+    padding: 0;
+}
+
+.row_input .label{
+    width: 25%;
+    text-align: left;
+}
+
+.row_input .value{
+    width: 75%;
+    padding-left: 5px;
+}
+
+.row_confirm{
+    display: flex;
+    width: 100%;
+    border-bottom: 1px black solid;
+}
+
+.row_confirm *{
+    margin: 0;
+    padding: 0;
+}
+
+.row_confirm .label{
+    width: 50%;
+    text-align: left;
+}
+
+.row_confirm .value{
+    width: 50%;
+    text-align: left;
+}
+
+/* ログイン系の画面に共通する部分 --------------------------- */
+
+.login{
+    background: #f0f0f0;
+    height: 100vh;
+}
+
+.login .content_area{
+    background: white;
+    width: 500px;
+    height: 100%;
+    margin: auto;
+    text-align: center;
+}
+
+.login .content{
+    width: 60%;
+    margin: auto;
+}
+
+.login .logo{
+    height: 80px;
+    margin: 30px 0;
+}
+
+.login .title{
+    margin-bottom: 20px;
+    font-size: x-large;
+    font-weight: 450;
+}
+
+.login .btn_wide{
+    width: 100%;
+}
+
+.login .link_area{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+/* 画面ごと ----------------------------------------------- */
+
+#u_login .title{
+    margin-bottom: 70px;
+}
+
+#u_login .row_input{
+    margin-bottom: 20px;
+}
+
+#u_login .btn_wide{
+    margin: 20px 0;
+}
+
+#u_login .link_area{
+    margin-top: 50px;
+}
+
+#u_signup_1 .title{
+    margin-bottom: 30px;
+}
+
+#u_signup_1 .row_input{
+    margin-bottom: 20px;
+}
+
+#u_signup_1 .btn_wide{
+    margin-top: 10px;
+}
+
+#u_signup_1 .link_area{
+    margin-top: 40px;
+}
+
+#u_signup_2 .title{
+    margin-bottom: 30px;
+}
+
+#u_signup_2 .row_confirm{
+    margin-bottom: 22px;
+}
+
+#u_signup_2 .btn_wide{
+    margin-top: 10px;
+}
+
+#u_signup_2 .link_area{
+    margin-top: 40px;
+}
+
+#u_signup_3 .content{
+    margin-top: 90px;
+}
+
+#u_signup_3 .content p{
+    font-size: x-large;
+    margin-bottom: 30px;
+}
+
+#a_login .title{
+    margin-bottom: 70px;
+}
+
+#a_login .row_input{
+    margin-bottom: 20px;
+}
+
+#a_login .btn_wide{
+    margin: 20px 0;
+}
+
+#a_login .link_area{
+    margin-top: 50px;
+}
+
+/* その他 ------------------------------------------------- */
+
+.logo_header{
+    height: 40px;
+}

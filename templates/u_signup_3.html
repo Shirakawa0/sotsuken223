@@ -1,10 +1,11 @@
-{% extends "template2.html" %}
+{% extends "temp_login.html" %}
+
 {% block content %}
 <div id="u_signup_3" class="login">
-    <div class="login_content">
-        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="就活帳" class="logo">
-        <div class="sign_content">
-            <h3>登録が完了しました</h3>
+    <div class="content_area">
+        <img src="{{ url_for('static',filename='img/logo.png') }}" alt="JBRecruit" class="logo">
+        <div class="content">
+            <p>登録が完了しました</p>
             <a href="{{ url_for('u_login_page') }}" class="btn btn-outline-primary">ログインへ進む</a>
         </div>
     </div>
