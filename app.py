@@ -433,6 +433,18 @@ def u_forum_page():
 
     return render_template("u_forum.html",threads=threads)
 
+@app.route("/u_forum_search",methods=["POST"])
+def u_forum_search():
+    word = str(request.form.get("word"))
+    dbmg = db_manager()
+    threads = dbmg.exec_query("select * from threads where title like %s order by last_update desc",'%'+word+'%')
+
+    for thread in threads:
+        comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
+        thread["comment_num"] = comment_num[0]["num"]
+
+    return render_template("u_forum.html",threads=threads)
+
 @app.route("/u_account")
 def u_account_page():
     grad_years,deps = get_classes()
@@ -573,6 +585,18 @@ def a_student_page():
 def a_forum_page():
     dbmg = db_manager()
     threads = dbmg.exec_query("select * from threads order by last_update desc")
+
+    for thread in threads:
+        comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
+        thread["comment_num"] = comment_num[0]["num"]
+
+    return render_template("a_forum.html",threads=threads)
+
+@app.route("/a_forum_search",methods=["POST"])
+def a_forum_search():
+    word = str(request.form.get("word"))
+    dbmg = db_manager()
+    threads = dbmg.exec_query("select * from threads where title like %s order by last_update desc",'%'+word+'%')
 
     for thread in threads:
         comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
