@@ -522,7 +522,48 @@ def a_signup_page():
     grad_years,deps = get_classes()
     return render_template("a_signup_1.html",deps=deps,grad_years=grad_years)
 
-@app.route("/a_signup",methods=["POST"])
+@app.route("/a_signup/confirm",methods=["POST"])
+def a_signup_confirm():
+    dbmg = db_manager()
+
+    id = request.form.get("id")
+    pw = request.form.get("pw")
+    name = request.form.get("name")
+    grad_year1 = request.form.get("grad_year1")
+    dep1 = request.form.get("dep1")
+    grad_year2 = request.form.get("grad_year2")
+    dep2 = request.form.get("dep2")
+
+    # 未入力の項目がある場合
+    if not (pw and name and grad_year1 and dep1):
+        return redirect(url_for("a_account_page"))
+
+    # pw の入力チェック
+    ## 文字数が不正な場合
+    if len(pw) < 8 or len(pw) > 20:
+        return redirect(url_for("a_account_page"))
+
+    # name の入力チェック
+    ## 文字数が不正な場合
+    if len(name) > 16:
+        return redirect(url_for("a_account_page"))
+
+    dep1 = dbmg.exec_query("select * from dep where id=%s",dep1)[0]
+    dep2 = dbmg.exec_query("select * from dep where id=%s",dep2)[0]
+
+    account = {
+        "id":id,
+        "pw":pw,
+        "name":name,
+        "grad_year1":grad_year1,
+        "dep1":dep1,
+        "grad_year2":grad_year2,
+        "dep2":dep2
+    }
+
+    return render_template("a_signup_2.html",account=account)
+
+@app.route("/a_signup/done",methods=["POST"])
 def a_signup():
     id = request.form.get("id")
     pw = request.form.get("pw")
@@ -687,7 +728,48 @@ def a_account_page():
     grad_years,deps = get_classes()
     return render_template("a_account_1.html",id=id,deps=deps,grad_years=grad_years)
 
-@app.route("/a_account",methods=["POST"])
+@app.route("/a_account/confirm",methods=["POST"])
+def a_account_confirm():
+    dbmg = db_manager()
+
+    id = session["id"]
+    pw = request.form.get("pw")
+    name = request.form.get("name")
+    grad_year1 = request.form.get("grad_year1")
+    dep1 = request.form.get("dep1")
+    grad_year2 = request.form.get("grad_year2")
+    dep2 = request.form.get("dep2")
+
+    # 未入力の項目がある場合
+    if not (pw and name and grad_year1 and dep1):
+        return redirect(url_for("a_account_page"))
+
+    # pw の入力チェック
+    ## 文字数が不正な場合
+    if len(pw) < 8 or len(pw) > 20:
+        return redirect(url_for("a_account_page"))
+
+    # name の入力チェック
+    ## 文字数が不正な場合
+    if len(name) > 16:
+        return redirect(url_for("a_account_page"))
+
+    dep1 = dbmg.exec_query("select * from dep where id=%s",dep1)[0]
+    dep2 = dbmg.exec_query("select * from dep where id=%s",dep2)[0]
+
+    account = {
+        "id":id,
+        "pw":pw,
+        "name":name,
+        "grad_year1":grad_year1,
+        "dep1":dep1,
+        "grad_year2":grad_year2,
+        "dep2":dep2
+    }
+
+    return render_template("a_account_2.html",account=account)
+
+@app.route("/a_account/done",methods=["POST"])
 def a_account():
     id = session["id"]
     pw = request.form.get("pw")
@@ -735,11 +817,11 @@ def a_user_account_page():
         return render_template("a_user_account_1.html",deps=deps,grad_years=grad_years)
 
     if id:
-        users = dbmg.exec_query("select u_account.id as id,u_account.name as name,dep.name as dep from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where u_account.id = %s",id)
+        users = dbmg.exec_query("select u_account.id as id,u_account.name as name,graduation as grad_year,dep.name as dep from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where u_account.id = %s",id)
     else:
         users = dbmg.exec_query("select u_account.id as id,u_account.name as name,graduation as grad_year,dep.name as dep from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where class_id like %s and class_id like %s and dep.name like %s",(grad_year,dep,name))
 
-    return render_template("a_user_account_1.html",deps=deps,users=users)
+    return render_template("a_user_account_1.html",deps=deps,grad_years=grad_years,users=users)
 
 @app.route("/a_user_account/confirm",methods=["POST"])
 def a_user_account_confirm():
