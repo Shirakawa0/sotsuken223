@@ -790,3 +790,9 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+
+#a_all h3{
+    font-size: large;
+    border: none;
+}

@@ -1,6 +1,9 @@
 {% extends "template3.html" %}
 {% block content %}
 <div id="u_check_eva" class="input_display">
+    <a href="{{ url_for('a_check_page') }}">
+        <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
+    </a>
     <div class="content wide">
         <div class="confirm_area">
             {% for check in result %}
@@ -30,7 +33,6 @@
                 </form>
             {% endfor %}
         </div>
-        <a href="{{ url_for('a_check_page') }}" class="btn btn-outline-primary">戻る</a>
     </div>
 </div>
 

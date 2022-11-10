@@ -9,6 +9,11 @@
         <p style="text-align:left">就活者同士の雑談や1人ではわからない問題を解決する場として設置しています。<br>コミュニティとして活用してください</p>
         <a href="{{ url_for('forum_build_page',user='user') }}" class="btn btn-outline-primary m-4">新規スレッド作成</a>
         
+        <form action="{{ url_for('u_forum_search') }}" method="post" class="mb-3">
+            <input type="text" name="word" placeholder="スレッド名を入力">
+            <input type="submit" value="検索" class="">
+        </form>
+
         {% for thread in threads %}
         <div class="btn btn-light box">
             <a href="{{ url_for('forum_brows',thread_id=thread.id,user='user') }}" class="links forum">
