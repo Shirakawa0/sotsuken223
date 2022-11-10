@@ -14,9 +14,9 @@
                 <div class="text_over">{{ check.title }}</div>
                 <div class="text_over">{{ check.name }}</div>
                 <div class="text_over">
-                    {% if check.check_flg==0 %}
+                    {% if check.check_flg=="0" %}
                         コメント待ち
-                    {% else %}
+                    {% elif check.check_flg=="1" %}
                         <span style="color: blue;">コメントが来ています</span>
                     {% endif %}
                 </div>

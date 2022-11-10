@@ -1,24 +1,37 @@
 {% extends "template3.html" %}
 {% block content %}
-<a href="{{ url_for('a_home_page') }}">
-    <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
-</a>
-<br>
-<h1>就活状況一覧</h1>
-<!-- formはJavaScriptで制御予定（送信ボタンなしで表示を変更したい） -->
-<form action="{{ url_for('a_all_page') }}">
-    <select name="class_id">
-        {% for class in classes %}
-        <option value="{{ class.class_id }}">{{ class.grad_year + "卒" + class.dep }}</option>
-        {% endfor %}
-        <input type="submit" value="検索">
-    </select>
-</form>
-<h1>選考中の学生</h1>
-{% for schedule in schedules %}
-<a href="{{ url_for('a_student_page',id = schedule.id) }}">
-    {{ schedule.name + "　" + schedule.num + "社受検中" }}
-</a>
-{% endfor %}
-<h1>選考終了済みの学生</h1>
+<div id="a_all" class="home">
+    <div class="home_content">
+        <a href="{{ url_for('a_home_page') }}">
+            <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
+        </a>
+        <br>
+        <h1 class="title">就活状況一覧</h1>
+        <!-- formはJavaScriptで制御予定（送信ボタンなしで表示を変更したい） -->
+        <form action="{{ url_for('a_all_page') }}">
+            <select name="class_id">
+                {% for class in classes %}
+                <option value="{{ class.class_id }}">{{ class.grad_year + "卒" + class.dep }}</option>
+                {% endfor %}
+                <input type="submit" value="検索">
+            </select>
+        </form>
+        <div class="search_content">
+            <h3 class="title">選考中の学生</h3>
+            <div class="scrollArea">
+                {% for schedule in schedules %}
+                <div class=" btn btn-light box">
+                    <a href="{{ url_for('a_student_page',id = schedule.id) }}" class="links">
+                        <div>{{ schedule.name }}</div>
+                        <div>{{ schedule.num }}社受検中</div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        
+        <h3 class="title">選考終了済みの学生</h3>
+    </div>
+</div>
 {% endblock %}

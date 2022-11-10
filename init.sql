@@ -61,7 +61,7 @@ CREATE TABLE review(
     title VARCHAR(32) NOT NULL,
     body VARCHAR(600) NOT NULL,
     date date,
-    check_flg BOOLEAN NOT NULL DEFAULT 0,
+    check_flg CHAR NOT NULL DEFAULT 0,
     propriety_flg BOOLEAN NOT NULL DEFAULT 0,
     comment VARCHAR(300)
 );

@@ -585,9 +585,10 @@ def a_student_page():
 
     dbmg = db_manager()
     student = dbmg.exec_query("select u_account.id as id,u_account.name as name,cast(graduation as char) as grad_year,dep.name as dep from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where u_account.id=%s",id)
-    schedules = dbmg.exec_query("select * from schedule as s1 where id = %s and s1.date_time = (select max(s2.date_time) from schedule as s2 where s1.company = s2.company group by s2.company) order by date_time asc",id)
-
-    return render_template("a_student.html",student=student[0],schedules=schedules)
+    schedules = dbmg.exec_query("select * from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company group by company) and finished_flg = 0 and passed_flg = 0 order by date_time asc;",id)
+    passed = dbmg.exec_query("select company from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company group by company) and passed_flg = 1 order by date_time asc;",id)
+    finished = dbmg.exec_query("select company from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company group by company) and finished_flg = 1 order by date_time asc;",id)
+    return render_template("a_student.html",student=student[0],schedules=schedules,passed=passed,finished=finished)
 
 @app.route("/a_forum")
 def a_forum_page():
@@ -669,7 +670,7 @@ def a_check_comment():
     dbmg = db_manager()
     sql = "update review set comment=%s where id=%s"
     dbmg.exec_query(sql,(comment,id))
-    sql = "update review set check_flg=1 where id=%s"
+    sql = "update review set check_flg='1' where id=%s"
     dbmg.exec_query(sql,(id))
     sql = "select a.id as id,b.name as name,a.title as title,a.check_flg as check_flg,a.date as date,a.body as body,a.comment as comment from review a,u_account b where a.student=b.id and a.id=%s"
     result = dbmg.exec_query(sql,(id))

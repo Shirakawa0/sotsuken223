@@ -691,3 +691,8 @@
     text-align: left;
     word-wrap: break-word;
 }
+
+#a_all h3{
+    font-size: large;
+    border: none;
+}

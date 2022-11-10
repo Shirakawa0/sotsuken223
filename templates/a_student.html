@@ -1,19 +1,41 @@
 {% extends "template3.html" %}
 {% block content %}
-<a href="{{ url_for('a_all_page') }}">
-    <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
-</a>
-<h1>{{ student.grad_year + "卒" + " " + student.dep + " " + student.name }}</h1>
-<h1>選考中の企業</h1>
-{% for schedule in schedules %}
-<div>
-    {{ schedule.company }}
-    {{ schedule.step }}
-    {{ schedule.detail }}
-    {{ schedule.date_time }}
+<div id="u_home" class="home">
+    
+    <div class="home_content">
+        <a href="{{ url_for('a_all_page') }}">
+            <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
+        </a>
+        <h3>{{ student.grad_year + "卒" + " " + student.dep + " " + student.name }}</h3>
+
+        <h1 class="title">選考中の企業</h1>
+        {% for schedule in schedules %}
+        <div class=" btn btn-light box">
+            <div class="links btn btn-light">
+                <div>{{ schedule.company }}</div>
+                <div>{{ schedule.step }}</div>
+                <div>{{ schedule.detail }}</div>
+                <div>{{ schedule.date_time }}</div>
+            </div>
+        </div>
+        {% endfor %}
+        <details>
+            <summary style=" list-style: none;"><h1 class="title">内定済みの企業</h1></summary>
+            {% for pass in passed %}
+            <div class="non_link links_ns">
+                {{ pass.company }}
+            </div>
+            {% endfor %}
+        </details>
+        
+        <details>
+            <summary style=" list-style: none;"><h1 class="title">選考終了済みの企業</h1></summary>
+            {% for fin in finished %}
+            <div class="non_link links_ns">
+                {{ fin.company }}
+            </div>
+            {% endfor %}
+        </details>
+    </div>
 </div>
-<br>
-{% endfor %}
-<h1>内定済みの企業</h1>
-<h1>選考終了済みの企業</h1>
 {% endblock %}
