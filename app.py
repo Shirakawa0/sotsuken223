@@ -640,6 +640,7 @@ def a_user_account_page():
     Class = request.form.get("class")
     name = request.form.get("name")
     if not name:
+
         name = ""
 
     if request.method == "GET":
