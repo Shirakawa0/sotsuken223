@@ -77,8 +77,10 @@ def u_signup_confirm():
         return redirect(url_for("u_signup_page"))
     
     ## 文字数が7文字でない場合
+    
     if len(id) != 7:
         return redirect(url_for("u_signup_page"))
+    
 
     ## 学籍番号が文字列の場合
     try:
@@ -89,11 +91,15 @@ def u_signup_confirm():
     ## 学籍番号が不正な場合
     if int(id) < 1000000:
         return redirect(url_for("u_signup_page"))
+    
+    
 
-    # pw の入力チェック
+    # pw の入力チェックS
     ## 文字数が不正な場合
     if len(pw) < 8 or len(pw) > 20:
         return redirect(url_for("u_signup_page"))
+    
+   
 
     # name の入力チェック
     ## 文字数が不正な場合
@@ -527,8 +533,14 @@ def a_home_page():
     #文章チェック
     sql = "select student,title from review where teacher = %s and check_flg = 0"
     reviews = dbmg.exec_query(sql,(id))
-    return render_template("a_home.html",schedules=schedules,practices=practices,reviews=reviews)
-
+    #内定未内定
+    sql = "select count(distinct b.id) as cnt from u_account a,schedule b where a.id = b.id and b.passed_flg = 1"
+    passed = dbmg.exec_query(sql)
+    print(passed)
+    sql = "select count(*) as cnt from u_account"
+    sum = dbmg.exec_query(sql)
+    return render_template("a_home.html",schedules=schedules,practices=practices,reviews=reviews,passed=passed,sum=sum)
+    
 @app.route("/a_all")
 def a_all_page():
     id = session["id"]
