@@ -77,10 +77,8 @@ def u_signup_confirm():
         return redirect(url_for("u_signup_page"))
     
     ## 文字数が7文字でない場合
-    
     if len(id) != 7:
         return redirect(url_for("u_signup_page"))
-    
 
     ## 学籍番号が文字列の場合
     try:
@@ -91,15 +89,11 @@ def u_signup_confirm():
     ## 学籍番号が不正な場合
     if int(id) < 1000000:
         return redirect(url_for("u_signup_page"))
-    
-    
 
     # pw の入力チェックS
     ## 文字数が不正な場合
     if len(pw) < 8 or len(pw) > 20:
         return redirect(url_for("u_signup_page"))
-    
-   
 
     # name の入力チェック
     ## 文字数が不正な場合
