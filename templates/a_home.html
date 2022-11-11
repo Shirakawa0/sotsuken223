@@ -41,6 +41,12 @@
         </div>
         
         <div>
+            {% for passed in passed %}
+                <input type="hidden" id="pass" value="{{ passed.cnt }}">
+            {% endfor %}
+            {% for sum in sum %}
+                <input type="hidden" id="sum" value="{{ sum.cnt }}">
+            {% endfor %}
             <h1 class="title">内定率</h1>
             <div style="position:relative; width:250px; height:250px;">
                 <canvas id="myChart" style="position: relative; height:150; width:150"></canvas>
@@ -67,17 +73,19 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+        let pass = document.getElementById("pass")
+        let sum = document.getElementById("sum")
+        no_pass = sum.value - pass.value
         new Chart(document.getElementById("myChart"), {
             type: "doughnut",
             data: {
-                labels: ["A", "B", "C"],
+                labels: ["内定", "未内定"],
                 datasets: [
                     {
-                        data: [300, 50, 100],
+                        data: [pass.value, no_pass],
                         backgroundColor: [
-                            "rgb(255, 99, 132)",
                             "rgb(54, 162, 235)",
-                            "rgb(255, 205, 86)"
+                            "rgb(255, 99, 132)"
                         ]
                     }
                 ]
