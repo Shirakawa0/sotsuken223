@@ -1,15 +1,16 @@
-{% extends "template3.html" %}
+{% extends "template.html" %}
 {% block content %}
 <div id="u_check_eva" class="input_display">
-    <a href="{{ url_for('a_check_page') }}">
+    <a href="{{ url_for('u_check_home') }}">
         <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
     </a>
     <div class="content wide">
+        <h1 class="title">文章チェック</h1>
         <div class="confirm_area">
-            {% for check in result %}
+            {% for check in check %}
                 <div class="row">
-                    <div class="label">生徒名</div>
-                    <div class="input">{{ check.name }}</div>
+                    <div class="label">依頼先</div>
+                    <div class="input">{{ check.name }}先生</div>
                 </div>
                 <div class="row">
                     <div class="label">提出期限</div>
@@ -23,17 +24,12 @@
                     <div class="label">本文</div>
                     <textarea name="body" cols="30" rows="10" class="input" readonly>{{ check.body }}</textarea>
                 </div>
-                <form action="{{ url_for('a_check_comment') }}" method="post">
-                    <div class="block">
-                        <div class="label">コメント</div>
-                        <textarea name="comment" cols="30" rows="10" class="input">{{ check.comment }}</textarea>
-                    </div>
-                    <input type="hidden" name="id" value="{{ check.id }}">
-                    <input type="submit" value="コメントする" class="btn btn-outline-primary">
-                </form>
+                <div class="block">
+                    <div class="label">コメント</div>
+                    <textarea name="body" cols="30" rows="10" class="input" readonly>{{ check.comment }}</textarea>
+                </div>
             {% endfor %}
         </div>
     </div>
 </div>
-
 {% endblock %}

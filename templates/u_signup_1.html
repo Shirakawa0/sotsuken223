@@ -1,53 +1,48 @@
-{% extends "template2.html" %}
+{% extends "temp_login.html" %}
+
 {% block content %}
 <div id="u_signup_1" class="login">
-    <div class="login_content">
-        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="就活帳" class="logo">
-        <h3>利用者アカウント新規登録</h3>
-        <form action="{{ url_for('u_signup') }}" method="post">
-            <div class="input">
-                <p>学籍番号</p>
-                <input type="number" name="id">
-                <br>
-                <p>パスワード</p>
-                <input type="password" name="pw">
-                <br>
-                <p>名前</p>
-                <input type="text" name="name">
-                <br>
-                <div class="pull">
-                    <div class="dep">
-                        <p>学科</p>
-                        <select name="dep">
-                            <option value="">学科を選択</option>
-                            {% for dep in deps %}
-                            <option value="{{ dep.id }}">{{ dep.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="grade">
-                        <p>学年</p>
-                        <select name="grade">
-                            <option value="">学年を選択</option>
-                            {% for grade in grades %}
-                            <option value="{{ grade.grade }}">{{ grade.grade }}年</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="class">
-                        <p>組</p>
-                        <select name="class">
-                            <option value="">組を選択</option>
-                            {% for class in classes %}
-                            <option value="{{ class.class }}">{{ class.class }}組</option>
-                            {% endfor %}
-                        </select>
-                    </div>
+    <div class="content_area">
+        <img src="{{ url_for('static',filename='img/logo.png') }}" alt="JBRecruit" class="logo">
+        <h3 class="title">利用者アカウント新規登録</h3>
+        <div class="content input">
+            <form action="{{ url_for('u_signup_confirm') }}" method="post">
+                <div class="row_input">
+                    <p class="label">学籍番号</p>
+                    <input type="text" name="id" class="value">
                 </div>
-            </div>
-            <input type="submit" value="次へ進む" class="btn btn-outline-primary">
-        </form>
-        <a href="{{ url_for('u_login_page') }}">ログインはこちら</a>
+                <div class="row_input">
+                    <p class="label">パスワード</p>
+                    <input type="password" name="pw" class="value">
+                </div>
+                <div class="row_input">
+                    <p class="label">名前</p>
+                    <input type="text" name="name" class="value">
+                </div>
+                <div class="row_input">
+                    <p class="label">卒業年</p>
+                    <select name="grad_year" class="value">
+                        <option value="">卒業年を選択</option>
+                        {% for grad_year in grad_years %}
+                        <option value="{{ grad_year }}">{{ grad_year }}卒</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="row_input">
+                    <p class="label">学科・組</p>
+                    <select name="dep" class="value">
+                        <option value="">学科・組を選択</option>
+                        {% for dep in deps %}
+                        <option value="{{ dep.id }}">{{ dep.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <input type="submit" value="確認画面へ進む" class="btn btn-primary btn_wide">
+                <div class="link_area">
+                    <a href="{{ url_for('u_login_page') }}">ログインはこちら</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}

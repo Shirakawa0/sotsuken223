@@ -1,28 +1,29 @@
-{% extends "template3.html" %}
+{% extends "template.html" %}
 {% block content %}
 <div id="u_check_home" class="home">
     <div class="home_content">
-        <a href="{{ url_for('a_home_page') }}">
+        <a href="{{ url_for('u_home_page') }}">
             <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
         </a>
         <h1 class="title">文章チェック</h1>
-        {% for check in result %}
+        <a href="{{ url_for('u_check_page') }}" class="btn btn-outline-primary m-3">文章チェックを依頼</a>
+        {% for check in check%}
         <div class=" btn btn-light box">
-            <a href="{{url_for('a_check',id=check.id)}}" class="links">
+            <a href="{{url_for('u_check_eva',id=check.id)}}" class="links">
                 <div class="text_over">{{ check.date }}</div>
                 <div class="text_over">{{ check.title }}</div>
                 <div class="text_over">{{ check.name }}</div>
                 <div class="text_over">
                     {% if check.check_flg=="0" %}
-                        <span style="color:blue ;">コメント未入力</span>
-                    {% else %}
-                        コメント済
+                        コメント待ち
+                    {% elif check.check_flg=="1" %}
+                        <span style="color: blue;">コメントが来ています</span>
                     {% endif %}
                 </div>
             </a> 
         </div>
         {% endfor %}
+
     </div>
 </div>
-
 {% endblock %}

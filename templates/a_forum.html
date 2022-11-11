@@ -8,19 +8,24 @@
         <h1 class="title">スレッド一覧</h1><br>
         <p style="text-align:left">管理者は新規スレッド作成、スレッドのコメント、スレッドの削除ができます。</p>
         <a href="{{ url_for('forum_build_page',user='admin') }}" class="btn btn-outline-primary m-4">新規スレッド作成</a>
+        
+        <form action="{{ url_for('a_forum_search') }}" method="post" class="mb-3">
+            <input type="text" name="word" placeholder="スレッド名を入力">
+            <input type="submit" value="検索" class="">
+        </form>
+        
         {% for thread in threads %}
         <div class="btn btn-light box">
             <a href="{{ url_for('forum_brows',thread_id=thread.id,user='admin') }}" class="links forum">
-                    <div class="sub text_over">
-                        最終更新：{{ thread.last_update }}
-                        投稿数：{{ thread.comment_num }}
-                        作成者：{{ thread.author }}
-                        最終投稿者：{{ thread.last_contributer }}
-                    </div>
-                    <div class="main text_over">{{ thread.title }}</div>
+                <div class="sub text_over">
+                    <p class="last_update">最終更新：{{ thread.last_update }}</p>
+                    <p class="comment_num">投稿数：{{ thread.comment_num }}</p>
+                    <p class="author">作成者：{{ thread.author }}</p>
+                    <p class="last_contributer">最終投稿者：{{ thread.last_contributer }}</p>
+                </div>
+                <div class="main text_over">{{ thread.title }}</div>
             </a>
         </div>
-        <a href="{{ url_for('a_thread_page',id=thread.id)}}" class="btn btn-outline-primary">削除</a>
         {% endfor %}
     </div>
 </div>

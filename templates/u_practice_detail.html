@@ -1,0 +1,28 @@
+{% extends "template.html" %}
+
+{% block content %}
+<div id="u_practice_detail" class="input_display">
+    <div class="home_content content">
+        <h1 class="title">面接練習詳細</h1>
+        <div class="content">
+            <div class="row_noborder">
+                <div class="label">先生</div>
+                <div class="value">{{ practice.teacher }}</div>
+            </div>
+            <div class="row_noborder">
+                <div class="label">日付</div>
+                <div class="value">{{ practice.date }}</div>
+            </div>
+            <div class="row_noborder">
+                <div class="label">コメント</div>
+                <div class="value">{{ practice.comment }}</div>
+            </div>
+
+            <div class="buttons">
+                <a href="{{ url_for('u_practice_page') }}" class="btn btn-outline-primary">戻る</a>
+                <a href="{{ url_for('u_practice_cancel',id=practice.id) }}" class="btn btn-outline-secondary">キャンセルする</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

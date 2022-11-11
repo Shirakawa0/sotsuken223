@@ -10,6 +10,10 @@
                 <div class="input">{{ check.name }}先生</div>
             </div>
             <div class="row">
+                <div class="label">提出期限</div>
+                <div class="input">{{ check.date }}</div>
+            </div>
+            <div class="row">
                 <div class="label">タイトル</div>
                 <div class="input">{{ check.title }}</div>
             </div>
@@ -19,6 +23,7 @@
             </div>
             <form action="{{ url_for('u_check') }}" method="post">
                 <input type="hidden" name="id" value="{{ check.id }}">
+                <input type="hidden" name="date" value="{{ check.date }}">
                 <input type="hidden" name="title" value="{{ check.title }}">
                 <input type="hidden" name="body" value="{{ check.body }}">
                 <div class="buttons">

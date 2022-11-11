@@ -6,7 +6,7 @@
 }
 
 .headlogo{
-    height: 35px;
+    height: 40px;
 }
 
 .return_btn{
@@ -106,7 +106,7 @@
 .home_content{
     background: white;
     height: 100%;
-    width: 70%;
+    width: 800px;
     text-align: center;
     margin-bottom: 50px;
 }
@@ -138,14 +138,18 @@
     border-radius: 5px;
 }
 
-.home_content .links_happy{
+.home_content .non_link{
     border: 1px solid aliceblue;
     color: black;
-    animation: gaming 0.3s linear infinite;;
+    background-color: #f8f9fa;
     display: flex;
     justify-content: space-around;
     padding: 20px;
     border-radius: 5px;
+}
+
+.home_content .happy{
+    animation: gaming 0.3s linear infinite;;
 }
 
 .text_over{
@@ -180,8 +184,28 @@
     width: 30%;
 }
 
-.home_content .container div p{
+.home_content .container h1{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.home_content .container p{
+    height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+
+}
+
+.home_content .explanation{
     text-align: left;
+}
+
+.home_content .non_link{
+    margin-bottom: 10px;
 }
 
 .scroll{
@@ -189,7 +213,7 @@
 }
 
 .input_display .content{
-    width: 60%;
+    width: 750px;
     margin: auto;
     text-align: center;
     position: relative;
@@ -292,6 +316,24 @@
     font-size: x-large;
 }
 
+.input_display .box{
+    border: 1px solid aliceblue;
+    display: block;
+    padding: 0%;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.input_display .non_link{
+    border: 1px solid aliceblue;
+    color: black;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    border-radius: 5px;
+}
+
 .scrollArea{
 	height: 200px;
 	overflow-y: scroll;
@@ -318,11 +360,43 @@
 }
 
 .home_content .forum .sub{
-    font-size: xx-small;
-    color: cornflowerblue;
-    width: max-content;
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
 }
 
+.home_content .forum .sub p{
+    font-size: xx-small;
+    color: cornflowerblue;
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-right: 20px;
+    margin-bottom: 0;
+}
+
+.home_content .forum .sub .last_update{
+    width: 20%;
+}
+
+.home_content .forum .sub .comment_num{
+    width: 10%;
+}
+
+.home_content .forum .sub .author{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 13%;
+}
+
+.home_content .forum .sub .last_contributer{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 16%;
+}
 .home_content .forum .main{
     font-size: large;
     color: black;
@@ -331,12 +405,11 @@
 
 #a_forum .home_content .box{
     border: 1px solid aliceblue;
-    display:flex;
-    justify-content: space-between;
+    /* display:flex; */
+    /* justify-content: space-between; */
     padding: 0%;
     margin-bottom: 10px;
 }
-
 
 @keyframes gaming {
     /* 色の指定 */
@@ -404,4 +477,322 @@
 
 .wide .confirm_area .block .label{
     width: 100%;
+}
+
+#forum_brows .home_content .comment{
+    margin: auto;
+    width: 100%;
+    text-align: left;
+}
+
+#forum_brows .home_content .contributer{
+    margin: 2px;
+}
+
+#forum_brows .home_content .comment .body{
+    padding: 10px 20px;
+    margin: 2em 0;
+    margin-top: 0;
+    background: -webkit-repeating-linear-gradient(-45deg, #f0f8ff, #f0f8ff 3px,#e9f4ff 3px, #e9f4ff 7px);
+    background: repeating-linear-gradient(-45deg, #f0f8ff, #f0f8ff 3px,#e9f4ff 3px, #e9f4ff 7px);
+    display: flex;
+    justify-content: space-between;
+}
+
+#forum_brows .home_content .comment .date_time{
+    text-align: right;
+    font-size: x-small;
+    color: gray;
+    display: flex;
+    align-items: flex-end;
+}
+
+#forum_brows .body p{
+    white-space: pre-wrap;
+    margin-bottom: 0;
+}
+
+#forum_brows .reply_area{
+    text-align: left;
+    width: 60%;
+    margin: auto;
+}
+
+#forum_brows .reply_area textarea{
+    width: 100%;
+}
+
+#forum_brows .button_area{
+    width: 100%;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.sub_title{
+    text-align: left;
+    font-size: 22px;
+    font-weight: 450;
+    margin: 30px 0 10px 0;
+}
+
+#u_practice_home form{
+    margin: 20px 0;
+}
+
+#u_practice_home .home_content{
+    margin-bottom: 50px;
+}
+
+#u_practice_home .title{
+    margin-bottom: 20px;
+}
+
+#u_practice_detail .content{
+    width: 60%;
+    margin: auto;
+}
+
+#u_practice_detail .row_noborder{
+    margin: 15px 0;
+    width: 100%;
+    display: flex;
+    background-color: #fafafa;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#u_practice_detail .label{
+    width: 25%;
+    text-align: left;
+}
+
+#u_practice_detail .value{
+    width: 75%;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+#a_practice_home .btn{
+    margin: 10px 0;
+}
+
+#a_practice_home .content{
+    margin-bottom: 50px;
+}
+
+#a_practice_detail .content{
+    width: 60%;
+    margin: auto;
+}
+
+#a_practice_detail .row_noborder{
+    margin: 15px 0;
+    width: 100%;
+    display: flex;
+    background-color: #fafafa;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#a_practice_detail .label{
+    width: 25%;
+    text-align: left;
+}
+
+#a_practice_detail .value{
+    width: 75%;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+#a_practice_detail .comment{
+    background-color: #fafafa;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: left;
+    margin-top: 20px;
+}
+
+#a_practice_detail .comment textarea{
+    width: 100%;
+    margin-top: 5px;
+}
+
+#u_practice_1 .content{
+    width: 60%;
+    margin: auto;
+}
+
+#u_practice_1 .row_noborder{
+    margin: 15px 0;
+    width: 100%;
+    display: flex;
+    background-color: #fafafa;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#u_practice_1 .label{
+    width: 25%;
+    text-align: left;
+}
+
+#u_practice_1 .value{
+    width: 75%;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+#a_practice_1 form{
+    width: 60%;
+    margin: auto;
+    margin-top: 50px;
+}
+
+#a_practice_1 .content{
+    width: 60%;
+}
+
+#a_practice_1 .row_input{
+    display: flex;
+    margin: 20px 0;
+}
+
+#a_practice_1 .label{
+    width: 25%;
+    text-align: left;
+}
+
+#a_practice_1 .value{
+    width: 75%;
+}
+
+#a_practice_2 .content{
+    width: 60%;
+    margin: auto;
+}
+
+#a_practice_2 .row_noborder{
+    margin: 15px 0;
+    width: 100%;
+    display: flex;
+    background-color: #fafafa;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#a_practice_2 .label{
+    width: 25%;
+    text-align: left;
+}
+
+#a_practice_2 .value{
+    width: 75%;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+#a_user_account_1 .content{
+    width: 800px;
+    margin: auto;
+    margin-bottom: 50px;
+}
+
+#a_user_account_1 .title{
+    text-align: left;
+    border-bottom: 1px solid black;
+    font-size: xx-large;
+    font-weight: 450;
+    margin-top: 20px;
+}
+
+#a_user_account_1 .search_area{
+    background-color: #ececec;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#a_user_account_1 .search_main .btn_sub{
+    margin-left: 20px;
+}
+
+#a_user_account_1 .search_sub{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#a_user_account_1 .search_sub div{
+    text-align: left;
+    width: 300px;
+    margin-right: 20px;
+}
+
+#a_user_account_1 .row_input{
+    display: flex;
+    width: 100%;
+    margin: 5px 0;
+}
+
+#a_user_account_1 .row_input *{
+    margin: 0;
+    padding: 0;
+}
+
+#a_user_account_1 .row_input .label{
+    width: 25%;
+    text-align: left;
+}
+
+#a_user_account_1 .row_input .value{
+    width: 75%;
+    padding-left: 5px;
+}
+
+#a_user_account_1 .search_sub .btn{
+    display: block;
+    height: 40px;
+    margin: auto 0;
+}
+
+.sub_title{
+    font-size: x-large;
+}
+
+#a_user_account_1 .box{
+    width: 100%;
+    margin: 10px 0;
+    display: block;
+    padding: 0;
+}
+
+#a_user_account_1 .box_content{
+    display: flex;
+    justify-content: space-around;
+    height: 100%;
+    padding: 20px;
+    text-decoration: none;
+    color: black;
+}
+
+#a_user_account_1 .name{
+    width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#a_user_account_1 .dep{
+    width: 200px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+#a_all h3{
+    font-size: large;
+    border: none;
 }

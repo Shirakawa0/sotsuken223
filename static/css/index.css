@@ -1,0 +1,295 @@
+@charset "utf-8";
+
+/* 全体に共通する部分 ------------------------------------  */
+
+.row_input{
+    display: flex;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.row_input *{
+    margin: 0;
+    padding: 0;
+}
+
+.row_input .label{
+    width: 30%;
+    text-align: left;
+}
+
+.row_input .value{
+    width: 70%;
+    padding-left: 5px;
+    text-align: left;
+}
+
+.row_input .values{
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.row_input .values * {
+    width: 48%;
+}
+
+.row_confirm{
+    display: flex;
+    width: 100%;
+    margin-bottom: 22px;
+    border-bottom: 1px black solid;
+}
+
+.row_confirm *{
+    margin: 0;
+    padding: 0;
+}
+
+.row_confirm .label{
+    width: 50%;
+    text-align: left;
+}
+
+.row_confirm .value{
+    width: 50%;
+    text-align: left;
+}
+
+/* BootStrap を上書きするために .main で指定している */
+.main .box{ 
+    width: 100%;
+    margin-bottom: 10px;
+    display: block;
+    padding: 0;
+}
+
+/* BootStrap を上書きするために .main で指定している */
+.main .box_content{
+    display: flex;
+    justify-content: space-around;
+    height: 100%;
+    padding: 20px;
+    text-decoration: none;
+    color: black;
+}
+
+.text_overflow{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* .return_img{
+    width: 30px;
+}
+
+.return_btn{
+    display: block;
+    position: absolute;
+    top: 100px;
+    left: 30px;
+} */
+
+/* ログイン系の画面に共通する部分 -------------------------- */
+
+.login{
+    background: #f0f0f0;
+    height: 100vh;
+}
+
+.login .content_area{
+    background: white;
+    width: 500px;
+    height: 100%;
+    margin: auto;
+    text-align: center;
+}
+
+.login .content{
+    width: 60%;
+    margin: auto;
+}
+
+.login .logo{
+    height: 80px;
+    margin: 30px 0;
+}
+
+.login .title{
+    margin-bottom: 20px;
+    font-size: x-large;
+    font-weight: 450;
+}
+
+.login .btn_wide{
+    width: 100%;
+}
+
+.login .link_area{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+/* メイン画面に共通する部分 -------------------------------- */
+
+.main .content_area{
+    width: 800px;
+    margin: auto;
+    padding-top: 66px;
+    padding-bottom: 50px;
+    text-align: center;
+}
+
+.main .title{
+    text-align: left;
+    border-bottom: 1px solid black;
+    font-size: x-large;
+    font-weight: 450;
+    margin: 40px 0;
+}
+
+.main .title_sub{
+    font-size: large;
+    text-align: left;
+}
+
+.main .message{
+    font-size: large;
+    margin: 30px 0;
+}
+
+.main .btn_area{
+    width: 100%;
+    margin-top: 40px;
+}
+
+.main .btn_area * {
+    margin: 10px;
+    min-width: 120px;
+}
+
+.main .content1{
+    width: 50%;
+    margin: auto;
+}
+
+.main .content2{
+    width: 100%;
+    margin-top: 120px;
+}
+
+.main .content3{
+    width: 80%;
+    margin: auto;
+}
+
+/* 画面ごと ----------------------------------------------- */
+
+#u_login .title{
+    margin-bottom: 70px;
+}
+
+#u_login .btn_wide{
+    margin: 20px 0;
+}
+
+#u_login .link_area{
+    margin-top: 50px;
+}
+
+#u_signup_1 .title{
+    margin-bottom: 30px;
+}
+
+#u_signup_1 .btn_wide{
+    margin-top: 10px;
+}
+
+#u_signup_1 .link_area{
+    margin-top: 40px;
+}
+
+#u_signup_2 .title{
+    margin-bottom: 30px;
+}
+
+#u_signup_2 .btn_wide{
+    margin-top: 10px;
+}
+
+#u_signup_2 .link_area{
+    margin-top: 40px;
+}
+
+#u_signup_3 .content{
+    margin-top: 90px;
+}
+
+#u_signup_3 .content p{
+    font-size: x-large;
+    margin-bottom: 30px;
+}
+
+#a_login .title{
+    margin-bottom: 70px;
+}
+
+#a_login .btn_wide{
+    margin: 20px 0;
+}
+
+#a_login .link_area{
+    margin-top: 50px;
+}
+
+#a_user_account_1 .search_area{
+    background-color: #ececec;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#a_user_account_1 .search_main{
+    margin-bottom: 20px;
+}
+
+#a_user_account_1 .btn_option{
+    margin-left: 20px;
+}
+
+#a_user_account_1 .search_sub{
+    display: flex;
+    justify-content: center;
+}
+
+#a_user_account_1 .search_sub div{
+    text-align: left;
+    width: 300px;
+    margin-right: 20px;
+}
+
+#a_user_account_1 .search_sub .row_input{
+    margin-bottom: 5px;
+}
+
+#a_user_account_1 .btn_search_sub{
+    height: 40px;
+    margin: auto 0 5px 0;
+}
+
+#a_user_account_1 .name{
+    width: 120px;
+}
+
+#a_user_account_1 .dep{
+    width: 150px;
+}
+
+/* その他 ------------------------------------------------- */
+
+.logo_header{
+    height: 40px;
+}
