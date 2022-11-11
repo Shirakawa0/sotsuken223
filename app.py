@@ -776,9 +776,6 @@ def a_user_account_page():
     grad_year = request.form.get("grad_year")
     dep = request.form.get("dep")
     name = request.form.get("name")
-    if not name:
-
-        name = ""
 
     # DBで検索するために変形
     if grad_year != None:
