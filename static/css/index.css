@@ -34,6 +34,11 @@
     width: 48%;
 }
 
+.row_input .values input[type="radio"]{
+    width: 13px;
+    margin-right: 5px;
+}
+
 .row_confirm{
     display: flex;
     width: 100%;
@@ -170,19 +175,13 @@
     min-width: 120px;
 }
 
-.main .content1{
+.main .type_input .content{
     width: 50%;
     margin: auto;
 }
 
-.main .content2{
-    width: 100%;
+.main .type_done .content{
     margin-top: 120px;
-}
-
-.main .content3{
-    width: 80%;
-    margin: auto;
 }
 
 /* 画面ごと ----------------------------------------------- */
@@ -286,6 +285,54 @@
 
 #a_user_account_1 .dep{
     width: 150px;
+}
+
+#a_account_1 .content_area{
+    padding-bottom: 0;
+}
+
+#a_account_1 .title{
+    margin-bottom: 30px;
+}
+
+#a_account_1 .btn_area{
+    margin-top: 20px;
+}
+
+#a_account_2 .content_area{
+    padding-bottom: 0;
+}
+
+#a_account_2 .title{
+    margin-bottom: 30px;
+}
+
+#a_account_2 .btn_area{
+    margin-top: 20px;
+}
+
+#a_signup_1 .content_area{
+    padding-bottom: 0;
+}
+
+#a_signup_1 .title{
+    margin-bottom: 30px;
+}
+
+#a_signup_1 .btn_area{
+    margin-top: 20px;
+}
+
+#a_signup_2 .content_area{
+    padding-bottom: 0;
+}
+
+#a_signup_2 .title{
+    margin-bottom: 30px;
+}
+
+#a_signup_2 .btn_area{
+    margin-top: 20px;
 }
 
 /* その他 ------------------------------------------------- */

@@ -2,10 +2,10 @@
 _account_page
 {% block content %}
 <div id="a_signup_1" class="main">
-    <div class="content_area">
+    <div class="content_area type_input">
         <h1 class="title">管理者アカウント新規登録</h1>
         <p class="message">登録情報を入力してください</p>
-        <div class="content1">
+        <div class="content">
             <form action="{{ url_for('a_signup_confirm') }}" method="post">
                 <div class="row_input">
                     <div class="label">ID</div>
@@ -51,6 +51,13 @@ _account_page
                             <option value="{{ dep.id }}">{{ dep.name }}</option>
                             {% endfor %}
                         </select>
+                    </div>
+                </div>
+                <div class="row_input">
+                    <div class="label">公開設定</div>
+                    <div class="values">
+                        <div><input type="radio" name="published" value="true">公開する</div>
+                        <div><input type="radio" name="published" value="false" checked>公開しない</div>
                     </div>
                 </div>
                 <div class="btn_area">
