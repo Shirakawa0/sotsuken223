@@ -69,7 +69,7 @@ def u_signup_confirm():
     # 未入力の項目がある場合
     if not (id and pw and name and grad_year and dep_id):
         return redirect(url_for("u_signup_page"))
-
+    """
     # id の入力チェック
     ## 既に使われている場合
     id_check = dbmg.exec_query("select * from u_account where id=%s",id)
@@ -77,8 +77,10 @@ def u_signup_confirm():
         return redirect(url_for("u_signup_page"))
     
     ## 文字数が7文字でない場合
+    
     if len(id) != 7:
         return redirect(url_for("u_signup_page"))
+    
 
     ## 学籍番号が文字列の場合
     try:
@@ -89,17 +91,21 @@ def u_signup_confirm():
     ## 学籍番号が不正な場合
     if int(id) < 1000000:
         return redirect(url_for("u_signup_page"))
+    
+    
 
-    # pw の入力チェック
+    # pw の入力チェックS
     ## 文字数が不正な場合
     if len(pw) < 8 or len(pw) > 20:
         return redirect(url_for("u_signup_page"))
+    
+   
 
     # name の入力チェック
     ## 文字数が不正な場合
     if len(name) > 16:
         return redirect(url_for("u_signup_page"))
-
+    """
     dep = dbmg.exec_query("select * from dep where id=%s",dep_id)[0]
 
     account = {
@@ -527,76 +533,14 @@ def a_home_page():
     #文章チェック
     sql = "select student,title from review where teacher = %s and check_flg = 0"
     reviews = dbmg.exec_query(sql,(id))
-    return render_template("a_home.html",schedules=schedules,practices=practices,reviews=reviews)
-
-@app.route("/a_signup")
-def a_signup_page():
-    grad_years,deps = get_classes()
-    return render_template("a_signup_1.html",deps=deps,grad_years=grad_years)
-
-@app.route("/a_signup/confirm",methods=["POST"])
-def a_signup_confirm():
-    dbmg = db_manager()
-
-    id = request.form.get("id")
-    pw = request.form.get("pw")
-    name = request.form.get("name")
-    grad_year1 = request.form.get("grad_year1")
-    dep1 = request.form.get("dep1")
-    grad_year2 = request.form.get("grad_year2")
-    dep2 = request.form.get("dep2")
-
-    # 未入力の項目がある場合
-    if not (pw and name and grad_year1 and dep1):
-        return redirect(url_for("a_account_page"))
-
-    # pw の入力チェック
-    ## 文字数が不正な場合
-    if len(pw) < 8 or len(pw) > 20:
-        return redirect(url_for("a_account_page"))
-
-    # name の入力チェック
-    ## 文字数が不正な場合
-    if len(name) > 16:
-        return redirect(url_for("a_account_page"))
-
-    dep1 = dbmg.exec_query("select * from dep where id=%s",dep1)[0]
-    dep2 = dbmg.exec_query("select * from dep where id=%s",dep2)[0]
-
-    account = {
-        "id":id,
-        "pw":pw,
-        "name":name,
-        "grad_year1":grad_year1,
-        "dep1":dep1,
-        "grad_year2":grad_year2,
-        "dep2":dep2
-    }
-
-    return render_template("a_signup_2.html",account=account)
-
-@app.route("/a_signup/done",methods=["POST"])
-def a_signup():
-    id = request.form.get("id")
-    pw = request.form.get("pw")
-    name = request.form.get("name")
-    grad_year1 = request.form.get("grad_year1")
-    dep1 = request.form.get("dep1")
-    grad_year2 = request.form.get("grad_year2")
-    dep2 = request.form.get("dep2")
-
-    dbmg = db_manager()
-    hash_pw, salt = dbmg.calc_pw_hash(pw)
-
-    class_id1 = grad_year1 + dep1
-    class_id2 = grad_year2 + dep2
-
-    dbmg.exec_query("insert into a_account(id,hash_pw,salt,name) values(%s,%s,%s,%s)",(id,hash_pw,salt,name))
-    dbmg.exec_query("insert into teacher_class values(%s,%s)",(id,class_id1))
-    dbmg.exec_query("insert into teacher_class values(%s,%s)",(id,class_id2))
-
-    return render_template("a_signup_3.html")
-
+    #内定未内定
+    sql = "select count(distinct b.id) as cnt from u_account a,schedule b where a.id = b.id and b.passed_flg = 1"
+    passed = dbmg.exec_query(sql)
+    print(passed)
+    sql = "select count(*) as cnt from u_account"
+    sum = dbmg.exec_query(sql)
+    return render_template("a_home.html",schedules=schedules,practices=practices,reviews=reviews,passed=passed,sum=sum)
+    
 @app.route("/a_all")
 def a_all_page():
     id = session["id"]
@@ -764,6 +708,7 @@ def a_account_confirm():
     dep1 = request.form.get("dep1")
     grad_year2 = request.form.get("grad_year2")
     dep2 = request.form.get("dep2")
+    published = request.form.get("published")
 
     # 未入力の項目がある場合
     if not (pw and name and grad_year1 and dep1):
@@ -789,7 +734,8 @@ def a_account_confirm():
         "grad_year1":grad_year1,
         "dep1":dep1,
         "grad_year2":grad_year2,
-        "dep2":dep2
+        "dep2":dep2,
+        "published":published
     }
 
     return render_template("a_account_2.html",account=account)
@@ -803,6 +749,12 @@ def a_account():
     dep1 = request.form.get("dep1")
     grad_year2 = request.form.get("grad_year2")
     dep2 = request.form.get("dep2")
+    published = request.form.get("published")
+
+    if published == "true":
+        published = True
+    elif published == "false":
+        published = False
 
     class_id1 = grad_year1 + dep1
     class_id2 = grad_year2 + dep2
@@ -810,20 +762,21 @@ def a_account():
     dbmg = db_manager()
     hash_pw, salt = dbmg.calc_pw_hash(pw)
 
-    sql = "update a_account set hash_pw=%s, salt=%s, name=%s where id=%s"
-    dbmg.exec_query(sql, (hash_pw, salt, name, id))
-
+    dbmg.exec_query("update a_account set hash_pw=%s, salt=%s, name=%s, public_flg=%s where id=%s",(hash_pw,salt,name,published,id))
     dbmg.exec_query("delete from teacher_class where id = %s",id)
     dbmg.exec_query("insert into teacher_class values(%s,%s)",(id,class_id1))
     dbmg.exec_query("insert into teacher_class values(%s,%s)",(id,class_id2))
 
     return render_template("a_account_3.html")
 
-@app.route("/a_user_account/search",methods=["GET","POST"])
+@app.route("/a_user_account",methods=["GET","POST"])
 def a_user_account_page():
     dbmg = db_manager()
 
     grad_years,deps = get_classes()
+
+    if request.method == "GET":
+        return render_template("a_user_account_1.html",deps=deps,grad_years=grad_years)
     
     id = request.form.get("id")
     grad_year = request.form.get("grad_year")
@@ -841,13 +794,10 @@ def a_user_account_page():
     if name != None:
         name = "%" + name + "%"
 
-    if request.method == "GET":
-        return render_template("a_user_account_1.html",deps=deps,grad_years=grad_years)
-
     if id:
         users = dbmg.exec_query("select u_account.id as id,u_account.name as name,graduation as grad_year,dep.name as dep from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where u_account.id = %s",id)
     else:
-        users = dbmg.exec_query("select u_account.id as id,u_account.name as name,graduation as grad_year,dep.name as dep from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where class_id like %s and class_id like %s and dep.name like %s",(grad_year,dep,name))
+        users = dbmg.exec_query("select u_account.id as id,u_account.name as name,graduation as grad_year,dep.name as dep from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where class_id like %s and class_id like %s and u_account.name like %s",(grad_year,dep,name))
 
     return render_template("a_user_account_1.html",deps=deps,grad_years=grad_years,users=users)
 
@@ -869,6 +819,82 @@ def a_user_account_done():
     dbmg.exec_query("delete from u_account where id = %s",id)
 
     return render_template("a_user_account_3.html")
+
+@app.route("/a_signup")
+def a_signup_page():
+    grad_years,deps = get_classes()
+    return render_template("a_signup_1.html",deps=deps,grad_years=grad_years)
+
+@app.route("/a_signup/confirm",methods=["POST"])
+def a_signup_confirm():
+    dbmg = db_manager()
+
+    id = request.form.get("id")
+    pw = request.form.get("pw")
+    name = request.form.get("name")
+    grad_year1 = request.form.get("grad_year1")
+    dep1 = request.form.get("dep1")
+    grad_year2 = request.form.get("grad_year2")
+    dep2 = request.form.get("dep2")
+    published = request.form.get("published")
+
+    # 未入力の項目がある場合
+    if not (pw and name and grad_year1 and dep1 and published):
+        return redirect(url_for("a_signup_page"))
+    """
+    # pw の入力チェック
+    ## 文字数が不正な場合
+    if len(pw) < 8 or len(pw) > 20:
+        return redirect(url_for("a_signup_page"))
+
+    # name の入力チェック
+    ## 文字数が不正な場合
+    if len(name) > 16:
+        return redirect(url_for("a_signup_page"))
+    """
+    dep1 = dbmg.exec_query("select * from dep where id=%s",dep1)[0]
+    dep2 = dbmg.exec_query("select * from dep where id=%s",dep2)[0]
+
+    account = {
+        "id":id,
+        "pw":pw,
+        "name":name,
+        "grad_year1":grad_year1,
+        "dep1":dep1,
+        "grad_year2":grad_year2,
+        "dep2":dep2,
+        "published":published
+    }
+
+    return render_template("a_signup_2.html",account=account)
+
+@app.route("/a_signup/done",methods=["POST"])
+def a_signup():
+    id = request.form.get("id")
+    pw = request.form.get("pw")
+    name = request.form.get("name")
+    grad_year1 = request.form.get("grad_year1")
+    dep1 = request.form.get("dep1")
+    grad_year2 = request.form.get("grad_year2")
+    dep2 = request.form.get("dep2")
+    published = request.form.get("published")
+
+    if published == "true":
+        published = True
+    elif published == "false":
+        published = False
+
+    dbmg = db_manager()
+    hash_pw, salt = dbmg.calc_pw_hash(pw)
+
+    class_id1 = grad_year1 + dep1
+    class_id2 = grad_year2 + dep2
+
+    dbmg.exec_query("insert into a_account values(%s,%s,%s,%s,%s)",(id,hash_pw,salt,name,published))
+    dbmg.exec_query("insert into teacher_class values(%s,%s)",(id,class_id1))
+    dbmg.exec_query("insert into teacher_class values(%s,%s)",(id,class_id2))
+
+    return render_template("a_signup_3.html")
 
 # 利用者・管理者で共通の処理 ------------------------------------------------------
 

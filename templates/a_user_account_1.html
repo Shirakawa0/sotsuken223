@@ -7,7 +7,7 @@
             <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_img">
         </a> -->
         <h1 class="title">利用者アカウント管理</h1>
-        <div class="content3">
+        <div class="content">
             <p class="title_sub">アカウント検索</p>
             <div class="search_area">
                 <form action="{{ url_for('a_user_account_page') }}" method="post" class="search_main">
@@ -47,7 +47,7 @@
             </div>
             {% for user in users %}
             <div class="btn btn-light box">
-                <a href="#" class="box_content">
+                <div class="box_content">
                     <div>{{ user.id }}</div>
                     <div class="name text_overflow">{{ user.name }}</div>
                     <div>{{ user.grad_year }}卒</div>
@@ -59,7 +59,7 @@
                         <input type="hidden" name="dep" value="{{ user.dep }}">
                         <input type="submit" value="削除" class="btn btn-sm btn-outline-primary">
                     </form>
-                </a>
+                </div>
             </div>
             {% endfor %}
         </div>

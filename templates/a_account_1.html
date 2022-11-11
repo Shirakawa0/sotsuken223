@@ -2,26 +2,23 @@
 
 {% block content %}
 <div id="a_account_1" class="main">
-    <div class="content_area">
+    <div class="content_area type_input">
         <h1 class="title">管理者アカウント編集</h1>
         <p class="message">変更情報を入力してください</p>
-        <div class="content1">
+        <div class="content">
             <form action="{{ url_for('a_account_confirm') }}" method="post">
                 <div class="row_input">
                     <div class="label">ID</div>
                     <div class="value">{{ id }}</div>
                 </div>
-            
                 <div class="row_input">
                 <div class="label">パスワード</div>
                     <input type="password" name="pw" class="value">
                 </div>
-            
                 <div class="row_input">
                     <div class="label">名前</div>
                     <input type="text" name="name" class="value">
                 </div>
-            
                 <div class="row_input">
                     <div class="label">担当クラス1</div>
                     <div class="values">
@@ -39,7 +36,6 @@
                         </select>
                     </div>
                 </div>
-    
                 <div class="row_input">
                     <div class="label">担当クラス2</div>
                     <div class="values">
@@ -57,7 +53,13 @@
                         </select>
                     </div>
                 </div>
-
+                <div class="row_input">
+                    <div class="label">公開設定</div>
+                    <div class="values">
+                        <div><input type="radio" name="published" value="true">公開する</div>
+                        <div><input type="radio" name="published" value="false" checked>公開しない</div>
+                    </div>
+                </div>
                 <div class="btn_area">
                     <a href="{{ url_for('a_home_page') }}" class="btn btn-outline-secondary">戻る</a>
                     <input type="submit" value="次へ進む" class="btn btn-outline-primary">
