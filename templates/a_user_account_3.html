@@ -1,12 +1,13 @@
-{% extends "template3.html" %}
+{% extends "temp_admin.html" %}
+
 {% block content %}
-<div id="a_user_account_3" class="input_display">
-    <div class="content">
+<div id="a_user_account_3" class="main">
+    <div class="content_area">
         <h1 class="title">利用者アカウント削除</h1>
-        <div class="done">
-            <p>アカウントを削除しました</p>
+        <div class="content2">
+            <p class="message">アカウントを削除しました</p>
             <form action="{{ url_for('a_user_account_page') }}">
-                <input type="submit" value="アカウント管理画面へ" class="btn btn-outline-secondary">
+                <input type="submit" value="アカウント管理画面へ" class="btn btn-outline-primary">
             </form>
         </div>
     </div>

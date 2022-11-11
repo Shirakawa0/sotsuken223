@@ -1,10 +1,11 @@
-{% extends "template3.html" %}
+{% extends "temp_admin.html" %}
+
 {% block content %}
-<div id="a_account_3" class="input_display">
-    <div class="content">
+<div id="a_account_3" class="main">
+    <div class="content_area">
         <h1 class="title">管理者アカウント編集</h1>
-        <div class="done">
-            <p>アカウント情報を変更しました。</p>
+        <div class="content2">
+            <p class="message">アカウント情報を変更しました。</p>
             <a href="{{ url_for('a_home_page') }}" class="btn btn-outline-primary">管理者ホームに戻る</a>
         </div>
     </div>
