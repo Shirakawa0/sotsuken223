@@ -335,6 +335,14 @@
     margin-top: 20px;
 }
 
+#u_practice_home .search{
+    margin-bottom: 20px;
+}
+
+#u_practice_home .search > *{
+    height: 30px;
+}
+
 /* その他 ------------------------------------------------- */
 
 .logo_header{
