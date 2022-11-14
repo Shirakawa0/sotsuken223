@@ -1,6 +1,7 @@
 from flask import Flask,render_template,request,redirect,url_for,session
 import datetime
 import random,string
+import glob
 from db.db_manager import db_manager
 
 app = Flask(__name__)
@@ -420,6 +421,21 @@ def u_check():
 @app.route("/u_search")
 def u_search_page():
     return render_template("u_search.html")
+
+@app.route("/u_search/u_search_res")
+def u_search():
+    name = request.args.get("name")
+    year = request.args.get("year")
+    results = []
+    for i,a in enumerate(glob.glob('./static/pdf/'+year+'/*'+name+'*.pdf')):
+        result = a.replace("\\","/")[9:]
+        filename = result[9:]
+        results.append([result,filename])
+        
+        print(results)
+        
+    return render_template("u_search.html",results=results)
+
 
 @app.route("/u_forum")
 def u_forum_page():

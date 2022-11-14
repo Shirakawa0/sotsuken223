@@ -2,17 +2,36 @@
 {% block content %}
 <h1>報告書検索</h1>
 <h1>企業名で検索できます</h1>
-<form action="">
+<form action="{{url_for('u_search')}}">
     企業名
-    <input type="text">
+    <input type="text" name="name">
     年度
-    <select>
-        <option value="">年度を選択</option>
+    <select name="year">
+        <option value="2023">年度を選択</option>
     </select>
     <input type="submit" value="検索" class="btn btn-outline-success">
     <br>
 </form>
-<iframe src="/static/pdf/2.pdf"></iframe>
-<a href="/static/pdf/2.pdf">あ</a>
+{% for res in results %}
+    <button href="{{url_for('static',filename=res[0])}}" class="pdf">{{res[1]}}</button>
+{% endfor %}
+<div id="show_pdf">
+
+</div>
+
+
+
 <a href="{{ url_for('u_home_page') }}" class="btn btn-outline-primary">マイページへ戻る</a>
+<script>
+    let a = document.getElementsByClassName('pdf')
+    console.log(a)
+    let show_pdf = document.getElementById('show_pdf')
+    let iframe = document.createElement('iframe')
+    for(let element of a){
+        element.addEventListener('click',function(){
+            iframe.src = element.getAttribute('href')
+            show_pdf.appendChild(iframe)
+        })
+    };
+</script>
 {% endblock %}
