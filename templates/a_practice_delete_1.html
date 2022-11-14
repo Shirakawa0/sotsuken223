@@ -1,9 +1,10 @@
 {% extends "temp_admin.html" %}
 
 {% block content %}
-<div id="a_practice_detail" class="main">
+<div id="a_practice_delete_1" class="main">
     <div class="content_area type_wide">
-        <h1 class="title">面接練習詳細</h1>
+        <h1 class="title">面接練習削除</h1>
+        <p class="message">この面接練習を削除します。よろしいですか？</p>
         <div class="content">
             <div class="row_block">
                 <div class="label">日付</div>
@@ -27,8 +28,8 @@
                 {% endif %}
             </div>
             <div class="btn_area">
-                <a href="{{ url_for('a_practice_home') }}" class="btn btn-outline-secondary">戻る</a>
-                <a href="{{ url_for('a_practice_modify',id=practice.id) }}" class="btn btn-outline-primary">更新・削除</a>
+                <a href="{{ url_for('a_practice_modify',id=practice.id) }}" class="btn btn-outline-secondary">戻る</a>
+                <a href="{{ url_for('a_practice_delete',id=practice.id) }}" class="btn btn-outline-danger">削除する</a>
             </div>
         </div>
     </div>

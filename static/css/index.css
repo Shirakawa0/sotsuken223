@@ -61,6 +61,31 @@
     text-align: left;
 }
 
+.row_block{
+    margin: 15px 0;
+    width: 100%;
+    display: flex;
+    background-color: #fafafa;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.row_block *{
+    margin: 0;
+    padding: 0;
+}
+
+.row_block .label{
+    width: 25%;
+    text-align: left;
+}
+
+.row_block .value{
+    width: 75%;
+    text-align: left;
+    word-wrap: break-word;
+}
+
 /* BootStrap を上書きするために .main で指定している */
 .main .box{ 
     width: 100%;
@@ -182,6 +207,11 @@
 
 .main .type_done .content{
     margin-top: 120px;
+}
+
+.main .type_wide .content{
+    width: 80%;
+    margin: auto;
 }
 
 /* 画面ごと ----------------------------------------------- */
@@ -341,6 +371,37 @@
 
 #u_practice_home .search > *{
     height: 30px;
+}
+
+#u_practice_home .explanation{
+    text-align: left;
+    width: 500px;
+    margin: auto;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    color: rgb(97, 97, 97);
+}
+
+#u_practice_home .teacher{
+    width: 15%;
+}
+
+#u_practice_home .comment{
+    width: 50%;
+}
+
+#u_practice_detail .content_area{
+    padding-bottom: 0;
+}
+
+#a_practice_home .comment{
+    width: 50%;
+    text-align: left;
+}
+
+#a_practice_home .num{
+    width: 15%;
 }
 
 /* その他 ------------------------------------------------- */
