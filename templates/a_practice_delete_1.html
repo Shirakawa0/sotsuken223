@@ -11,10 +11,6 @@
                 <div class="value">{{ practice.date }}</div>
             </div>
             <div class="row_block">
-                <div class="label">コメント</div>
-                <div class="value">{{ practice.comment }}</div>
-            </div>
-            <div class="row_block">
                 {% if students %}
                 <div class="label">参加者（{{ num }}名）</div>
                 <div class="value">
@@ -26,6 +22,10 @@
                 <div class="label">参加者</div>
                 <p class="value">なし</p>
                 {% endif %}
+            </div>
+            <div class="row_block">
+                <div class="label">コメント</div>
+                <div class="value">{{ practice.comment }}</div>
             </div>
             <div class="btn_area">
                 <a href="{{ url_for('a_practice_modify',id=practice.id) }}" class="btn btn-outline-secondary">戻る</a>
