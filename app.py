@@ -436,8 +436,6 @@ def u_search():
         filename = result[9:]
         results.append([result,filename])
         
-        print(results)
-        
     return render_template("u_search.html",results=results)
 
 
@@ -550,7 +548,6 @@ def a_home_page():
     #内定未内定
     sql = "select count(distinct b.id) as cnt from u_account a,schedule b where a.id = b.id and b.passed_flg = 1"
     passed = dbmg.exec_query(sql)
-    print(passed)
     sql = "select count(*) as cnt from u_account"
     sum = dbmg.exec_query(sql)
     return render_template("a_home.html",schedules=schedules,practices=practices,reviews=reviews,passed=passed,sum=sum)
@@ -564,7 +561,6 @@ def a_all_page():
     classes = dbmg.exec_query("select class_id,cast(graduation as char) as grad_year,name as dep from teacher_class inner join class on class_id = class.id inner join dep on dep_id = dep.id where teacher_class.id=%s",id)
     if class_id:
         schedules = dbmg.exec_query("select schedule.id as id,name,cast(count(company) as char) as num from schedule inner join u_account on schedule.id = u_account.id where class_id = %s group by schedule.id",class_id)
-        print(schedules)
         return render_template("a_all.html",classes=classes,schedules=schedules)
     else:
         return render_template("a_all.html",classes=classes)
@@ -674,7 +670,7 @@ def a_practice_modify():
 
     id = request.form.get("id")
     practice = dbmg.exec_query("select * from practice where id=%s",id)
-    
+
     comment = request.form.get("comment")
     if not comment or len(comment) > 200:
         return render_template("a_practice_modify.html",practice=practice[0])
@@ -712,7 +708,6 @@ def a_check_page():
 @app.route("/a_check")
 def a_check():
     id = request.args.get("id")
-    print(id)
     dbmg = db_manager()
     sql = "select a.id as id,b.name as name,a.title as title,a.check_flg as check_flg,a.date as date,a.body as body,a.comment as comment from review a,u_account b where a.student=b.id and a.id=%s"
     result = dbmg.exec_query(sql,(id))
