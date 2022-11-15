@@ -2,7 +2,7 @@
 
 {% block content %}
 <div id="a_practice_1" class="main">
-    <div class="content_area type_input">
+    <div class="content_area type_wide">
         <h1 class="title">面接練習</h1>
         <p class="message">面接練習の情報を入力してください</p>
         <div class="content">
@@ -13,7 +13,7 @@
                 </div>
                 <div class="row_input">
                     <div class="label">コメント</div>
-                    <textarea cols="10" rows="6" name="comment" class="value" placeholder="時間帯・場所などを入力"></textarea>
+                    <textarea cols="10" rows="6" name="comment" class="value" placeholder="時間帯・場所などを入力" maxlength="200"></textarea>
                 </div>
                 <div class="btn_area">
                     <a href="{{ url_for('a_practice_home') }}" class="btn btn-outline-secondary">戻る</a>

@@ -2,7 +2,7 @@
 
 {% block content %}
 <div id="a_practice_2" class="main">
-    <div class="content_area type_input">
+    <div class="content_area type_wide">
         <h1 class="title">面接練習</h1>
         <p class="message">この内容で登録します。よろしいですか？</p>
         <div class="content">
@@ -14,7 +14,7 @@
                 <div class="label">コメント</div>
                 <div class="value">{{ comment }}</div>
             </div>
-            <form action="{{ url_for('a_practice_done') }}" method="post">
+            <form action="{{ url_for('a_practice') }}" method="post">
                 <input type="hidden" name="date" value="{{ date }}">
                 <input type="hidden" name="comment" value="{{ comment }}">
                 <div class="btn_area">

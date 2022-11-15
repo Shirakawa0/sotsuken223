@@ -3,9 +3,11 @@
 {% block content %}
 
 <div id="a_practice_home" class="main">
-    <!-- <a href="{{ url_for('a_home_page') }}">
-        <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
-    </a> -->
+    <div class="return_btn">
+        <a href="{{ url_for('a_home_page') }}">
+            <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る">
+        </a>
+    </div>
     <div class="content_area">
         <h1 class="title">面接練習</h1>
         <p class="message">

@@ -16,7 +16,7 @@
             </div>
             <div class="row_block">
                 <div class="label">更新後のコメント</div>
-                <textarea name="comment" cols="30" rows="6" class="value"></textarea>
+                <textarea name="comment" cols="30" rows="6" class="value">{{ practice.comment }}</textarea>
             </div>
             <div class="btn_area">
                 <a href="{{ url_for('a_practice_detail',id=practice.id) }}" class="btn btn-outline-secondary">戻る</a>

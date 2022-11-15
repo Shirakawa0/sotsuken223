@@ -300,12 +300,19 @@ def u_passed():
 
     return render_template("u_passed_2.html",company=company)
 
-@app.route("/u_practice",methods=["GET","POST"])
+@app.route("/u_practice/home",methods=["GET","POST"])
 def u_practice_page():
     dbmg = db_manager()
 
+    # userが面接練習の中止を確認した場合
+    if request.args.get("user_display_flg"):
+        id = request.args.get("id")
+        dbmg.exec_query("update practice set user_display_flg=%s where id=%s",(False,id))
+        dbmg.exec_query("delete from practice_attendance where schedule_id=%s",id)
+
     student = session["id"]
-    practices = dbmg.exec_query("select practice.id as id,name as teacher,date,comment from practice inner join a_account on teacher = a_account.id where practice.id in (select schedule_id from practice_attendance where student=%s) order by date asc",student)
+    today = datetime.date.today()
+    practices = dbmg.exec_query("select practice.id as id,name as teacher,date,comment,carrying_out_flg from practice inner join a_account on teacher = a_account.id where user_display_flg=%s and date>=%s and practice.id in (select schedule_id from practice_attendance where student=%s) order by date asc",(True,today,student))
     
     teachers = dbmg.exec_query("select id,name from a_account")
 
@@ -320,7 +327,7 @@ def u_practice_page():
 
     today = datetime.date.today()
 
-    search_results = dbmg.exec_query("select practice.id as id,name as teacher,date,comment from practice inner join a_account on teacher=a_account.id where teacher like %s and date >= %s and date <= %s and practice.id not in (select schedule_id from practice_attendance where student=%s) order by date asc",(teacher,today,date,student))
+    search_results = dbmg.exec_query("select practice.id as id,name as teacher,date,comment from practice inner join a_account on teacher=a_account.id where carrying_out_flg=%s and teacher like %s and date >= %s and date <= %s and practice.id not in (select schedule_id from practice_attendance where student=%s) order by date asc",(True,teacher,today,date,student))
     
     return render_template("u_practice_home.html",teachers=teachers,practices=practices,search_results=search_results)
 
@@ -349,7 +356,7 @@ def u_practice_detail():
     dbmg = db_manager()
 
     id = request.args.get("id")
-    practice = dbmg.exec_query("select practice.id as id,name as teacher,date,comment from practice inner join a_account on teacher=a_account.id where practice.id=%s",id)
+    practice = dbmg.exec_query("select practice.id as id,name as teacher,date,comment,carrying_out_flg from practice inner join a_account on teacher=a_account.id where practice.id=%s",id)
     
     return render_template("u_practice_detail.html",practice=practice[0])
 
@@ -603,7 +610,7 @@ def a_practice_home():
     teacher = session["id"]
     today = datetime.date.today()
 
-    practices = dbmg.exec_query("select * from practice where teacher = %s and date>=%s order by date asc",(teacher,today))
+    practices = dbmg.exec_query("select * from practice where carrying_out_flg=%s and teacher=%s and date>=%s order by date asc",(True,teacher,today))
     for practice in practices:
         num = dbmg.exec_query("select count(*) as num from practice_attendance where schedule_id=%s",practice["id"])
         num = num[0]["num"]
@@ -623,7 +630,7 @@ def a_practice_confirm():
     return render_template("a_practice_2.html",date=date,comment=comment)
 
 @app.route("/a_practice/done",methods=["POST"])
-def a_practice_done():
+def a_practice():
     dbmg = db_manager()
 
     teacher = session["id"]
@@ -674,7 +681,7 @@ def a_practice_delete():
     dbmg = db_manager()
 
     id = request.args.get("id")
-    dbmg.exec_query("delete from practice where id=%s",id)
+    dbmg.exec_query("update practice set carrying_out_flg=%s where id=%s",(False,id))
 
     return render_template("a_practice_delete_2.html")
 

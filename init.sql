@@ -35,7 +35,9 @@ CREATE TABLE practice(
     id int AUTO_INCREMENT PRIMARY KEY,
     teacher VARCHAR(128) NOT NULL,
     date date NOT NULL,
-    comment VARCHAR(200)
+    comment VARCHAR(200),
+    carrying_out_flg BOOLEAN DEFAULT 1 NOT NULL,
+    user_display_flg BOOLEAN DEFAULT 1 NOT NULL
 );
 
 CREATE TABLE practice_attendance(

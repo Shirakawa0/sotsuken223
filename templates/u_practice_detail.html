@@ -4,6 +4,9 @@
 <div id="u_practice_detail" class="main">
     <div class="content_area type_wide">
         <h1 class="title">面接練習詳細</h1>
+        {% if practice.carrying_out_flg == 0 %}
+        <p class="message" style="color: red;">この面接練習は中止されました。</p>
+        {% endif %}
         <div class="content">
             <div class="row_block">
                 <div class="label">先生</div>
@@ -17,11 +20,16 @@
                 <div class="label">コメント</div>
                 <div class="value">{{ practice.comment }}</div>
             </div>
-
+            {% if practice.carrying_out_flg == 1 %}
             <div class="btn_area">
                 <a href="{{ url_for('u_practice_page') }}" class="btn btn-outline-primary">戻る</a>
                 <a href="{{ url_for('u_practice_canceled',id=practice.id) }}" class="btn btn-outline-secondary">キャンセルする</a>
             </div>
+            {% else %}
+            <div class="btn_area">
+                <a href="{{ url_for('u_practice_page',id=practice.id,user_display_flg=0) }}" class="btn btn-outline-danger">中止を確認した</a>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

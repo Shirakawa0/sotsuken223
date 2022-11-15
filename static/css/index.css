@@ -10,7 +10,6 @@
 
 .row_input *{
     margin: 0;
-    padding: 0;
 }
 
 .row_input .label{
@@ -20,7 +19,6 @@
 
 .row_input .value{
     width: 70%;
-    padding-left: 5px;
     text-align: left;
 }
 
@@ -48,7 +46,6 @@
 
 .row_confirm *{
     margin: 0;
-    padding: 0;
 }
 
 .row_confirm .label{
@@ -72,7 +69,6 @@
 
 .row_block *{
     margin: 0;
-    padding: 0;
 }
 
 .row_block .label{
@@ -110,16 +106,19 @@
     text-overflow: ellipsis;
 }
 
-/* .return_img{
+.return_btn a{
+    display: block;
+    position: absolute;
+    top: 106px;
+}
+
+.return_btn img{
     width: 30px;
 }
 
-.return_btn{
-    display: block;
-    position: absolute;
-    top: 100px;
-    left: 30px;
-} */
+.logo_header{
+    height: 40px;
+}
 
 /* ログイン系の画面に共通する部分 -------------------------- */
 
@@ -163,6 +162,11 @@
 }
 
 /* メイン画面に共通する部分 -------------------------------- */
+
+.main{
+    width: 1130px; /* 戻るボタンの位置を調整 */
+    margin: auto;
+}
 
 .main .content_area{
     width: 800px;
@@ -389,10 +393,11 @@
 
 #u_practice_home .comment{
     width: 50%;
+    text-align: left;
 }
 
-#u_practice_detail .content_area{
-    padding-bottom: 0;
+#u_practice_home .carrying_out{
+    width: 10%;
 }
 
 #a_practice_home .comment{
@@ -404,8 +409,14 @@
     width: 15%;
 }
 
-/* その他 ------------------------------------------------- */
-
-.logo_header{
-    height: 40px;
+#a_practice_1  .row_input .label{
+    width: 25%;
+    text-align: left;
 }
+
+#a_practice_1  .row_input .value{
+    width: 75%;
+    text-align: left;
+}
+
+/* -------------------------------------------------------- */
