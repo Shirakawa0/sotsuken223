@@ -809,7 +809,7 @@
 }
 
 #u_search .current{
-    background-color: #09C9D9;
+    background-color:#09C9D9;
 }
 
 #u_search .home_content .search_form{
@@ -823,6 +823,13 @@
 #u_search #show_pdf{
     width: 50%;
     height: 100%;
+}
+
+#u_search #show_pdf .back_str{
+    position:absolute; 
+    top:320px; 
+    left:870px;
+    z-index: -1;
 }
 
 #u_search #show_pdf iframe{
