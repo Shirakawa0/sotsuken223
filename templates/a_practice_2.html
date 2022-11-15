@@ -1,22 +1,24 @@
-{% extends "template3.html" %}
+{% extends "temp_admin.html" %}
+
 {% block content %}
-<div class="input_display" id="a_practice_2">
-    <div class="content">
+<div id="a_practice_2" class="main">
+    <div class="content_area type_input">
         <h1 class="title">面接練習</h1>
+        <p class="message">この内容で登録します。よろしいですか？</p>
         <div class="content">
-            <div class="row_noborder">
+            <div class="row_block">
                 <div class="label">日付</div>
                 <div class="value">{{ date }}</div>
             </div>
-            <div class="row_noborder">
+            <div class="row_block">
                 <div class="label">コメント</div>
                 <div class="value">{{ comment }}</div>
             </div>
-            <form action="{{ url_for('a_practice_3') }}" method="post">
+            <form action="{{ url_for('a_practice_done') }}" method="post">
                 <input type="hidden" name="date" value="{{ date }}">
                 <input type="hidden" name="comment" value="{{ comment }}">
-                <div class="buttons">
-                    <a href="{{ url_for('a_practice_1') }}" class="btn btn-outline-secondary">戻る</a>
+                <div class="btn_area">
+                    <a href="{{ url_for('a_practice_create') }}" class="btn btn-outline-secondary">戻る</a>
                     <input type="submit" value="登録する" class="btn btn-outline-primary">
                 </div>
             </form>

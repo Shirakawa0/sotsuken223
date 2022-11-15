@@ -1,26 +1,26 @@
-{% extends "template.html" %}
-{% block content %}
+{% extends "temp_user.html" %}
 
-<div id="u_practice_home" class="input_display">
-    <a href="{{ url_for('u_home_page') }}">
+{% block content %}
+<div id="u_practice_home" class="main">
+    <!-- <a href="{{ url_for('u_home_page') }}">
         <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
-    </a>
-    <div class="content home_content">
+    </a> -->
+    <div class="content_area">
         <h1 class="title">参加予定の面接練習</h1>
-        {% if not schedules %}
+        {% if not practices %}
         <p>ありません。</p>
         {% endif %}
-        {% for schedule in schedules %}
+        {% for practice in practices %}
         <div class="btn btn-light box">
-            <a href="{{ url_for('u_practice_detail',id=schedule.id) }}" class="links">
-                <div>{{ schedule.teacher }}</div>
-                <div>{{ schedule.date }}</div>
-                <div>{{ schedule.comment }}</div>
+            <a href="{{ url_for('u_practice_detail',id=practice.id) }}" class="box_content">
+                <div class="teacher">{{ practice.teacher }}</div>
+                <div class="date">{{ practice.date }}</div>
+                <div class="comment text_overflow">{{ practice.comment }}</div>
             </a>
         </div>
         {% endfor %}
         <h1 class="title">面接練習検索</h1>
-        <form action="{{ url_for('u_practice_page') }}" method="post">
+        <form action="{{ url_for('u_practice_page') }}" method="post" class="search">
             <select name="teacher">
                 <option value="">先生を選択</option>
                 {% for teacher in teachers %}
@@ -28,16 +28,30 @@
                 {% endfor %}
             </select>
             <input type="date" name="date">
-            <input type="submit" value="検索" class="btn btn-outline-primary btn-sm">
+            <input type="submit" value="検索" class="">
         </form>
-        {% if not search_result and method != "get" %}
+        {% if method == "get" %}
+        <p class="explanation">
+            先生を選択すると、先生ごとに検索できます。<br>
+            日付を入力すると、今日から指定した日付までの範囲で検索できます。<br>
+            条件は組み合わせることができます。<br>
+            何も選択しないとすべての面接練習が表示されます。<br>
+        </p>
+        <!-- <ul class="explanation">
+            <li>先生を選択すると、先生ごとに検索できます。</li>
+            <li>日付を入力すると、今日から指定した日付までの範囲で検索できます。</li>
+            <li>条件は組み合わせることができます。</li>
+            <li>何も選択しないとすべての面接練習が表示されます。</li>
+        </ul> -->
+        {% elif not search_results %}
         <p>ありません。</p>
         {% endif %}
-        {% for result in search_result %}
+        {% for result in search_results %}
         <div class="btn btn-light box">
-            <a href="{{ url_for('u_practice_confirm',id=result.id) }}" class="links">
-                <div>{{ result.date }}</div>
-                <div>{{ result.comment }}</div>
+            <a href="{{ url_for('u_practice_confirm',id=result.id) }}" class="box_content">
+                <div class="teacher">{{ result.teacher }}</div>
+                <div class="date">{{ result.date }}</div>
+                <div class="comment text_overflow">{{ result.comment }}</div>
             </a>
         </div>
         {% endfor %}

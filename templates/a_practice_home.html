@@ -1,22 +1,35 @@
-{% extends "template3.html" %}
+{% extends "temp_admin.html" %}
 
 {% block content %}
 
-<div id="a_practice_home" class="input_display">
-    <a href="{{ url_for('a_home_page') }}">
+<div id="a_practice_home" class="main">
+    <!-- <a href="{{ url_for('a_home_page') }}">
         <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
-    </a>
-    <div class="home_content content">
+    </a> -->
+    <div class="content_area">
         <h1 class="title">面接練習</h1>
-        <a href="{{ url_for('a_practice_1') }}" class="btn btn-outline-primary">日程追加</a>
-        {% for schedule in schedules %}
-        <div class="btn btn-light box">
-            <a href="{{ url_for('a_practice_detail',id=schedule.id) }}" class="links">
-                <div>{{ schedule.date }}</div>
-                <div class="text_over">{{ schedule.comment }}</div>
-            </a>
+        <p class="message">
+            予定をクリックすると、内容の編集や削除ができます。<br>
+            また、画面下の日程追加ボタンから日程を追加できます。
+        </p>
+        <div class="content">
+            {% for practice in practices %}
+            <div class="btn btn-light box">
+                <a href="{{ url_for('a_practice_detail',id=practice.id) }}" class="box_content">
+                    <div class="date">{{ practice.date }}</div>
+                    <div class="comment text_overflow">{{ practice.comment }}</div>
+                    {% if practice.num == 0 %}
+                    <div class="num" style="color: gray;">参加者なし</div>
+                    {% else %}
+                    <div class="num" style="color: rgb(0, 89, 255);">参加者：{{ practice.num }}名</div>
+                    {% endif %}
+                </a>
+            </div>
+            {% endfor %}
+            <div class="btn_area">
+                <a href="{{ url_for('a_practice_create') }}" class="btn btn-outline-primary">日程追加</a>
+            </div>
         </div>
-        {% endfor %}
     </div>
 </div>
 

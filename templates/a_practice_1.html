@@ -1,23 +1,26 @@
-{% extends "template3.html" %}
+{% extends "temp_admin.html" %}
 
 {% block content %}
-<div id="a_practice_1" class="input_display">
-    <div class="content">
+<div id="a_practice_1" class="main">
+    <div class="content_area type_input">
         <h1 class="title">面接練習</h1>
-        <form action="{{ url_for('a_practice_2') }}">
-            <div class="row_input">
-                <div class="label">日付</div>
-                <input type="date" name="date" class="value">
-            </div>
-            <div class="row_input">
-                <div class="label">詳細</div>
-                <textarea cols="30" rows="10" name="comment" class="value" placeholder="時間帯・場所などを入力"></textarea>
-            </div>
-            <div class="buttons">
-                <a href="{{ url_for('a_practice_page') }}" class="btn btn-outline-secondary">戻る</a>
-                <input type="submit" value="次へ進む" class="btn btn-outline-primary">
-            </div>
-        </form>
+        <p class="message">面接練習の情報を入力してください</p>
+        <div class="content">
+            <form action="{{ url_for('a_practice_confirm') }}">
+                <div class="row_input">
+                    <div class="label">日付</div>
+                    <input type="date" name="date" class="value">
+                </div>
+                <div class="row_input">
+                    <div class="label">コメント</div>
+                    <textarea cols="10" rows="6" name="comment" class="value" placeholder="時間帯・場所などを入力"></textarea>
+                </div>
+                <div class="btn_area">
+                    <a href="{{ url_for('a_practice_home') }}" class="btn btn-outline-secondary">戻る</a>
+                    <input type="submit" value="次へ進む" class="btn btn-outline-primary">
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}

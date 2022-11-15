@@ -302,66 +302,63 @@ def u_passed():
 
 @app.route("/u_practice",methods=["GET","POST"])
 def u_practice_page():
-    student = session["id"]
-
     dbmg = db_manager()
-    schedules = dbmg.exec_query("select practice.id as id,name as teacher,date,comment from practice inner join a_account on teacher = a_account.id where practice.id in (select schedule_id from practice_attendance where student=%s) order by date asc",student)
+
+    student = session["id"]
+    practices = dbmg.exec_query("select practice.id as id,name as teacher,date,comment from practice inner join a_account on teacher = a_account.id where practice.id in (select schedule_id from practice_attendance where student=%s) order by date asc",student)
+    
     teachers = dbmg.exec_query("select id,name from a_account")
 
-    teacher = request.form.get("teacher")
-    date = request.form.get("date")
-
     if request.method == "GET":
-        return render_template("u_practice_home.html",teachers=teachers,schedules=schedules,method="get")
-    
-    if teacher:
-        if date:
-            search_result = dbmg.exec_query("select * from practice where teacher = %s and date <= %s and id not in (select schedule_id from practice_attendance where student=%s) order by date asc",(teacher,date,student))
-        else:
-            search_result = dbmg.exec_query("select * from practice where teacher = %s and id not in (select schedule_id from practice_attendance where student=%s) order by date asc",(teacher,student))
-    else:
-        if date:
-            search_result = dbmg.exec_query("select * from practice where date <= %s and id not in (select schedule_id from practice_attendance where student=%s) order by date asc",(date,student))
-        else:
-            search_result = dbmg.exec_query("select * from practice where id not in (select schedule_id from practice_attendance where student=%s) order by date asc",student)
+        return render_template("u_practice_home.html",teachers=teachers,practices=practices,method="get")
 
-    return render_template("u_practice_home.html",teachers=teachers,search_result=search_result,schedules=schedules)
+    teacher = request.form.get("teacher")
+    teacher = "%" + teacher + "%"
+
+    date = request.form.get("date")
+    date = date if date else "2099-12-31"
+
+    today = datetime.date.today()
+
+    search_results = dbmg.exec_query("select practice.id as id,name as teacher,date,comment from practice inner join a_account on teacher=a_account.id where teacher like %s and date >= %s and date <= %s and practice.id not in (select schedule_id from practice_attendance where student=%s) order by date asc",(teacher,today,date,student))
+    
+    return render_template("u_practice_home.html",teachers=teachers,practices=practices,search_results=search_results)
 
 @app.route("/u_practice/confirm",methods=["GET","POST"])
 def u_practice_confirm():
-    id = request.args.get("id")
-
     dbmg = db_manager()
 
+    id = request.args.get("id")
     practice = dbmg.exec_query("select practice.id,name as teacher,date,comment from practice inner join a_account on teacher = a_account.id where practice.id=%s",id)
 
     return render_template("u_practice_1.html",practice=practice[0])
 
 @app.route("/u_practice/done")
 def u_practice():
+    dbmg = db_manager()
+
     id = request.args.get("id")
     student = session["id"]
 
-    dbmg = db_manager()
     dbmg.exec_query("insert into practice_attendance values(%s,%s)",(id,student))
     
     return render_template("u_practice_2.html")
 
 @app.route("/u_practice/detail")
 def u_practice_detail():
-    practice_id = request.args.get("id")
-
     dbmg = db_manager()
-    practice = dbmg.exec_query("select practice.id as id,name as teacher,date,comment from practice inner join a_account on teacher=a_account.id where practice.id=%s",practice_id)
+
+    id = request.args.get("id")
+    practice = dbmg.exec_query("select practice.id as id,name as teacher,date,comment from practice inner join a_account on teacher=a_account.id where practice.id=%s",id)
     
     return render_template("u_practice_detail.html",practice=practice[0])
 
-@app.route("/u_practice/cancel")
-def u_practice_cancel():
-    practice_id = request.args.get("id")
-
+@app.route("/u_practice/canceled")
+def u_practice_canceled():
     dbmg = db_manager()
-    dbmg.exec_query("delete from practice_attendance where schedule_id=%s",practice_id)
+
+    id = request.args.get("id")
+    dbmg.exec_query("delete from practice_attendance where schedule_id=%s",id)
 
     return render_template("u_practice_canceled.html")
 
@@ -599,50 +596,87 @@ def a_forum_search():
 
     return render_template("a_forum.html",threads=threads)
 
-@app.route("/a_practice")
-def a_practice_page():
-    teacher = session["id"]
-
+@app.route("/a_practice/home")
+def a_practice_home():
     dbmg = db_manager()
-    schedules = dbmg.exec_query("select * from practice where teacher = %s order by date asc",(teacher))
 
-    return render_template("a_practice_home.html",schedules=schedules)
+    teacher = session["id"]
+    today = datetime.date.today()
 
-@app.route("/a_practice_1")
-def a_practice_1():
+    practices = dbmg.exec_query("select * from practice where teacher = %s and date>=%s order by date asc",(teacher,today))
+    for practice in practices:
+        num = dbmg.exec_query("select count(*) as num from practice_attendance where schedule_id=%s",practice["id"])
+        num = num[0]["num"]
+        practice["num"] = num
+
+    return render_template("a_practice_home.html",practices=practices)
+
+@app.route("/a_practice/create")
+def a_practice_create():
     return render_template("a_practice_1.html")
 
-@app.route("/a_practice_2")
-def a_practice_2():
+@app.route("/a_practice/confirm")
+def a_practice_confirm():
     date = request.args.get("date")
     comment = request.args.get("comment")
 
     return render_template("a_practice_2.html",date=date,comment=comment)
 
-@app.route("/a_practice_3",methods=["POST"])
-def a_practice_3():
+@app.route("/a_practice/done",methods=["POST"])
+def a_practice_done():
+    dbmg = db_manager()
+
     teacher = session["id"]
     date = request.form.get("date")
     comment = request.form.get("comment")
 
-    dbmg = db_manager()
     dbmg.exec_query("insert into practice(teacher,date,comment) values(%s,%s,%s)",(teacher,date,comment))
 
     return render_template("a_practice_3.html")
 
 @app.route("/a_practice/detail",methods=["GET","POST"])
 def a_practice_detail():
-    id = request.args.get("id")
-
     dbmg = db_manager()
 
+    id = request.args.get("id")
+    practice = dbmg.exec_query("select * from practice where id=%s",id)
+    students = dbmg.exec_query("select u_account.name as name,dep.name as dep from practice_attendance inner join u_account on student=u_account.id inner join class on class_id=class.id inner join dep on dep_id=dep.id where schedule_id=%s",id)
+
+    return render_template("a_practice_detail.html",practice=practice[0],students=students,num=len(students))
+
+@app.route("/a_practice/modify",methods=["GET","POST"])
+def a_practice_modify():
+    dbmg = db_manager()
+
+    if request.method == "GET":
+        id = request.args.get("id")
+        practice = dbmg.exec_query("select * from practice where id=%s",id)
+        return render_template("a_practice_modify.html",practice=practice[0])
+
     if request.method == "POST":
+        id = request.form.get("id")
         comment = request.form.get("comment")
         dbmg.exec_query("update practice set comment=%s where id=%s",(comment,id))
+        return redirect(url_for("a_practice_detail",id=id))
 
+@app.route("/a_practice/delete/confirm")
+def a_practice_delete_confirm():
+    dbmg = db_manager()
+
+    id = request.args.get("id")
     practice = dbmg.exec_query("select * from practice where id=%s",id)
+    students = dbmg.exec_query("select u_account.name as name,dep.name as dep from practice_attendance inner join u_account on student=u_account.id inner join class on class_id=class.id inner join dep on dep_id=dep.id where schedule_id=%s",id)
 
-    return render_template("a_practice_detail.html",practice=practice[0])
+    return render_template("a_practice_delete_1.html",practice=practice[0],students=students,num=len(students))
+
+@app.route("/a_practice_delete/done")
+def a_practice_delete():
+    dbmg = db_manager()
+
+    id = request.args.get("id")
+    dbmg.exec_query("delete from practice where id=%s",id)
+
+    return render_template("a_practice_delete_2.html")
 
 @app.route("/a_check_all")
 def a_check_page():
