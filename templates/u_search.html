@@ -1,27 +1,38 @@
 {% extends "template.html" %}
 {% block content %}
-<h1>報告書検索</h1>
-<h1>企業名で検索できます</h1>
-<form action="{{url_for('u_search')}}">
-    企業名
-    <input type="text" name="name">
-    年度
-    <select name="year">
-        <option value="2023">年度を選択</option>
-    </select>
-    <input type="submit" value="検索" class="btn btn-outline-success">
-    <br>
-</form>
-{% for res in results %}
-    <button href="{{url_for('static',filename=res[0])}}" class="pdf">{{res[1]}}</button>
-{% endfor %}
-<div id="show_pdf">
+<div id="u_search" class="home">
+    <a href="{{ url_for('u_home_page') }}">
+        <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
+    </a>
+<div class="home_content">
+    <h1 class="title">報告書検索</h1>
 
+    <form action="{{url_for('u_search')}}" class="search_form">
+        企業名
+        <input type="text" name="name" placeholder="企業名を入力">
+        年度
+        <select name="year">
+            <option value="2023">年度を選択</option>
+        </select>
+        <input type="submit" value="検索" class="">
+        <br>
+    </form>
+
+    <div class="scrollArea">
+        {% for res in results %}
+        <div class="box btn btn-light">
+            <div href="{{url_for('static',filename=res[0])}}" class="pdf links">
+                {{res[1]}}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+</div>
+<div id="show_pdf">
+</div>
 </div>
 
-
-
-<a href="{{ url_for('u_home_page') }}" class="btn btn-outline-primary">マイページへ戻る</a>
 <script>
     let a = document.getElementsByClassName('pdf')
     console.log(a)
@@ -29,7 +40,7 @@
     let iframe = document.createElement('iframe')
     for(let element of a){
         element.addEventListener('click',function(){
-            iframe.src = element.getAttribute('href')
+            iframe.src = element.getAttribute('href')+'#toolbar=0&navpanes=0'
             show_pdf.appendChild(iframe)
         })
     };
