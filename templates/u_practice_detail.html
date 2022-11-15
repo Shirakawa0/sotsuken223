@@ -22,12 +22,12 @@
             </div>
             {% if practice.carrying_out_flg == 1 %}
             <div class="btn_area">
-                <a href="{{ url_for('u_practice_page') }}" class="btn btn-outline-primary">戻る</a>
+                <a href="{{ url_for('u_practice_home') }}" class="btn btn-outline-primary">戻る</a>
                 <a href="{{ url_for('u_practice_canceled',id=practice.id) }}" class="btn btn-outline-secondary">キャンセルする</a>
             </div>
             {% else %}
             <div class="btn_area">
-                <a href="{{ url_for('u_practice_page',id=practice.id,user_display_flg=0) }}" class="btn btn-outline-danger">中止を確認した</a>
+                <a href="{{ url_for('u_practice_home',id=practice.id,user_display_flg=0) }}" class="btn btn-outline-danger">中止を確認した</a>
             </div>
             {% endif %}
         </div>

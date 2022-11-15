@@ -300,8 +300,8 @@ def u_passed():
 
     return render_template("u_passed_2.html",company=company)
 
-@app.route("/u_practice/home",methods=["GET","POST"])
-def u_practice_page():
+@app.route("/u_practice",methods=["GET","POST"])
+def u_practice_home():
     dbmg = db_manager()
 
     # 利用者が面接練習の中止を確認した場合
@@ -603,7 +603,7 @@ def a_forum_search():
 
     return render_template("a_forum.html",threads=threads)
 
-@app.route("/a_practice/home")
+@app.route("/a_practice")
 def a_practice_home():
     dbmg = db_manager()
 
@@ -676,7 +676,7 @@ def a_practice_delete_confirm():
 
     return render_template("a_practice_delete_1.html",practice=practice[0],students=students,num=len(students))
 
-@app.route("/a_practice_delete/done")
+@app.route("/a_practice/delete/done")
 def a_practice_delete():
     dbmg = db_manager()
 
