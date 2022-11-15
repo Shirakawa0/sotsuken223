@@ -2,9 +2,9 @@
 
 {% block content %}
 <div id="a_practice_modify" class="main">
-    <div class="content_area type_input">
+    <div class="content_area">
         <h1 class="title">面接練習編集</h1>
-        <form action="{{ url_for('a_practice_modify') }}" method="post" class="content">
+        <form action="{{ url_for('a_practice_modify') }}" method="post" class="content_60">
             <input type="hidden" name="id" value="{{ practice.id }}">
             <div class="col_block">
                 <div class="label">日付</div>
@@ -16,7 +16,7 @@
             </div>
             <div class="col_input">
                 <div class="label">更新後のコメント（200文字以内）</div>
-                <textarea name="comment" cols="30" rows="8" class="value" maxlength="200">{{ practice.comment }}</textarea>
+                <textarea name="comment" cols="30" rows="6" class="value" maxlength="200">{{ practice.comment }}</textarea>
             </div>
             <input type="submit" value="コメント更新" class="btn btn-sm btn-outline-primary">
             <div class="btn_area">

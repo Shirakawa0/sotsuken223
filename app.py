@@ -618,10 +618,10 @@ def a_practice_home():
 def a_practice_create():
     return render_template("a_practice_1.html")
 
-@app.route("/a_practice/confirm")
+@app.route("/a_practice/confirm",methods=["POST"])
 def a_practice_confirm():
-    date = request.args.get("date")
-    comment = request.args.get("comment")
+    date = request.form.get("date")
+    comment = request.form.get("comment")
 
     # 入力チェック
     if not date:

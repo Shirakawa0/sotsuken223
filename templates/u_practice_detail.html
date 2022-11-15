@@ -2,12 +2,12 @@
 
 {% block content %}
 <div id="u_practice_detail" class="main">
-    <div class="content_area type_input">
+    <div class="content_area">
         <h1 class="title">面接練習詳細</h1>
         {% if practice.carrying_out_flg == 0 %}
         <p class="message" style="color: red;">この面接練習は中止されました。</p>
         {% endif %}
-        <div class="content">
+        <div class="content_60">
             <div class="col_block">
                 <div class="label">先生</div>
                 <div class="value">{{ practice.teacher }}</div>
