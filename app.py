@@ -627,6 +627,18 @@ def a_practice_confirm():
     date = request.args.get("date")
     comment = request.args.get("comment")
 
+    # 入力チェック
+    if not date:
+        return redirect(url_for("a_practice_create"))
+
+    if not comment or len(comment) > 200:
+        return redirect(url_for("a_practice_create"))
+
+    date_check = datetime.datetime.strptime(date, '%Y-%m-%d')
+    today = datetime.date.today()
+    if date_check.date() < today:
+        return redirect(url_for("a_practice_create"))
+
     return render_template("a_practice_2.html",date=date,comment=comment)
 
 @app.route("/a_practice/done",methods=["POST"])
@@ -660,11 +672,15 @@ def a_practice_modify():
         practice = dbmg.exec_query("select * from practice where id=%s",id)
         return render_template("a_practice_modify.html",practice=practice[0])
 
-    if request.method == "POST":
-        id = request.form.get("id")
-        comment = request.form.get("comment")
-        dbmg.exec_query("update practice set comment=%s where id=%s",(comment,id))
-        return redirect(url_for("a_practice_detail",id=id))
+    id = request.form.get("id")
+    practice = dbmg.exec_query("select * from practice where id=%s",id)
+    
+    comment = request.form.get("comment")
+    if not comment or len(comment) > 200:
+        return render_template("a_practice_modify.html",practice=practice[0])
+
+    dbmg.exec_query("update practice set comment=%s where id=%s",(comment,id))
+    return redirect(url_for("a_practice_detail",id=id))
 
 @app.route("/a_practice/delete/confirm")
 def a_practice_delete_confirm():

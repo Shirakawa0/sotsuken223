@@ -82,6 +82,46 @@
     word-wrap: break-word;
 }
 
+.col_input{
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.col_input *{
+    margin: 0;
+}
+
+/* .col_input .label{
+    text-align: left;
+} */
+
+.col_input .value{
+    width: 100%;
+}
+
+.col_block{
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: left;
+}
+
+.col_block *{
+    margin: 0;
+}
+
+/* .col_block .label{
+    width: 100%;
+} */
+
+.col_block .value{
+    text-align: left;
+    word-wrap: break-word;
+    background-color: #fafafa;
+    padding: 10px;
+    border-radius: 5px;
+}
+
 /* BootStrap を上書きするために .main で指定している */
 .main .box{ 
     width: 100%;
@@ -409,14 +449,8 @@
     width: 15%;
 }
 
-#a_practice_1  .row_input .label{
-    width: 25%;
-    text-align: left;
-}
-
-#a_practice_1  .row_input .value{
-    width: 75%;
-    text-align: left;
+#a_practice_1 .date{
+    width: 50%;
 }
 
 /* -------------------------------------------------------- */
