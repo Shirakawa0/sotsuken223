@@ -304,7 +304,7 @@ def u_passed():
 def u_practice_page():
     dbmg = db_manager()
 
-    # userが面接練習の中止を確認した場合
+    # 利用者が面接練習の中止を確認した場合
     if request.args.get("user_display_flg"):
         id = request.args.get("id")
         dbmg.exec_query("update practice set user_display_flg=%s where id=%s",(False,id))
