@@ -1,32 +1,33 @@
-{% extends "template.html" %}
+{% extends "temp_user.html" %}
+
 {% block content %}
-<div id="u_check_2" class="input_display">
-    <div class="content wide">
+<div id="u_check_2" class="main">
+    <div class="content_area">
         <h1 class="title">文章チェック</h1>
-        <p>入力内容を確認してください</p>
-        <div class="confirm_area">
-            <div class="row">
+        <p class="message">入力内容を確認してください</p>
+        <div class="content_60">
+            <div class="col_block">
                 <div class="label">依頼先</div>
-                <div class="input">{{ check.name }}先生</div>
+                <div class="value">{{ check.name }}先生</div>
             </div>
-            <div class="row">
+            <div class="col_block">
                 <div class="label">提出期限</div>
-                <div class="input">{{ check.date }}</div>
+                <div class="value">{{ check.date }}</div>
             </div>
-            <div class="row">
+            <div class="col_block">
                 <div class="label">タイトル</div>
-                <div class="input">{{ check.title }}</div>
+                <div class="value">{{ check.title }}</div>
             </div>
-            <div class="block">
+            <div class="col_block">
                 <div class="label">本文</div>
-                <textarea name="body" cols="30" rows="10" class="input" readonly>{{ check.body }}</textarea>
+                <div class="value">{{ check.body }}</div>
             </div>
             <form action="{{ url_for('u_check') }}" method="post">
                 <input type="hidden" name="id" value="{{ check.id }}">
                 <input type="hidden" name="date" value="{{ check.date }}">
                 <input type="hidden" name="title" value="{{ check.title }}">
                 <input type="hidden" name="body" value="{{ check.body }}">
-                <div class="buttons">
+                <div class="btn_area">
                     <a href="{{ url_for('u_check_page') }}" class="btn btn-outline-secondary">戻る</a>
                     <input type="submit" value="確定する" class="btn btn-outline-primary">
                 </div>

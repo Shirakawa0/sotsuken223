@@ -1,28 +1,31 @@
-{% extends "template3.html" %}
+{% extends "temp_admin.html" %}
+
 {% block content %}
-<div id="u_check_home" class="home">
-    <div class="home_content">
+<div id="u_check_home" class="main">
+    <div class="return_btn">
         <a href="{{ url_for('a_home_page') }}">
-            <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
+            <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る">
         </a>
+    </div>
+    <div class="content_area">
         <h1 class="title">文章チェック</h1>
-        {% for check in result %}
-        <div class=" btn btn-light box">
-            <a href="{{url_for('a_check',id=check.id)}}" class="links">
-                <div class="text_over">{{ check.date }}</div>
-                <div class="text_over">{{ check.title }}</div>
-                <div class="text_over">{{ check.name }}</div>
-                <div class="text_over">
+        <p class="message">届いた文章をチェックし、コメントができます。</p>
+        <div class="content">
+            {% for check in result %}
+            <div class=" btn btn-light box">
+                <a href="{{url_for('a_check',id=check.id)}}" class="box_content">
+                    <div>{{ check.date }}</div>
+                    <div class="text_overflow" style="width: 40%;">{{ check.title }}</div>
+                    <div class="text_overflow" style="width: 15%;">{{ check.name }}</div>
                     {% if check.check_flg=="0" %}
-                        <span style="color:blue ;">コメント未入力</span>
+                    <div style="width: 20%;">コメント未入力</div>
                     {% else %}
-                        コメント済
+                    <div style="width: 20%; color:blue">コメント済</div>
                     {% endif %}
-                </div>
-            </a> 
+                </a> 
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
 </div>
-
 {% endblock %}

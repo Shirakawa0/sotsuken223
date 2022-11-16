@@ -1,10 +1,11 @@
-{% extends "template.html" %}
+{% extends "temp_user.html" %}
+
 {% block content %}
-<div id="u_add_3" class="input_display">
-    <div class="content">
+<div id="u_check_3" class="main">
+    <div class="content_area">
         <h1 class="title">文章チェック</h1>
-        <div class="done">
-            <p>文章チェックを依頼しました</p>
+        <div class="content_done">
+            <p class="message">文章チェックを依頼しました</p>
             <a href="{{ url_for('u_check_home') }}" class="btn btn-outline-primary">ホームへ戻る</a>
         </div>
     </div>

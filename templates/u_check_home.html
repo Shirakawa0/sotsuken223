@@ -1,29 +1,32 @@
-{% extends "template.html" %}
+{% extends "temp_user.html" %}
+
 {% block content %}
-<div id="u_check_home" class="home">
-    <div class="home_content">
+<div id="u_check_home" class="main">
+    <div class="return_btn">
         <a href="{{ url_for('u_home_page') }}">
-            <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
+            <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る">
         </a>
+    </div>
+    <div class="content_area">
         <h1 class="title">文章チェック</h1>
-        <a href="{{ url_for('u_check_page') }}" class="btn btn-outline-primary m-3">文章チェックを依頼</a>
+        <p class="message">画面下のボタンから文章チェックを依頼できます。</p>
         {% for check in check%}
         <div class=" btn btn-light box">
-            <a href="{{url_for('u_check_eva',id=check.id)}}" class="links">
-                <div class="text_over">{{ check.date }}</div>
-                <div class="text_over">{{ check.title }}</div>
-                <div class="text_over">{{ check.name }}</div>
-                <div class="text_over">
-                    {% if check.check_flg=="0" %}
-                        コメント待ち
-                    {% elif check.check_flg=="1" %}
-                        <span style="color: blue;">コメントが来ています</span>
-                    {% endif %}
-                </div>
+            <a href="{{url_for('u_check_eva',id=check.id)}}" class="box_content">
+                <div class="date">{{ check.date }}</div>
+                <div class="check_title text_overflow">{{ check.title }}</div>
+                <div class="teacher text_overflow">{{ check.name }}</div>
+                {% if check.check_flg == 0 %}
+                <div class="flg" style="color: gray;">コメント待ち</div>
+                {% elif check.check_flg == 1 %}
+                <div class="flg" style="color: blue;">コメントが来ています</div>
+                {% endif %}
             </a> 
         </div>
         {% endfor %}
-
+        <div class="btn_area">
+            <a href="{{ url_for('u_check_page') }}" class="btn btn-outline-primary m-3">文章チェックを依頼</a>
+        </div>
     </div>
 </div>
 {% endblock %}

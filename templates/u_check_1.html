@@ -1,33 +1,34 @@
-{% extends "template.html" %}
+{% extends "temp_user.html" %}
+
 {% block content %}
-<div id="u_check_1" class="input_display">
-    <div class="content wide">
+<div id="u_check_1" class="main"> class="col_input"
+    <div class="content_area">
         <h1 class="title">文章チェック</h1>
-        <p>以下の項目を入力してください</p>
-        <div class="input_area">
+        <p class="message">以下の項目を入力してください</p>
+        <div class="content_60">
             <form action="{{ url_for('u_check_confirm') }}" method="post">
-                <div class="row">
+                <div class="col_input">
                     <div class="label">先生</div>
-                    <select name="id" class="input">
+                    <select name="id" class="value" style="width: 50%;">
                         <option value="">先生を選択</option>
                         {% for teacher in teachers %}
                         <option value="{{ teacher.id }}">{{ teacher.name }}先生</option>
                         {% endfor %}
                     </select>
                 </div>
-                <div class="row">
+                <div class="col_input">
                     <div class="label">提出期限</div>
-                    <input type="date" name="date" class="input">
+                    <input type="date" name="date" class="value" style="width: 50%;">
                 </div>
-                <div class="row">
+                <div class="col_input">
                     <div class="label">タイトル</div>
-                    <input type="text" name="title" class="input">
+                    <input type="text" name="title" class="value">
                 </div>
-                <div class="block">
+                <div class="col_input">
                     <div class="label">本文</div>
-                    <textarea name="body" cols="30" rows="10" class="input"></textarea>
+                    <textarea name="body" cols="30" rows="10" class="value"></textarea>
                 </div>
-                <div class="buttons">
+                <div class="btn_area">
                     <a href="{{ url_for('u_check_home') }}" class="btn btn-outline-secondary">戻る</a>
                     <input type="submit" value="次へ進む" class="btn btn-outline-primary">
                 </div>

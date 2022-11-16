@@ -239,7 +239,7 @@
     margin-top: 40px;
 }
 
-.main .btn_area * {
+.main .btn{
     margin: 10px;
     min-width: 120px;
 }
@@ -454,8 +454,16 @@
     width: 15%;
 }
 
-#a_practice_1 .date{
+#u_check_home .check_title{
     width: 40%;
+}
+
+#u_check_home .teacher{
+    width: 15%;
+}
+
+#u_check_home .flg{
+    width: 20%;
 }
 
 /* -------------------------------------------------------- */

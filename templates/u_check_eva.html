@@ -1,32 +1,35 @@
-{% extends "template.html" %}
+{% extends "temp_user.html" %}
+
 {% block content %}
-<div id="u_check_eva" class="input_display">
-    <a href="{{ url_for('u_check_home') }}">
-        <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
-    </a>
-    <div class="content wide">
-        <h1 class="title">文章チェック</h1>
-        <div class="confirm_area">
+<div id="u_check_eva" class="main">
+    <div class="return_btn">
+        <a href="{{ url_for('u_check_home') }}">
+            <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る">
+        </a>
+    </div>
+    <div class="content_area">
+        <h1 class="title">文章チェック詳細</h1>
+        <div class="content_60">
             {% for check in check %}
-                <div class="row">
+                <div class="col_block">
                     <div class="label">依頼先</div>
-                    <div class="input">{{ check.name }}先生</div>
+                    <div class="value">{{ check.name }}先生</div>
                 </div>
-                <div class="row">
+                <div class="col_block">
                     <div class="label">提出期限</div>
-                    <div class="input">{{ check.date }}</div>
+                    <div class="value">{{ check.date }}</div>
                 </div>
-                <div class="row">
+                <div class="col_block">
                     <div class="label">タイトル</div>
-                    <div class="input">{{ check.title }}</div>
+                    <div class="value">{{ check.title }}</div>
                 </div>
-                <div class="block">
+                <div class="col_block">
                     <div class="label">本文</div>
-                    <textarea name="body" cols="30" rows="10" class="input" readonly>{{ check.body }}</textarea>
+                    <div name="body" class="value">{{ check.body }}</div>
                 </div>
-                <div class="block">
+                <div class="col_block">
                     <div class="label">コメント</div>
-                    <textarea name="body" cols="30" rows="10" class="input" readonly>{{ check.comment }}</textarea>
+                    <div name="body" class="value">{{ check.comment }}</div>
                 </div>
             {% endfor %}
         </div>
