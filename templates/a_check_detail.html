@@ -1,0 +1,51 @@
+{% extends "temp_admin.html" %}
+
+{% block content %}
+<div id="u_check_eva" class="main">
+    <div class="return_btn">
+        <a href="{{ url_for('a_check_home') }}">
+            <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る">
+        </a>
+    </div>
+    <div class="content_area">
+        <h1 class="title">文章チェック詳細</h1>
+        <div class="content_60">
+            <div class="col_block">
+                <div class="label">生徒名</div>
+                <div class="value">{{ result.name }}</div>
+            </div>
+            <div class="col_block">
+                <div class="label">提出期限</div>
+                <div class="value">{{ result.date }}</div>
+            </div>
+            <div class="col_block">
+                <div class="label">タイトル</div>
+                <div class="value">{{ result.title }}</div>
+            </div>
+            <div class="col_block">
+                <div class="label">本文</div>
+                <div name="body" class="value">{{ result.body }}</div>
+            </div>
+            {% if result.comment %}
+            <div class="col_block">
+                <div class="label">現在のコメント</div>
+                <div class="value">{{ result.comment }}</div>
+            </div>
+            {% endif %}
+            <form action="{{ url_for('a_check_detail') }}" method="post">
+                <div class="col_input">
+                    {% if result.comment %}
+                    <div class="label">更新後のコメント（300文字以内）</div>
+                    {% else %}
+                    <div class="label">コメント（300文字以内）</div>
+                    {% endif %}
+                    <textarea name="comment" cols="30" rows="8" class="value">{{ result.comment }}</textarea>
+                </div>
+                <input type="hidden" name="id" value="{{ result.id }}">
+                <input type="submit" value="コメントする" class="btn btn-outline-primary">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

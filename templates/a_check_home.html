@@ -1,0 +1,60 @@
+{% extends "temp_admin.html" %}
+
+{% block content %}
+<div id="a_check_home" class="main">
+    <div class="return_btn">
+        <a href="{{ url_for('a_home_page') }}">
+            <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る">
+        </a>
+    </div>
+    <div class="content_area">
+        <h1 class="title">文章チェック</h1>
+        <p class="message">届いた文章をチェックし、コメントを送信できます。</p>
+        <div class="content">
+            
+            {% if not checked and not unchecked %}
+            <p class="explanation">
+                学生から文章チェックの依頼があると、ここに表示されます。
+            </p>
+            {% endif %}
+
+            {% if unchecked %}
+            <p class="title_sub">チェック未完了</p>
+            {% endif %}
+            {% for check in unchecked %}
+            <div class=" btn btn-light box">
+                <a href="{{url_for('a_check_detail',id=check.id)}}" class="box_content">
+                    <div>{{ check.date }}</div>
+                    <div class="check_title text_overflow" >{{ check.title }}</div>
+                    <div class="teacher text_overflow">{{ check.name }}</div>
+                    {% if check.check_flg == 0 %}
+                    <div class="flg">コメント未入力</div>
+                    {% elif check.check_flg == 1 %}
+                    <div class="flg" style="color: green;">コメント済</div>
+                    {% endif %}
+                </a> 
+            </div>
+            {% endfor %}
+
+            {% if checked %}
+            <p class="title_sub">チェック済み</p>
+            {% endif %}
+            {% for check in checked %}
+            <div class=" btn btn-light box">
+                <a href="{{url_for('a_check_detail',id=check.id)}}" class="box_content">
+                    <div>{{ check.date }}</div>
+                    <div class="check_title text_overflow" >{{ check.title }}</div>
+                    <div class="teacher text_overflow">{{ check.name }}</div>
+                    {% if check.check_flg == 0 %}
+                    <div class="flg">コメント未入力</div>
+                    {% elif check.check_flg == 1 %}
+                    <div class="flg" style="color: green;">コメント済</div>
+                    {% endif %}
+                </a> 
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -125,7 +125,7 @@
 /* BootStrap を上書きするために .main で指定している */
 .main .box{ 
     width: 100%;
-    margin-bottom: 10px;
+    margin: 0 0 10px 0;
     display: block;
     padding: 0;
 }
@@ -240,8 +240,12 @@
 }
 
 .main .btn{
-    margin: 10px;
+    /* margin: 10px; */
     min-width: 120px;
+}
+
+.main .btn_area .btn{
+    margin: 10px;
 }
 
 .main .content_50{
@@ -454,8 +458,22 @@
     width: 15%;
 }
 
+#u_check_home .explanation{
+    width: 500px;
+    margin: 30px auto;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    color: rgb(97, 97, 97);
+}
+
+#u_check_home .title_sub{
+    margin: 20px 0 5px 0;
+}
+
 #u_check_home .check_title{
     width: 40%;
+    /* text-align: left; */
 }
 
 #u_check_home .teacher{
@@ -464,6 +482,32 @@
 
 #u_check_home .flg{
     width: 20%;
+}
+
+#a_check_home .check_title{
+    width: 40%;
+    /* text-align: left; */
+}
+
+#a_check_home .explanation{
+    width: 500px;
+    margin: auto;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    color: rgb(97, 97, 97);
+}
+
+#a_check_home .teacher{
+    width: 15%;
+}
+
+#a_check_home .flg{
+    width: 20%;
+}
+
+#a_check_home .title_sub{
+    margin: 20px 0 5px 0;
 }
 
 /* -------------------------------------------------------- */

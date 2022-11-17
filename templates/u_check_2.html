@@ -8,7 +8,7 @@
         <div class="content_60">
             <div class="col_block">
                 <div class="label">依頼先</div>
-                <div class="value">{{ check.name }}先生</div>
+                <div class="value">{{ check.teacher.name }}先生</div>
             </div>
             <div class="col_block">
                 <div class="label">提出期限</div>
@@ -23,12 +23,12 @@
                 <div class="value">{{ check.body }}</div>
             </div>
             <form action="{{ url_for('u_check') }}" method="post">
-                <input type="hidden" name="id" value="{{ check.id }}">
+                <input type="hidden" name="id" value="{{ check.teacher.id }}">
                 <input type="hidden" name="date" value="{{ check.date }}">
                 <input type="hidden" name="title" value="{{ check.title }}">
                 <input type="hidden" name="body" value="{{ check.body }}">
                 <div class="btn_area">
-                    <a href="{{ url_for('u_check_page') }}" class="btn btn-outline-secondary">戻る</a>
+                    <a href="{{ url_for('u_check_request') }}" class="btn btn-outline-secondary">戻る</a>
                     <input type="submit" value="確定する" class="btn btn-outline-primary">
                 </div>
             </form>

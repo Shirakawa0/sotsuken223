@@ -1,7 +1,7 @@
 {% extends "temp_user.html" %}
 
 {% block content %}
-<div id="u_check_1" class="main"> class="col_input"
+<div id="u_check_1" class="main">
     <div class="content_area">
         <h1 class="title">文章チェック</h1>
         <p class="message">以下の項目を入力してください</p>
@@ -9,7 +9,7 @@
             <form action="{{ url_for('u_check_confirm') }}" method="post">
                 <div class="col_input">
                     <div class="label">先生</div>
-                    <select name="id" class="value" style="width: 50%;">
+                    <select name="teacher" class="value" style="width: 50%;" required>
                         <option value="">先生を選択</option>
                         {% for teacher in teachers %}
                         <option value="{{ teacher.id }}">{{ teacher.name }}先生</option>
@@ -18,15 +18,15 @@
                 </div>
                 <div class="col_input">
                     <div class="label">提出期限</div>
-                    <input type="date" name="date" class="value" style="width: 50%;">
+                    <input type="date" name="date" class="value" style="width: 50%;" required>
                 </div>
                 <div class="col_input">
                     <div class="label">タイトル</div>
-                    <input type="text" name="title" class="value">
+                    <input type="text" name="title" class="value" required maxlength="32">
                 </div>
                 <div class="col_input">
                     <div class="label">本文</div>
-                    <textarea name="body" cols="30" rows="10" class="value"></textarea>
+                    <textarea name="body" cols="30" rows="10" class="value" required maxlength="600"></textarea>
                 </div>
                 <div class="btn_area">
                     <a href="{{ url_for('u_check_home') }}" class="btn btn-outline-secondary">戻る</a>

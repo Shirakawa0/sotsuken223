@@ -1,0 +1,44 @@
+{% extends "temp_user.html" %}
+
+{% block content %}
+<div id="u_check_detail" class="main">
+    <div class="return_btn">
+        <a href="{{ url_for('u_check_home') }}">
+            <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る">
+        </a>
+    </div>
+    <div class="content_area">
+        <h1 class="title">文章チェック詳細</h1>
+        <div class="content_60">
+            <div class="col_block">
+                <div class="label">依頼先</div>
+                <div class="value">{{ check.name }}先生</div>
+            </div>
+            <div class="col_block">
+                <div class="label">提出期限</div>
+                <div class="value">{{ check.date }}</div>
+            </div>
+            <div class="col_block">
+                <div class="label">タイトル</div>
+                <div class="value">{{ check.title }}</div>
+            </div>
+            <div class="col_block">
+                <div class="label">本文</div>
+                <div name="body" class="value">{{ check.body }}</div>
+            </div>
+            {% if check.check_flg == 1 %}
+            <div class="col_block">
+                <div class="label">コメント</div>
+                <div name="body" class="value">{{ check.comment }}</div>
+            </div>
+            {% endif %}
+
+            <div class="btn_area">
+                {% if check.read_flg == 0 and check.check_flg == 1 %}
+                <a href="{{ url_for('u_check_home',check_id=check.id) }}" class="btn btn-outline-success">既読にする</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

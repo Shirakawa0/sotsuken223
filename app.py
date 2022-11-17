@@ -369,43 +369,74 @@ def u_practice_canceled():
 
     return render_template("u_practice_canceled.html")
 
-@app.route("/u_check_home")
-def u_check_home():
-    id = session["id"]
-    dbmg = db_manager()
-    check = dbmg.exec_query("select a.id as id,b.name as name,a.title as title,a.check_flg as check_flg,a.date as date from review a,a_account b where a.teacher=b.id and a.student=%s",id)
-    return render_template("u_check_home.html",check=check)
-
-@app.route("/u_check_eva")
-def u_check_eva():
-    id = request.args.get("id")
-    dbmg = db_manager()
-    check = dbmg.exec_query("select a.id as id,b.name as name,a.title as title,a.check_flg as check_flg,a.date as date,a.body as body,a.comment as comment from review a,a_account b where a.teacher=b.id and a.id=%s",id)
-    return render_template("u_check_eva.html",check=check)
-
 @app.route("/u_check")
-def u_check_page():
+def u_check_home():
     dbmg = db_manager()
-    teachers = dbmg.exec_query("select * from a_account")
 
+    # u_check_detail で既読ボタンが押された場合
+    check_id = request.args.get("check_id")
+    if check_id:
+        dbmg.exec_query("update review set read_flg=1 where id=%s",check_id)
+
+    student_id = session["id"]
+    read = dbmg.exec_query("select review.id as id,a_account.name as teacher,title,body,date,check_flg,read_flg,comment from review inner join a_account on teacher=a_account.id where read_flg=1 and student=%s order by date asc",student_id)
+    unread = dbmg.exec_query("select review.id as id,a_account.name as teacher,title,body,date,check_flg,read_flg,comment from review inner join a_account on teacher=a_account.id where read_flg=0 and student=%s order by date asc",student_id)
+    
+    return render_template("u_check_home.html",read=read,unread=unread)
+
+@app.route("/u_check/detail")
+def u_check_detail():
+    dbmg = db_manager()
+
+    id = request.args.get("id")
+    check = dbmg.exec_query("select review.id as id,a_account.name as teacher,title,body,date,check_flg,read_flg,comment from review inner join a_account on teacher=a_account.id where review.id=%s",id)
+
+    return render_template("u_check_detail.html",check=check[0])
+
+@app.route("/u_check/request")
+def u_check_request():
+    dbmg = db_manager()
+    teachers = dbmg.exec_query("select id,name from a_account")
     return render_template("u_check_1.html",teachers=teachers)
 
 @app.route("/u_check/confirm",methods=["POST"])
 def u_check_confirm():
-    id = request.form.get("id")
-
     dbmg = db_manager()
-    teacher = dbmg.exec_query("select name from a_account where id=%s",id)
+
+    teacher_id = request.form.get("teacher")
+    date = request.form.get("date")
+    title = request.form.get("title")
+    body = request.form.get("body")
+
+    # 入力チェック
+    ## 未入力の項目がある場合
+    if not (teacher_id and date and title and body):
+        return redirect(url_for('u_check_request'))
+
+    ## 日付が過去の場合
+    date_check = datetime.datetime.strptime(date, '%Y-%m-%d')
+    today = datetime.date.today()
+    if date_check.date() < today:
+        return redirect(url_for('u_check_request'))
+
+    ## タイトルの文字数が長すぎる場合
+    if len(title) > 32:
+        return redirect(url_for('u_check_request'))
+
+    ## 本文の文字数が長すぎる場合
+    if len(body) > 600:
+        return redirect(url_for('u_check_request'))
+
+    teacher = dbmg.exec_query("select id,name from a_account where id=%s",teacher_id)
 
     check = {
-        "id":id,
+        "teacher":teacher[0],
         "date":request.form.get("date"),
-        "name":teacher[0]["name"],
         "title":request.form.get("title"),
         "body":request.form.get("body")
     }
 
-    return render_template("u_check_2.html", check=check)
+    return render_template("u_check_2.html",check=check)
 
 @app.route("/u_check/done",methods=["POST"])
 def u_check():
@@ -697,46 +728,36 @@ def a_practice_delete():
 
     return render_template("a_practice_delete_2.html")
 
-@app.route("/a_check_all")
-def a_check_page():
-    id = session["id"]
-    dbmg = db_manager()
-    sql = "select a.id as id,b.name as name,a.title as title,a.check_flg as check_flg,a.date as date from review a,u_account b where a.student=b.id and a.teacher=%s"
-    result = dbmg.exec_query(sql,(id))
-    return render_template("a_check_all.html",result=result)
-
 @app.route("/a_check")
-def a_check():
-    id = request.args.get("id")
+def a_check_home():
     dbmg = db_manager()
-    sql = "select a.id as id,b.name as name,a.title as title,a.check_flg as check_flg,a.date as date,a.body as body,a.comment as comment from review a,u_account b where a.student=b.id and a.id=%s"
-    result = dbmg.exec_query(sql,(id))
-    return render_template("a_check.html",result=result)
 
-@app.route("/a_check_comment",methods=["POST"])
-def a_check_comment():
-    comment = request.form.get("comment")
-    id = request.form.get("id")
-    dbmg = db_manager()
-    sql = "update review set comment=%s where id=%s"
-    dbmg.exec_query(sql,(comment,id))
-    sql = "update review set check_flg='1' where id=%s"
-    dbmg.exec_query(sql,(id))
-    sql = "select a.id as id,b.name as name,a.title as title,a.check_flg as check_flg,a.date as date,a.body as body,a.comment as comment from review a,u_account b where a.student=b.id and a.id=%s"
-    result = dbmg.exec_query(sql,(id))
-    return render_template("a_check.html",result=result)
+    id = session["id"]
+    today = datetime.date.today()
 
-@app.route("/a_check_flg")
-def a_check_flg():
-    id = request.args.get("id")
-    flg = request.args.get("flg")
+    # チェック済みは提出期限前のものだけ選択
+    checked = dbmg.exec_query("select review.id as id,u_account.name as name,title,date,check_flg from review inner join u_account on student = u_account.id where check_flg=1 and teacher=%s and date>=%s order by date asc",(id,today))
+    # 未チェックは提出期限を過ぎたのものも含めて選択
+    unchecked = dbmg.exec_query("select review.id as id,u_account.name as name,title,date,check_flg from review inner join u_account on student = u_account.id where check_flg=0 and teacher=%s order by date asc",id)
+
+    return render_template("a_check_home.html",checked=checked,unchecked=unchecked)
+
+@app.route("/a_check/detail",methods=["GET","POST"])
+def a_check_detail():
     dbmg = db_manager()
-    sql = "update review set check_flg = %s where id = %s"
-    dbmg.exec_query(sql,(flg,id))
-    sql = "select a.id as id,d.name as dep,c.grade as grade,c.class as class,b.name as name,a.title as title,a.body as body from review a,u_account b,class c,dep d where a.student = b.id and b.class_id = c.id and c.dep_id = d.id and a.id = %s"
-    result = dbmg.exec_query(sql,(id))
-    # return render_template("a_check.html",result=result[0])
-    return redirect("/a_check_all")
+
+    if request.method == "GET":
+        id = request.args.get("id")
+    
+    if request.method == "POST":
+        id = request.form.get("id")
+        comment = request.form.get("comment")
+
+        dbmg.exec_query("update review set comment=%s,check_flg=1,read_flg=0 where id=%s",(comment,id))
+        
+    result = dbmg.exec_query("select review.id as id,u_account.name as name,title,body,date,check_flg,comment from review inner join u_account on student = u_account.id where review.id=%s",id)
+
+    return render_template("a_check_detail.html",result=result[0])
 
 @app.route("/a_thread")
 def a_thread_page():

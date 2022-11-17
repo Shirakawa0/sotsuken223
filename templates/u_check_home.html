@@ -9,13 +9,25 @@
     </div>
     <div class="content_area">
         <h1 class="title">文章チェック</h1>
-        <p class="message">画面下のボタンから文章チェックを依頼できます。</p>
-        {% for check in check%}
+        <div class="btn_area">
+            <a href="{{ url_for('u_check_request') }}" class="btn btn-outline-primary m-3">文章チェックを依頼</a>
+        </div>
+
+        {% if not unread and not read %}
+        <p class="explanation">
+            文章チェックを依頼すると、ここに表示されます。
+        </p>
+        {% endif %}
+
+        {% if unread %}
+        <p class="title_sub">未読</p>
+        {% endif %}
+        {% for check in unread %}
         <div class=" btn btn-light box">
-            <a href="{{url_for('u_check_eva',id=check.id)}}" class="box_content">
+            <a href="{{url_for('u_check_detail',id=check.id)}}" class="box_content">
                 <div class="date">{{ check.date }}</div>
                 <div class="check_title text_overflow">{{ check.title }}</div>
-                <div class="teacher text_overflow">{{ check.name }}</div>
+                <div class="teacher text_overflow">{{ check.teacher }}</div>
                 {% if check.check_flg == 0 %}
                 <div class="flg" style="color: gray;">コメント待ち</div>
                 {% elif check.check_flg == 1 %}
@@ -24,9 +36,19 @@
             </a> 
         </div>
         {% endfor %}
-        <div class="btn_area">
-            <a href="{{ url_for('u_check_page') }}" class="btn btn-outline-primary m-3">文章チェックを依頼</a>
+        {% if read %}
+        <p class="title_sub">既読</p>
+        {% endif %}
+        {% for check in read %}
+        <div class=" btn btn-light box">
+            <a href="{{url_for('u_check_detail',id=check.id)}}" class="box_content">
+                <div class="date">{{ check.date }}</div>
+                <div class="check_title text_overflow">{{ check.title }}</div>
+                <div class="teacher text_overflow">{{ check.teacher }}</div>
+                <div class="flg" style="color: green;">確認済み</div>
+            </a> 
         </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
