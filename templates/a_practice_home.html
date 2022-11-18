@@ -15,6 +15,11 @@
             また、画面下の日程追加ボタンから日程を追加できます。
         </p>
         <div class="content">
+            {% if not practices %}
+            <p class="explanation">
+                登録した面接練習の予定は、ここに表示されます。
+            </p>
+            {% endif %}
             {% for practice in practices %}
             <div class="btn btn-light box">
                 <a href="{{ url_for('a_practice_detail',id=practice.id) }}" class="box_content">

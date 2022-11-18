@@ -140,6 +140,54 @@
     color: black;
 }
 
+.main .box_content_forum{
+    display: block;
+    justify-content: center;
+    height: 100%;
+    padding: 20px;
+    text-decoration: none;
+}
+
+.main .box_content_forum .sub{
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.main .box_content_forum .sub p{
+    font-size: xx-small;
+    color: cornflowerblue;
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-right: 18px;
+    margin-bottom: 0;
+}
+
+.main .box_content_forum .sub .last_update{
+    width: 20%;
+}
+
+.main .box_content_forum .sub .comment_num{
+    width: 10%;
+}
+
+.main .box_content_forum .sub .author{
+    width: 13%;
+}
+
+.main .box_content_forum .sub .last_contributer{
+    width: 16%;
+}
+
+.main .box_content_forum .main{
+    margin: 4px auto 0 0;
+    font-size: large;
+    color: black;
+    width: max-content;
+}
+
 .text_overflow{
     overflow: hidden;
     white-space: nowrap;
@@ -239,13 +287,9 @@
     margin-top: 40px;
 }
 
-.main .btn{
-    /* margin: 10px; */
-    min-width: 120px;
-}
-
 .main .btn_area .btn{
     margin: 10px;
+    min-width: 120px;
 }
 
 .main .content_50{
@@ -449,6 +493,15 @@
     width: 10%;
 }
 
+#a_practice_home .explanation{
+    width: 500px;
+    margin: auto;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    color: rgb(97, 97, 97);
+}
+
 #a_practice_home .comment{
     width: 50%;
     text-align: left;
@@ -508,6 +561,27 @@
 
 #a_check_home .title_sub{
     margin: 20px 0 5px 0;
+}
+
+#u_forum .btn_area{
+    margin: 40px 0;
+}
+
+#u_forum form{
+    margin-bottom: 10px;
+}
+
+#u_forum .explanation{
+    width: 500px;
+    margin: auto;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    color: rgb(97, 97, 97);
+}
+
+#u_forum .search_result_none{
+    margin-top: 40px;
 }
 
 /* -------------------------------------------------------- */
