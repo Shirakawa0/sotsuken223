@@ -70,7 +70,7 @@ def u_signup_confirm():
     # 未入力の項目がある場合
     if not (id and pw and name and grad_year and dep_id):
         return redirect(url_for("u_signup_page"))
-    """
+    
     # id の入力チェック
     ## 既に使われている場合
     id_check = dbmg.exec_query("select * from u_account where id=%s",id)
@@ -100,7 +100,7 @@ def u_signup_confirm():
     ## 文字数が不正な場合
     if len(name) > 16:
         return redirect(url_for("u_signup_page"))
-    """
+    
     dep = dbmg.exec_query("select * from dep where id=%s",dep_id)[0]
 
     account = {
@@ -470,29 +470,23 @@ def u_search():
     return render_template("u_search.html",results=results)
 
 
-@app.route("/u_forum")
+@app.route("/u_forum",methods=["GET","POST"])
 def u_forum_page():
-
     dbmg = db_manager()
-    threads = dbmg.exec_query("select * from threads order by last_update desc")
 
-    for thread in threads:
-        comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
-        thread["comment_num"] = comment_num[0]["num"]
+    word = "%"
+    search_flg = False
+    if request.method == "POST":
+        word = "%" + request.form.get("word") + "%"
+        search_flg = True
 
-    return render_template("u_forum.html",threads=threads)
-
-@app.route("/u_forum_search",methods=["POST"])
-def u_forum_search():
-    word = str(request.form.get("word"))
-    dbmg = db_manager()
     threads = dbmg.exec_query("select * from threads where title like %s order by last_update desc",'%'+word+'%')
 
     for thread in threads:
         comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
         thread["comment_num"] = comment_num[0]["num"]
 
-    return render_template("u_forum.html",threads=threads)
+    return render_template("u_forum.html",threads=threads,search_flg=search_flg)
 
 @app.route("/u_account")
 def u_account_page():
@@ -990,23 +984,37 @@ def forum_build_page():
     user = request.args.get("user")
     return render_template("forum_build.html",user=user)
 
-@app.route("/forum_build/done")
+@app.route("/forum_build/done",methods=["POST"])
 def forum_build():
+    dbmg = db_manager()
+
     id = session["id"]
     date_time = datetime.datetime.now()
-    title = request.args.get("title")
-    body = request.args.get("body")
-    user = request.args.get("user")
 
-    dbmg = db_manager()
-    name = dbmg.exec_query("select name from u_account where id = %s",id)
-    if name:
+    user = request.form.get("user")
+    title = request.form.get("title")
+    body = request.form.get("body")
+
+    # 入力チェック
+    ## タイトル
+    if not title or len(title) > 30:
+        return redirect(url_for('forum_build_page',user=user))
+    ## 本文
+    if not body or len(body) > 500:
+        return redirect(url_for('forum_build_page',user=user))
+
+    if user == "user":
+        name = dbmg.exec_query("select name from u_account where id = %s",id)
         name = name[0]["name"]
-    else:
+    elif user == "admin":
         name = dbmg.exec_query("select name from a_account where id = %s",id)
         name = name[0]["name"]
+    else:
+        return redirect(url_for('forum_build_page',user=user))
+    
     dbmg.exec_query("insert into threads(title,author_id,author,last_contributer_id,last_contributer,last_update) values(%s,%s,%s,%s,%s,%s)",(title,id,name,id,name,date_time))
     
+    # thread_id の取得方法はこれでいいのか？修正検討
     thread_id = dbmg.exec_query("select id from threads where author_id=%s order by last_update desc limit 1",id)
     thread_id = thread_id[0]["id"]
 

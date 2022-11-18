@@ -42,7 +42,7 @@
         element.addEventListener('click',function(){
             current = document.getElementsByClassName("current")
             if(current[0] != null){
-                 current[0].classList.remove("current")
+                current[0].classList.remove("current")
             }
             element.classList.add("current")
             iframe.src = element.getAttribute('href')+'#toolbar=0&navpanes=0'
