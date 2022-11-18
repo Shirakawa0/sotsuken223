@@ -9,10 +9,13 @@
 
     <form action="{{url_for('u_search')}}" class="search_form">
         企業名
-        <input type="text" name="name" placeholder="企業名を入力">
+        <input type="text" name="name" value="{{ name }}" placeholder="企業名を入力">
         年度
         <select name="year">
-            <option value="2023">年度を選択</option>
+            <option value="*">年度を選択</option>
+            {% for year in years %}
+                <option value="{{ year[0] }}">{{ year[0] }}</option>
+            {% endfor %}
         </select>
         <input type="submit" value="検索" class="">
         <br>

@@ -12,7 +12,7 @@
             <div class="search_area">
                 <form action="{{ url_for('a_user_account_page') }}" method="post" class="search_main">
                     学籍番号
-                    <input type="text" name="id">
+                    <input type="text" name="id" value="{{ id }}">
                     <input type="submit" value="検索" class="btn btn-sm btn-primary">
                     <!-- formタグの中にbuttonタグがあるとtype:submitが規定値になるのでtype:resetにした -->
                     <button class="btn btn-outline-primary btn_option" type="reset">学籍番号以外で検索</button>
@@ -39,7 +39,7 @@
                         </div>
                         <div class="row_input">
                             <p class="label">名前</p>
-                            <input type="text" name="name" class="value">
+                            <input type="text" name="name" class="value" value="{{name}}">
                         </div>
                     </div>
                     <input type="submit" value="この条件で検索する" class="btn btn-outline-primary btn_search_sub">

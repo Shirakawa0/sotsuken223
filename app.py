@@ -455,7 +455,10 @@ def u_check():
 
 @app.route("/u_search")
 def u_search_page():
-    return render_template("u_search.html")
+    years = []
+    for i,a in enumerate(glob.glob('./static/pdf/*/')):
+        years.append([a[13:17]])
+    return render_template("u_search.html",years=years)
 
 @app.route("/u_search/u_search_res")
 def u_search():
@@ -466,8 +469,11 @@ def u_search():
         result = a.replace("\\","/")[9:]
         filename = result[9:]
         results.append([result,filename])
-        
-    return render_template("u_search.html",results=results)
+    years = []
+    for i,a in enumerate(glob.glob('./static/pdf/*/')):
+        years.append([a[13:17]])
+
+    return render_template("u_search.html",results=results,years=years,name=name)
 
 
 @app.route("/u_forum")
@@ -492,7 +498,7 @@ def u_forum_search():
         comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
         thread["comment_num"] = comment_num[0]["num"]
 
-    return render_template("u_forum.html",threads=threads)
+    return render_template("u_forum.html",threads=threads,word=word)
 
 @app.route("/u_account")
 def u_account_page():
@@ -628,7 +634,7 @@ def a_forum_search():
         comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
         thread["comment_num"] = comment_num[0]["num"]
 
-    return render_template("a_forum.html",threads=threads)
+    return render_template("a_forum.html",threads=threads,word=word)
 
 @app.route("/a_practice")
 def a_practice_home():
@@ -867,19 +873,23 @@ def a_user_account_page():
     name = request.form.get("name")
 
     # DBで検索するために変形
+    if id == None:
+        id = ""
     if grad_year != None:
         grad_year = grad_year + "%"
     if dep != None:
         dep = "%" + dep
     if name != None:
         name = "%" + name + "%"
+    else: 
+        name = ""
 
     if id:
         users = dbmg.exec_query("select u_account.id as id,u_account.name as name,graduation as grad_year,dep.name as dep from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where u_account.id = %s",id)
     else:
         users = dbmg.exec_query("select u_account.id as id,u_account.name as name,graduation as grad_year,dep.name as dep from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where class_id like %s and class_id like %s and u_account.name like %s",(grad_year,dep,name))
-
-    return render_template("a_user_account_1.html",deps=deps,grad_years=grad_years,users=users)
+    name = name.replace("%","")
+    return render_template("a_user_account_1.html",deps=deps,grad_years=grad_years,users=users,id=id,name=name)
 
 @app.route("/a_user_account/confirm",methods=["POST"])
 def a_user_account_confirm():
