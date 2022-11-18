@@ -482,17 +482,18 @@ def u_forum_page():
 
     word = "%"
     search_flg = False
+
     if request.method == "POST":
         word = "%" + request.form.get("word") + "%"
         search_flg = True
 
-    threads = dbmg.exec_query("select * from threads where title like %s order by last_update desc",'%'+word+'%')
+    threads = dbmg.exec_query("select * from threads where title like %s order by last_update desc",word)
 
     for thread in threads:
         comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
         thread["comment_num"] = comment_num[0]["num"]
 
-    return render_template("u_forum.html",threads=threads,search_flg=search_flg,word=word)
+    return render_template("u_forum.html",threads=threads,search_flg=search_flg)
 
 @app.route("/u_account")
 def u_account_page():
@@ -607,28 +608,24 @@ def a_student_page():
     finished = dbmg.exec_query("select company from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company group by company) and finished_flg = 1 order by date_time asc;",id)
     return render_template("a_student.html",student=student[0],schedules=schedules,passed=passed,finished=finished)
 
-@app.route("/a_forum")
+@app.route("/a_forum",methods=["GET","POST"])
 def a_forum_page():
     dbmg = db_manager()
-    threads = dbmg.exec_query("select * from threads order by last_update desc")
+
+    word = "%"
+    search_flg = False
+    
+    if request.method == "POST":
+        word = "%" + request.form.get("word") + "%"
+        search_flg = True
+
+    threads = dbmg.exec_query("select * from threads where title like %s order by last_update desc",word)
 
     for thread in threads:
         comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
         thread["comment_num"] = comment_num[0]["num"]
 
-    return render_template("a_forum.html",threads=threads)
-
-@app.route("/a_forum_search",methods=["POST"])
-def a_forum_search():
-    word = str(request.form.get("word"))
-    dbmg = db_manager()
-    threads = dbmg.exec_query("select * from threads where title like %s order by last_update desc",'%'+word+'%')
-
-    for thread in threads:
-        comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
-        thread["comment_num"] = comment_num[0]["num"]
-
-    return render_template("a_forum.html",threads=threads,word=word)
+    return render_template("a_forum.html",threads=threads,search_flg=search_flg)
 
 @app.route("/a_practice")
 def a_practice_home():
@@ -752,6 +749,10 @@ def a_check_detail():
     if request.method == "POST":
         id = request.form.get("id")
         comment = request.form.get("comment")
+        
+        # 入力チェック
+        if not comment or len(comment) > 300:
+            return redirect(url_for("a_check_detail",id=id))
 
         dbmg.exec_query("update review set comment=%s,check_flg=1,read_flg=0 where id=%s",(comment,id))
         
