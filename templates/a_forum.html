@@ -30,7 +30,7 @@
         {% endif %}
         {% for thread in threads %}
         <div class="btn btn-light box">
-            <a href="{{ url_for('forum_brows',thread_id=thread.id,user='user') }}" class="box_content_forum">
+            <a href="{{ url_for('forum_brows',thread_id=thread.id,user='admin') }}" class="box_content_forum">
                 <div class="sub text_over">
                     <p class="last_update">最終更新：{{ thread.last_update }}</p>
                     <p class="comment_num">投稿数：{{ thread.comment_num }}</p>
@@ -39,6 +39,10 @@
                 </div>
                 <div class="main text_overflow">{{ thread.title }}</div>
             </a>
+            <form action="{{ url_for('a_thread_page') }}">
+                <input type="hidden" name="id" value="{{ thread.id }}">
+                <input type="submit" value="削除" class="btn btn-sm btn-outline-primary">
+            </form>
         </div>
         {% endfor %}
     </div>

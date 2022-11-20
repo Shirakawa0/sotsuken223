@@ -27,11 +27,11 @@
                 <input type="hidden" name="user" value="{{ user }}">
                 <div class="col_input">
                     <div class="label">スレッドタイトル（30文字以内）</div>
-                    <input type="text" name="title" class="value">
+                    <input type="text" name="title" class="value" maxlength="30" required>
                 </div>
                 <div class="col_input">
                     <div class="label">本文（500文字以内）</div>
-                    <textarea name="body" cols="30" rows="10" class="value"></textarea>
+                    <textarea name="body" cols="30" rows="10" class="value" maxlength="500" required></textarea>
                 </div>
                 <div class="btn_area">
                     <input type="submit" value="この内容で作成" class="btn btn-outline-primary">
