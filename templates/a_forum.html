@@ -1,33 +1,50 @@
-{% extends "template3.html" %}
+{% extends "temp_admin.html" %}
+
 {% block content %}
-<div id="a_forum" class="home">
-    <div class="home_content">
+<div id="a_forum" class="main">
+    <div class="return_btn">
         <a href="{{ url_for('a_home_page') }}">
-            <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
+            <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る">
         </a>
-        <h1 class="title">スレッド一覧</h1><br>
-        <p style="text-align:left">管理者は新規スレッド作成、スレッドのコメント、スレッドの削除ができます。</p>
-        <a href="{{ url_for('forum_build_page',user='admin') }}" class="btn btn-outline-primary m-4">新規スレッド作成</a>
-        
-        <form action="{{ url_for('a_forum_search') }}" method="post" class="mb-3">
-            <input type="text" name="word" placeholder="スレッド名を入力" value="{{word}}">
+    </div>
+    <div class="content_area">
+        <h1 class="title">スレッド一覧</h1>
+        <p class="message">
+            スレッドへのコメントや新しいスレッドの作成ができます。<br>
+            また、不適切なスレッドは削除できます。
+        </p>
+        <div class="btn_area">
+            <a href="{{ url_for('forum_build_page',user='admin') }}" class="btn btn-outline-primary">新規スレッド作成</a>
+        </div>
+        <form action="{{ url_for('a_forum_page') }}" method="post">
+            <input type="text" name="word" placeholder="スレッド名を入力">
             <input type="submit" value="検索" class="">
         </form>
-        
+        {% if not threads and not search_flg %}
+        <p class="explanation">
+            スレッドが作成されると、ここに一覧で表示されます。<br>
+            上のボタンからスレッドを作成できます。
+        </p>
+        {% elif not threads and search_flg %}
+        <p class="search_result_none">条件に一致するスレッドはありません。</p>
+        {% endif %}
         {% for thread in threads %}
         <div class="btn btn-light box">
-            <a href="{{ url_for('forum_brows',thread_id=thread.id,user='admin') }}" class="links forum">
+            <a href="{{ url_for('forum_brows',thread_id=thread.id,user='admin') }}" class="box_content_forum">
                 <div class="sub text_over">
                     <p class="last_update">最終更新：{{ thread.last_update }}</p>
                     <p class="comment_num">投稿数：{{ thread.comment_num }}</p>
-                    <p class="author">作成者：{{ thread.author }}</p>
-                    <p class="last_contributer">最終投稿者：{{ thread.last_contributer }}</p>
+                    <p class="author text_overflow">作成者：{{ thread.author }}</p>
+                    <p class="last_contributer text_overflow">最終投稿者：{{ thread.last_contributer }}</p>
                 </div>
-                <div class="main text_over">{{ thread.title }}</div>
+                <div class="main text_overflow">{{ thread.title }}</div>
             </a>
+            <form action="{{ url_for('a_thread_page') }}">
+                <input type="hidden" name="id" value="{{ thread.id }}">
+                <input type="submit" value="削除" class="btn btn-sm btn-outline-primary">
+            </form>
         </div>
         {% endfor %}
     </div>
 </div>
-
 {% endblock %}

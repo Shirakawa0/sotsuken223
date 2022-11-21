@@ -482,17 +482,18 @@ def u_forum_page():
 
     word = "%"
     search_flg = False
+
     if request.method == "POST":
         word = "%" + request.form.get("word") + "%"
         search_flg = True
 
-    threads = dbmg.exec_query("select * from threads where title like %s order by last_update desc",'%'+word+'%')
+    threads = dbmg.exec_query("select * from threads where title like %s order by last_update desc",word)
 
     for thread in threads:
         comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
         thread["comment_num"] = comment_num[0]["num"]
 
-    return render_template("u_forum.html",threads=threads,search_flg=search_flg,word=word)
+    return render_template("u_forum.html",threads=threads,search_flg=search_flg)
 
 @app.route("/u_account")
 def u_account_page():
@@ -607,28 +608,24 @@ def a_student_page():
     finished = dbmg.exec_query("select company from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company group by company) and finished_flg = 1 order by date_time asc;",id)
     return render_template("a_student.html",student=student[0],schedules=schedules,passed=passed,finished=finished)
 
-@app.route("/a_forum")
+@app.route("/a_forum",methods=["GET","POST"])
 def a_forum_page():
     dbmg = db_manager()
-    threads = dbmg.exec_query("select * from threads order by last_update desc")
+
+    word = "%"
+    search_flg = False
+    
+    if request.method == "POST":
+        word = "%" + request.form.get("word") + "%"
+        search_flg = True
+
+    threads = dbmg.exec_query("select * from threads where title like %s order by last_update desc",word)
 
     for thread in threads:
         comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
         thread["comment_num"] = comment_num[0]["num"]
 
-    return render_template("a_forum.html",threads=threads)
-
-@app.route("/a_forum_search",methods=["POST"])
-def a_forum_search():
-    word = str(request.form.get("word"))
-    dbmg = db_manager()
-    threads = dbmg.exec_query("select * from threads where title like %s order by last_update desc",'%'+word+'%')
-
-    for thread in threads:
-        comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
-        thread["comment_num"] = comment_num[0]["num"]
-
-    return render_template("a_forum.html",threads=threads,word=word)
+    return render_template("a_forum.html",threads=threads,search_flg=search_flg)
 
 @app.route("/a_practice")
 def a_practice_home():
@@ -753,26 +750,87 @@ def a_check_detail():
         id = request.form.get("id")
         comment = request.form.get("comment")
 
+        # 入力チェック
+        if not comment or len(comment) > 300:
+            return redirect(url_for("a_check_detail",id=id))
+
         dbmg.exec_query("update review set comment=%s,check_flg=1,read_flg=0 where id=%s",(comment,id))
+
+        # コメントを更新したら文章チェックTOPに遷移する
+        return redirect("/a_check")
         
     result = dbmg.exec_query("select review.id as id,u_account.name as name,title,body,date,check_flg,comment from review inner join u_account on student = u_account.id where review.id=%s",id)
-
     return render_template("a_check_detail.html",result=result[0])
 
 @app.route("/a_thread")
 def a_thread_page():
+    dbmg = db_manager()
+
     id = request.args.get("id")
-    return render_template("a_thread_1.html",id=id)
+    thread = dbmg.exec_query("select * from threads where id=%s",id)
+
+    num = dbmg.exec_query("select count(*) as num from comments where thread_id=%s",id)
+    thread[0]["num"] = num[0]["num"]
+
+    return render_template("a_thread_1.html",thread=thread[0])
 
 @app.route("/a_thread/done")
 def a_thread_delete():
     id = request.args.get("id")
 
     dbmg = db_manager()
-    dbmg.exec_query("delete from threads where id = %s",id)
-    dbmg.exec_query("delete from comments where thread_id = %s",id)
+    dbmg.exec_query("delete from threads where id=%s",id)
+    dbmg.exec_query("delete from comments where thread_id=%s",id)
 
     return render_template("a_thread_2.html")
+
+@app.route("/a_user_account",methods=["GET","POST"])
+def a_user_account_page():
+    dbmg = db_manager()
+
+    grad_years,deps = get_classes()
+
+    if request.method == "GET":
+        return render_template("a_user_account_1.html",deps=deps,grad_years=grad_years)
+    
+    id = request.form.get("id")
+    grad_year = request.form.get("grad_year")
+    dep = request.form.get("dep")
+    name = request.form.get("name")
+
+    if id:
+        users = dbmg.exec_query("select u_account.id as id,u_account.name as name,graduation as grad_year,dep.name as dep from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where u_account.id = %s",id)
+    else:
+        # DBで検索するために変形
+        if grad_year != None:
+            grad_year = grad_year + "%"
+        if dep != None:
+            dep = "%" + dep
+        if name != None:
+            name = "%" + name + "%"
+
+        users = dbmg.exec_query("select u_account.id as id,u_account.name as name,graduation as grad_year,dep.name as dep from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where class_id like %s and class_id like %s and u_account.name like %s",(grad_year,dep,name))
+
+    return render_template("a_user_account_1.html",deps=deps,grad_years=grad_years,users=users)
+
+@app.route("/a_user_account/confirm",methods=["POST"])
+def a_user_account_confirm():
+    user = {
+        "id":request.form.get("id"),
+        "name":request.form.get("name"),
+        "grad_year":request.form.get("grad_year"),
+        "dep":request.form.get("dep")
+    }
+    return render_template("a_user_account_2.html",user=user)
+
+@app.route("/a_user_account/done")
+def a_user_account_done():
+    id = request.args.get("id")
+
+    dbmg = db_manager()
+    dbmg.exec_query("delete from u_account where id = %s",id)
+
+    return render_template("a_user_account_3.html")
 
 @app.route("/a_account")
 def a_account_page():
@@ -794,17 +852,19 @@ def a_account_confirm():
     published = request.form.get("published")
 
     # 未入力の項目がある場合
-    if not (pw and name and grad_year1 and dep1):
+    if not (pw and name and grad_year1 and dep1 and grad_year2 and dep2):
         return redirect(url_for("a_account_page"))
 
     # pw の入力チェック
-    ## 文字数が不正な場合
     if len(pw) < 8 or len(pw) > 20:
         return redirect(url_for("a_account_page"))
 
     # name の入力チェック
-    ## 文字数が不正な場合
     if len(name) > 16:
+        return redirect(url_for("a_account_page"))
+
+    # 担当クラスの入力チェック
+    if grad_year1 == grad_year2 and dep1 == dep2:
         return redirect(url_for("a_account_page"))
 
     dep1 = dbmg.exec_query("select * from dep where id=%s",dep1)[0]
@@ -852,58 +912,6 @@ def a_account():
 
     return render_template("a_account_3.html")
 
-@app.route("/a_user_account",methods=["GET","POST"])
-def a_user_account_page():
-    dbmg = db_manager()
-
-    grad_years,deps = get_classes()
-
-    if request.method == "GET":
-        return render_template("a_user_account_1.html",deps=deps,grad_years=grad_years)
-    
-    id = request.form.get("id")
-    grad_year = request.form.get("grad_year")
-    dep = request.form.get("dep")
-    name = request.form.get("name")
-
-    # DBで検索するために変形
-    if id == None:
-        id = ""
-    if grad_year != None:
-        grad_year = grad_year + "%"
-    if dep != None:
-        dep = "%" + dep
-    if name != None:
-        name = "%" + name + "%"
-    else: 
-        name = ""
-
-    if id:
-        users = dbmg.exec_query("select u_account.id as id,u_account.name as name,graduation as grad_year,dep.name as dep from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where u_account.id = %s",id)
-    else:
-        users = dbmg.exec_query("select u_account.id as id,u_account.name as name,graduation as grad_year,dep.name as dep from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where class_id like %s and class_id like %s and u_account.name like %s",(grad_year,dep,name))
-    name = name.replace("%","")
-    return render_template("a_user_account_1.html",deps=deps,grad_years=grad_years,users=users,id=id,name=name)
-
-@app.route("/a_user_account/confirm",methods=["POST"])
-def a_user_account_confirm():
-    user = {
-        "id":request.form.get("id"),
-        "name":request.form.get("name"),
-        "grad_year":request.form.get("grad_year"),
-        "dep":request.form.get("dep")
-    }
-    return render_template("a_user_account_2.html",user=user)
-
-@app.route("/a_user_account/done")
-def a_user_account_done():
-    id = request.args.get("id")
-
-    dbmg = db_manager()
-    dbmg.exec_query("delete from u_account where id = %s",id)
-
-    return render_template("a_user_account_3.html")
-
 @app.route("/a_signup")
 def a_signup_page():
     grad_years,deps = get_classes()
@@ -925,17 +933,19 @@ def a_signup_confirm():
     # 未入力の項目がある場合
     if not (pw and name and grad_year1 and dep1 and published):
         return redirect(url_for("a_signup_page"))
-    """
+
     # pw の入力チェック
-    ## 文字数が不正な場合
     if len(pw) < 8 or len(pw) > 20:
         return redirect(url_for("a_signup_page"))
 
     # name の入力チェック
-    ## 文字数が不正な場合
     if len(name) > 16:
         return redirect(url_for("a_signup_page"))
-    """
+
+    # 担当クラスの入力チェック
+    if grad_year1 == grad_year2 and dep1 == dep2:
+        return redirect(url_for("a_account_page"))
+
     dep1 = dbmg.exec_query("select * from dep where id=%s",dep1)[0]
     dep2 = dbmg.exec_query("select * from dep where id=%s",dep2)[0]
 
@@ -1034,32 +1044,41 @@ def forum_build():
 
 @app.route("/forum_brows")
 def forum_brows():
+    dbmg = db_manager()
+
     thread_id = request.args.get("thread_id")
     user = request.args.get("user")
-
-    dbmg = db_manager()
+    
     thread = dbmg.exec_query("select * from threads where id = %s",thread_id)
-    # sql修正必要
     comments = dbmg.exec_query("select * from comments where thread_id = %s",thread_id)
 
     return render_template("forum_brows.html",thread=thread[0],comments=comments,user=user)
 
-@app.route("/forum_contribute")
+@app.route("/forum_contribute",methods=["POST"])
 def forum_contribute():
+    dbmg = db_manager()
+
     id = session["id"]
-    thread_id = request.args.get("thread_id")
-    user = request.args.get("user")
-    body = request.args.get("body")
+    thread_id = request.form.get("thread_id")
+    user = request.form.get("user")
+    body = request.form.get("body")
     date_time = datetime.datetime.now()
 
-    # commentsテーブルのcontributerをcontributer_idに変更、contributer_nameを追加する必要がある
-    dbmg = db_manager()
-    name = dbmg.exec_query("select name from u_account where id = %s",id)
-    if name:
+    # 入力チェック
+    if not body or len(body) > 600:
+        return redirect(url_for("forum_brows",thread_id=thread_id,user=user))
+
+    # 名前の取得
+    if user == "user":
+        name = dbmg.exec_query("select name from u_account where id = %s",id)
         name = name[0]["name"]
-    else:
+    elif user == "admin":
         name = dbmg.exec_query("select name from a_account where id = %s",id)
         name = name[0]["name"]
+    else:
+        return redirect(url_for("forum_brows",thread_id=thread_id,user=user))
+    
+    # コメントの記録
     dbmg.exec_query("insert into comments(thread_id,contributer_id,contributer,date_time,body) values(%s,%s,%s,%s,%s)",(thread_id,id,name,date_time,body))
     dbmg.exec_query("update threads set last_contributer_id = %s,last_contributer = %s where id = %s",(id,name,thread_id))
 

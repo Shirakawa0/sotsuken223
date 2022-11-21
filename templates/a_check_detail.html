@@ -39,7 +39,7 @@
                     {% else %}
                     <div class="label">コメント（300文字以内）</div>
                     {% endif %}
-                    <textarea name="comment" cols="30" rows="8" class="value">{{ result.comment }}</textarea>
+                    <textarea name="comment" cols="30" rows="8" class="value" maxlength="300" required>{{ result.comment }}</textarea>
                 </div>
                 <input type="hidden" name="id" value="{{ result.id }}">
                 <input type="submit" value="コメントする" class="btn btn-outline-primary">
@@ -47,5 +47,4 @@
         </div>
     </div>
 </div>
-
 {% endblock %}

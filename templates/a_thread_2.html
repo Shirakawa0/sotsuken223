@@ -1,8 +1,13 @@
-{% extends "template3.html" %}
+{% extends "temp_admin.html" %}
+
 {% block content %}
-<h1>スレッド削除</h1><br>
-<h1>スレッドを削除しました</h1><br>
-<form action="{{ url_for('a_forum_page') }}">
-    <input type="submit" value="スレッド一覧へ戻る" class="btn btn-outline-secondary">
-</form>
+<div id="a_thread_2" class="main">
+    <div class="content_area">
+        <h1 class="title">スレッド削除</h1>
+        <div class="content_done">
+        <p class="message">スレッドを削除しました。</p>
+            <a href="{{ url_for('a_forum_page') }}" class="btn btn-outline-primary">スレッド一覧へ戻る</a>
+        </div>
+    </div>
+</div>
 {% endblock %}

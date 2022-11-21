@@ -22,15 +22,6 @@ CREATE TABLE schedule(
     PRIMARY KEY(id,company,date_time)
 );
 
--- CREATE TABLE practice(
---     id int AUTO_INCREMENT PRIMARY KEY,
---     student VARCHAR(7) NOT NULL,
---     teacher VARCHAR(128) NOT NULL,
---     date date NOT NULL,
---     time VARCHAR(16) NOT NULL,
---     check_flg BOOLEAN DEFAULT 0 NOT NULL
--- );
-
 CREATE TABLE practice(
     id int AUTO_INCREMENT PRIMARY KEY,
     teacher VARCHAR(128) NOT NULL,
@@ -45,16 +36,6 @@ CREATE TABLE practice_attendance(
     student VARCHAR(7),
     PRIMARY KEY(schedule_id,student)
 );
-
--- CREATE TABLE review(
---     id int AUTO_INCREMENT PRIMARY KEY,
---     student VARCHAR(7) NOT NULL,
---     teacher VARCHAR(128) NOT NULL,
---     title VARCHAR(32) NOT NULL,
---     body VARCHAR(600) NOT NULL,
---     check_flg BOOLEAN NOT NULL DEFAULT 0,
---     propriety_flg BOOLEAN NOT NULL DEFAULT 0
--- );
 
 CREATE TABLE review(
     id int AUTO_INCREMENT PRIMARY KEY,

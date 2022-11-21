@@ -10,8 +10,8 @@
     <div class="content_area">
         <h1 class="title">スレッド一覧</h1>
         <p class="message">
-            就活者同士の雑談や1人ではわからない問題を解決する場として設置しています。<br>
-            コミュニティとして活用してください。
+            スレッドを選択すると、コメントができます。<br>
+            また、新しくスレッドを作成することができます。
         </p>
         <div class="btn_area">
             <a href="{{ url_for('forum_build_page',user='user') }}" class="btn btn-outline-primary">新規スレッド作成</a>
@@ -26,7 +26,7 @@
             上のボタンからスレッドを作成できます。
         </p>
         {% elif not threads and search_flg %}
-        <p class="search_result_none">該当するスレッドがありませんでした。</p>
+        <p class="search_result_none">条件に一致するスレッドはありません。</p>
         {% endif %}
         {% for thread in threads %}
         <div class="btn btn-light box">
@@ -43,5 +43,4 @@
         {% endfor %}
     </div>
 </div>
-
 {% endblock %}

@@ -2,10 +2,12 @@
 
 {% block content %}
 <div id="a_user_account_1" class="main">
+    <div class="return_btn">
+        <a href="{{ url_for('a_home_page') }}">
+            <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る">
+        </a>
+    </div>
     <div class="content_area">
-        <!-- <a href="{{ url_for('a_home_page') }}" class="return_btn">
-            <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_img">
-        </a> -->
         <h1 class="title">利用者アカウント管理</h1>
         <div class="content">
             <p class="title_sub">アカウント検索</p>
