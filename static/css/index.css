@@ -419,16 +419,26 @@
     width: 150px;
 }
 
-#a_account_1 .content_area{
-    padding-bottom: 0;
+#a_account_1 .row_input .label{
+    width: 35%;
 }
 
-#a_account_1 .title{
-    margin-bottom: 30px;
+#a_account_1 .row_input .value{
+    width: 65%;
 }
 
-#a_account_1 .btn_area{
-    margin-top: 20px;
+#a_account_1 .row_input .values{
+    width: 65%;
+}
+
+#a_account_1 .explanation{
+    text-align: left;
+    width: 500px;
+    margin: 30px auto;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    color: rgb(97, 97, 97);
 }
 
 #a_account_2 .content_area{
@@ -443,16 +453,26 @@
     margin-top: 20px;
 }
 
-#a_signup_1 .content_area{
-    padding-bottom: 0;
+#a_signup_1 .row_input .label{
+    width: 35%;
 }
 
-#a_signup_1 .title{
-    margin-bottom: 30px;
+#a_signup_1 .row_input .value{
+    width: 65%;
 }
 
-#a_signup_1 .btn_area{
-    margin-top: 20px;
+#a_signup_1 .row_input .values{
+    width: 65%;
+}
+
+#a_signup_1 .explanation{
+    text-align: left;
+    width: 500px;
+    margin: 30px auto;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    color: rgb(97, 97, 97);
 }
 
 #a_signup_2 .content_area{
