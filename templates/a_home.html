@@ -18,7 +18,7 @@
     </div>
     <a href="{{ url_for('a_all_page') }}" class="btn btn-outline-primary">選考状況一覧</a>
     <div class="container">
-        <div class="text_over">
+        <div class="content">
             <h1 class="title">面接練習 {{practices|length}}件</h1>
                 {% for res in practices %}
                     {{res.dep}}
@@ -31,16 +31,21 @@
             <a href="{{url_for('a_practice_home')}}" class="btn btn-outline-primary">希望状況を閲覧</a>
         </div>
         
-        <div class="text_over">
+        <div class="content">
             <h1 class="title">文章チェック</h1>
-            {% for res in reviews %}
-                {{res.student}}
-                {{res.title}}<br>
-            {% endfor %}
-            <a href="{{url_for('a_check_home')}}" class="btn btn-outline-primary">文章チェックへ進む</a>
+            <div class="scrollArea">
+                {% for res in reviews %}
+                <div class="a_check_content btn btn-light">
+                        <div class="sub">{{res.student}}</div>
+                        <div class="main">{{res.title}}</div>  
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- <a href="{{url_for('a_check_home')}}" class="btn btn-outline-primary">文章チェックへ進む</a> -->
         </div>
         
-        <div>
+        <div class="content">
             {% for passed in passed %}
                 <input type="hidden" id="pass" value="{{ passed.cnt }}">
             {% endfor %}
