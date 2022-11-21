@@ -181,7 +181,7 @@
     padding: 0%;
 }
 
-.home_content .container div{
+.home_content .container .content{
     width: 30%;
 }
 
@@ -837,3 +837,19 @@
     height: 100%;
 }
 
+.home_content .a_check_content{
+    width: 100%;
+    display: block;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.home_content .content .a_check_content div{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow:ellipsis;
+}
+.home_content .content .a_check_content .sub{
+    color:blue;
+    font-size: small;
+}
