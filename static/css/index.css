@@ -690,4 +690,24 @@
     margin-top: 10px;
 }
 
+#u_company .title_sub{
+    margin: 30px 0 10px 0;
+}
+
+#a_all .title_sub{
+    margin: 30px 0 10px 0;
+}
+
+#a_all .dep{
+    width: 140px;
+}
+
+#a_all .name{
+    width: 100px;
+}
+
+#a_all .company_num{
+    width: 120px;
+}
+
 /* -------------------------------------------------------- */

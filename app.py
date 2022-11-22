@@ -3,6 +3,7 @@ import datetime
 import random,string
 import glob
 from db.db_manager import db_manager
+from pymysql import IntegrityError
 
 app = Flask(__name__)
 app.secret_key = "".join(random.choices(string.ascii_letters, k=256))
@@ -161,12 +162,17 @@ def u_home_page():
 
 @app.route("/u_company")
 def u_company_page():
+    dbmg = db_manager()
+
     id = session["id"]
     company = request.args.get("company")
 
-    dbmg = db_manager()
     sql = "select * from schedule where id=%s and company=%s order by date_time desc"
     schedules = dbmg.exec_query(sql,(id,company))
+
+    for schedule in schedules:
+        # "YY-MM-DD hh-mm-ss" を "YY-MM-DD hh-mm" に加工して更新
+        schedule["date_time"] = str(schedule["date_time"])[:16]
 
     return render_template("u_company.html", schedules=schedules)
 
@@ -178,6 +184,8 @@ def u_add_page():
 
 @app.route("/u_add/confirm",methods=["POST"])
 def u_add_confirm():
+    dbmg = db_manager()
+
     company = request.form.get("company")
     step = request.form.get("step")
     detail = request.form.get("detail")
@@ -189,7 +197,7 @@ def u_add_confirm():
     if not (company and step and detail and place and date_time):
         return redirect(url_for("u_add_page"))
 
-    # companyの文字数
+    ## companyの文字数
     if len(company) > 64:
         return redirect(url_for("u_add_page"))
 
@@ -197,6 +205,12 @@ def u_add_confirm():
     date_check = datetime.datetime.strptime(date_time + ":00", '%Y-%m-%dT%H:%M:%S')
     today = datetime.datetime.now()
     if date_check < today:
+        return redirect(url_for("u_add_page"))
+    
+    ## 既に登録されている企業の場合
+    id = session["id"]
+    schedule_check = dbmg.exec_query("select * from schedule where id=%s and company=%s",(id,company))
+    if schedule_check:
         return redirect(url_for("u_add_page"))
 
     schedule = {
@@ -214,6 +228,8 @@ def u_add_confirm():
 
 @app.route("/u_add/done",methods=["POST"])
 def u_add():
+    dbmg = db_manager()
+
     schedule = (
         session["id"],
         request.form.get("company"),
@@ -223,7 +239,6 @@ def u_add():
         request.form.get("place")
     )
 
-    dbmg = db_manager()
     dbmg.exec_query("insert into schedule(id,company,date_time,step,detail,place) values(%s,%s,%s,%s,%s,%s)",schedule)
 
     return render_template("u_add_3.html")
@@ -235,13 +250,42 @@ def u_register_page():
 
 @app.route("/u_register/confirm",methods=["POST"])
 def u_register_confirm():
+    dbmg = db_manager()
+
+    company = request.form.get("company")
+    step = request.form.get("step")
+    detail = request.form.get("detail")
+    place = request.form.get("place")
+    date_time = request.form.get("date_time")
+
+    # 入力チェック
+    ## 未入力
+    if not (company and step and detail and place and date_time):
+        return redirect(url_for("u_register_page",company=company))
+
+    ## 日付が過去の場合
+    date_check = datetime.datetime.strptime(date_time + ":00", '%Y-%m-%dT%H:%M:%S')
+    today = datetime.datetime.now()
+    if date_check < today:
+        return redirect(url_for("u_register_page",company=company))
+    
+    ## 既に登録されている予定の場合
+    id = session["id"]
+    schedule_check = dbmg.exec_query("select * from schedule where id=%s and company=%s and date_time=%s",(id,company,date_time))
+    if schedule_check:
+        return redirect(url_for("u_register_page",company=company))
+
     schedule = {
-        "company":request.form.get("company"),
-        "step":request.form.get("step"),
-        "detail":request.form.get("detail"),
-        "place":request.form.get("place"),
-        "date_time":request.form.get("date_time")
+        "company":company,
+        "step":step,
+        "detail":detail,
+        "place":place,
+        "date_time":{
+            "value":date_time,
+            "display":date_time.replace("T"," ")
+        }
     }
+
     return render_template("u_register_2.html",schedule=schedule)
 
 @app.route("/u_register/done",methods=["POST"])
@@ -267,12 +311,40 @@ def u_modify_page():
 
 @app.route("/u_modify/confirm",methods=["POST"])
 def u_modify_confirm():
+    dbmg = db_manager()
+
+    company = request.form.get("company")
+    step = request.form.get("step")
+    detail = request.form.get("detail")
+    place = request.form.get("place")
+    date_time = request.form.get("date_time")
+
+    # 入力チェック
+    ## 未入力
+    if not (company and step and detail and place and date_time):
+        return redirect(url_for("u_register_page",company=company))
+
+    ## 日付が過去の場合
+    date_check = datetime.datetime.strptime(date_time + ":00", '%Y-%m-%dT%H:%M:%S')
+    today = datetime.datetime.now()
+    if date_check < today:
+        return redirect(url_for("u_register_page",company=company))
+    
+    ## 既に登録されている予定の場合
+    id = session["id"]
+    schedule_check = dbmg.exec_query("select * from schedule where id=%s and company=%s and date_time=%s",(id,company,date_time))
+    if schedule_check:
+        return redirect(url_for("u_register_page",company=company))
+
     schedule = {
-        "company":request.form.get("company"),
-        "step":request.form.get("step"),
-        "detail":request.form.get("detail"),
-        "place":request.form.get("place"),
-        "date_time":request.form.get("date_time")
+        "company":company,
+        "step":step,
+        "detail":detail,
+        "place":place,
+        "date_time":{
+            "value":date_time,
+            "display":date_time.replace("T"," ")
+        }
     }
 
     return render_template("u_modify_2.html",schedule=schedule)
@@ -613,16 +685,37 @@ def a_home_page():
     
 @app.route("/a_all")
 def a_all_page():
-    id = session["id"]
-    class_id = request.args.get('class_id')
-
     dbmg = db_manager()
-    classes = dbmg.exec_query("select class_id,cast(graduation as char) as grad_year,name as dep from teacher_class inner join class on class_id = class.id inner join dep on dep_id = dep.id where teacher_class.id=%s",id)
-    if class_id:
-        schedules = dbmg.exec_query("select schedule.id as id,name,cast(count(company) as char) as num from schedule inner join u_account on schedule.id = u_account.id where class_id = %s group by schedule.id",class_id)
-        return render_template("a_all.html",classes=classes,schedules=schedules)
-    else:
-        return render_template("a_all.html",classes=classes)
+
+    teacher_id = session["id"]
+
+    passed_students_id = dbmg.exec_query("select distinct(id) from schedule where passed_flg=1")
+    # 初期化
+    passed_students = []
+    for student in passed_students_id:
+        # 学生の情報を取得
+        passed_student = dbmg.exec_query("select u_account.id as id,u_account.name as name,cast(graduation as char) as grad_year,dep.name as dep from u_account inner join class on class_id=class.id inner join dep on dep_id=dep.id where u_account.id=%s",student["id"])
+        # 受験済みの企業数を取得
+        company_num = dbmg.exec_query("select count(distinct(company)) as company_num from schedule where id=%s",student["id"])
+        # 企業数の属性を追加
+        passed_student[0]["company_num"] = company_num[0]["company_num"]
+        # 配列に追加
+        passed_students.append(passed_student[0])
+
+    unpassed_students_id = dbmg.exec_query("select id from u_account where class_id in (select class_id from teacher_class where id=%s) and id not in (select distinct(id) from schedule where passed_flg=1)",teacher_id)
+    # 初期化
+    unpassed_students = []
+    for student in unpassed_students_id:
+        # 学生の情報を取得
+        unpassed_student = dbmg.exec_query("select u_account.id as id,u_account.name as name,cast(graduation as char) as grad_year,dep.name as dep from u_account inner join class on class_id=class.id inner join dep on dep_id=dep.id where u_account.id=%s",student["id"])
+        # 受験済みの企業数を取得
+        company_num = dbmg.exec_query("select count(distinct(company)) as company_num from schedule where id=%s",student["id"])
+        # 企業数の属性を追加
+        unpassed_student[0]["company_num"] = company_num[0]["company_num"]
+        # 配列に追加
+        unpassed_students.append(unpassed_student[0])
+
+    return render_template("a_all.html",passed_students=passed_students,unpassed_students=unpassed_students)
 
 @app.route("/a_student")
 def a_student_page():

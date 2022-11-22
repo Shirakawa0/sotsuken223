@@ -1,10 +1,11 @@
-{% extends "template.html" %}
+{% extends "temp_user.html" %}
+
 {% block content %}
-<div id="u_modify_3" class="input_display">
-    <div class="content">
+<div id="u_modify_3" class="main">
+    <div class="content_area">
         <h1 class="title">{{ company }}</h1>
-        <div class="done">
-            <p>変更が完了しました</p>
+        <div class="content_done">
+            <p class="message">変更が完了しました</p>
             <a href="{{ url_for('u_company_page',company=company) }}" class="btn btn-outline-primary">企業ページへ戻る</a>
         </div>
     </div>

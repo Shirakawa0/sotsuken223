@@ -1,41 +1,50 @@
-{% extends "template3.html" %}
-{% block content %}
-<div id="u_home" class="home">
-    
-    <div class="home_content">
-        <a href="{{ url_for('a_all_page') }}">
-            <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
-        </a>
-        <h3>{{ student.grad_year + "卒" + " " + student.dep + " " + student.name }}</h3>
+{% extends "temp_user.html" %}
 
-        <h1 class="title">選考中の企業</h1>
+{% block content %}
+<div id="u_home" class="main"> 
+    <div class="return_btn">
+        <a href="{{ url_for('a_all_page') }}">
+            <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る">
+        </a>
+    </div>   
+    <div class="content_area">
+        <h1 class="title">{{ student.grad_year + "卒" + " " + student.dep + " " + student.name }}</h1>
+
+        <p class="title_sub">選考中の企業</p>
+        {% if not schedules %}
+        <p>ありません。</p>
+        {% endif %}
         {% for schedule in schedules %}
-        <div class=" btn btn-light box">
-            <div class="links btn btn-light">
-                <div>{{ schedule.company }}</div>
-                <div>{{ schedule.step }}</div>
-                <div>{{ schedule.detail }}</div>
-                <div>{{ schedule.date_time }}</div>
+        <div class="btn btn-light box">
+            <div class="box_content">
+                <div class="text_overflow">{{ schedule.company }}</div>
             </div>
         </div>
         {% endfor %}
-        <details>
-            <summary style=" list-style: none;"><h1 class="title">内定済みの企業</h1></summary>
-            {% for pass in passed %}
-            <div class="non_link links_ns">
-                {{ pass.company }}
+
+        <p class="title_sub">内定済みの企業</p>
+        {% if not passed %}
+        <p>ありません。</p>
+        {% endif %}
+        {% for schedule in passed %}
+        <div class="btn btn-light box">
+            <div class="box_content">
+                <div class="text_overflow">{{ schedule.company }}</div>
             </div>
-            {% endfor %}
-        </details>
+        </div>
+        {% endfor %}
         
-        <details>
-            <summary style=" list-style: none;"><h1 class="title">選考終了済みの企業</h1></summary>
-            {% for fin in finished %}
-            <div class="non_link links_ns">
-                {{ fin.company }}
+        <p class="title_sub">選考終了済みの企業</p>
+        {% if not passed %}
+        <p>ありません。</p>
+        {% endif %}
+        {% for schedule in finished %}
+        <div class="btn btn-light box">
+            <div class="box_content">
+                <div class="text_overflow">{{ schedule.company }}</div>
             </div>
-            {% endfor %}
-        </details>
+        </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

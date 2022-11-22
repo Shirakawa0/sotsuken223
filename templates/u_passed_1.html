@@ -1,11 +1,12 @@
-{% extends "template.html" %}
+{% extends "temp_user.html" %}
+
 {% block content %}
-<div id="u_passed_1" class="input_display">
-    <div class="content">
+<div id="u_passed_1" class="main">
+    <div class="content_area">
         <h1 class="title">{{ company }}</h1>
-        <div class="done">
+        <div class="content_done">
             <p>内定済に変更します。よろしいですか?</p>
-            <div class="buttons">
+            <div class="btn_area">
                 <a href="{{ url_for('u_company_page',company=company )}}" class="btn btn-outline-secondary">戻る</a>
                 <a href="{{ url_for('u_passed',company=company) }}" class="btn btn-outline-primary">確定する</a>
             </div>

@@ -1,11 +1,11 @@
-{% extends "template.html" %}
-{% block content %}
+{% extends "temp_user.html" %}
 
-<div id="u_passed_2" class="input_display">
-    <div class="content">
+{% block content %}
+<div id="u_passed_2" class="main">
+    <div class="content_area">
         <h1 class="title">{{ company }}</h1>
-        <div class="done">
-            <p>内定済に変更しました。</p>
+        <div class="content_done">
+            <p class="message">内定済に変更しました。</p>
             <a href="{{ url_for('u_home_page') }}" class="btn btn-outline-primary">マイページへ戻る</a>
         </div>
     </div>

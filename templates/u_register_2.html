@@ -1,51 +1,39 @@
-{% extends "template.html" %}
+{% extends "temp_user.html" %}
+
 {% block content %}
-
-<div id="u_register_2" class="input_display">
-    <div class="content">
-
+<div id="u_register_2" class="main">
+    <div class="content_area">
         <h1 class="title">{{ schedule.company }}</h1>
-
-        <p>登録内容を確認してください</p>
-
-        <div class="confirm_area">
-
-            <div class="row">
+        <p class="message">登録内容を確認してください</p>
+        <div class="content_50">
+            <div class="row_confirm">
                 <div class="label">選考段階</div>
-                <div class="input">{{ schedule.step }}</div>
+                <div class="value">{{ schedule.step }}</div>
             </div>
-
-            <div class="row">
+            <div class="row_confirm">
                 <div class="label">内容</div>
-                <div class="input">{{ schedule.detail }}</div>
+                <div class="value">{{ schedule.detail }}</div>
             </div>
-
-            <div class="row">
+            <div class="row_confirm">
                 <div class="label">場所</div>
-                <div class="input">{{ schedule.place }}</div>
+                <div class="value">{{ schedule.place }}</div>
             </div>
-            
-            <div class="row">
+            <div class="row_confirm">
                 <div class="label">日時</div>
-                <div class="input">{{ schedule.date_time }}</div>
+                <div class="value">{{ schedule.date_time.display }}</div>
             </div>
-
         </div>
-
-        <form action="{{url_for('u_register')}}" method="post">
+        <form action="{{ url_for('u_register') }}" method="post">
             <input type="hidden" name="company" value="{{ schedule.company }}">
             <input type="hidden" name="step" value="{{ schedule.step }}">
             <input type="hidden" name="detail" value="{{ schedule.detail }}">
             <input type="hidden" name="place" value="{{ schedule.place }}">
-            <input type="hidden" name="date_time" value="{{ schedule.date_time }}">
-            
-            <div class="buttons">
+            <input type="hidden" name="date_time" value="{{ schedule.date_time.value }}">
+            <div class="btn_area">
                 <a href="{{ url_for('u_register_page',company=schedule.company) }}" class="btn btn-outline-secondary">戻る</a>
                 <input type="submit" value="登録する" class="btn btn-outline-primary">
             </div>
-
         </form>
-
     </div>
 </div>
 {% endblock %}

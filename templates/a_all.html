@@ -1,37 +1,36 @@
-{% extends "template3.html" %}
+{% extends "temp_admin.html" %}
+
 {% block content %}
-<div id="a_all" class="home">
-    <div class="home_content">
+<div id="a_all" class="main">
+    <div class="return_btn">
         <a href="{{ url_for('a_home_page') }}">
-            <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
+            <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る">
         </a>
-        <br>
-        <h1 class="title">就活状況一覧</h1>
-        <!-- formはJavaScriptで制御予定（送信ボタンなしで表示を変更したい） -->
-        <form action="{{ url_for('a_all_page') }}">
-            <select name="class_id">
-                {% for class in classes %}
-                <option value="{{ class.class_id }}">{{ class.grad_year + "卒" + class.dep }}</option>
-                {% endfor %}
-                <input type="submit" value="検索">
-            </select>
-        </form>
-        <div class="search_content">
-            <h3 class="title">選考中の学生</h3>
-            <div class="scrollArea">
-                {% for schedule in schedules %}
-                <div class=" btn btn-light box">
-                    <a href="{{ url_for('a_student_page',id = schedule.id) }}" class="links">
-                        <div>{{ schedule.name }}</div>
-                        <div>{{ schedule.num }}社受検中</div>
-                    </a>
-                </div>
-                {% endfor %}
-            </div>
+    </div>
+    <div class="content_area">
+        <h1 class="title">学生一覧</h1>
+        <p class="title_sub">未内定の学生</p>
+        {% for student in unpassed_students %}
+        <div class=" btn btn-light box">
+            <a href="{{ url_for('a_student_page',id = student.id) }}" class="box_content">
+                <div>{{ student.grad_year + "卒" }}</div>
+                <div class="dep">{{ student.dep }}</div>
+                <div class="name text_overflow">{{ student.name }}</div>
+                <div class="company_num">受験企業なし</div>
+            </a>
         </div>
-        
-        
-        <h3 class="title">選考終了済みの学生</h3>
+        {% endfor %}
+        <p class="title_sub">内定済みの学生</p>
+        {% for student in passed_students %}
+        <div class=" btn btn-light box">
+            <a href="{{ url_for('a_student_page',id = student.id) }}" class="box_content">
+                <div>{{ student.grad_year + "卒" }}</div>
+                <div class="dep">{{ student.dep }}</div>
+                <div class="name text_overflow">{{ student.name }}</div>
+                <div class="company_num">{{ student.company_num }}社受験</div>
+            </a>
+        </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
