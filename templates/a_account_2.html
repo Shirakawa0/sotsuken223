@@ -24,7 +24,11 @@
             </div>
             <div class="row_confirm">
                 <p class="label">担当クラス2</p>
+                {% if account.grad_year2 %}
                 <p class="value">{{ account.grad_year2 + "卒  " + account.dep2.name }}</p>
+                {% else %}
+                <p class="value">なし</p>
+                {% endif %}
             </div>
             <div class="row_confirm">
                 <p class="label">公開設定</p>

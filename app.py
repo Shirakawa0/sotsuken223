@@ -172,17 +172,44 @@ def u_company_page():
 
 @app.route("/u_add")
 def u_add_page():
+    # today = datetime.date.today()
+    # detetime_default = str(today)+"T12:00"
     return render_template("u_add_1.html")
 
 @app.route("/u_add/confirm",methods=["POST"])
 def u_add_confirm():
+    company = request.form.get("company")
+    step = request.form.get("step")
+    detail = request.form.get("detail")
+    place = request.form.get("place")
+    date_time = request.form.get("date_time")
+
+    # 入力チェック
+    ## 未入力
+    if not (company and step and detail and place and date_time):
+        return redirect(url_for("u_add_page"))
+
+    # companyの文字数
+    if len(company) > 64:
+        return redirect(url_for("u_add_page"))
+
+    ## 日付が過去の場合
+    date_check = datetime.datetime.strptime(date_time + ":00", '%Y-%m-%dT%H:%M:%S')
+    today = datetime.datetime.now()
+    if date_check < today:
+        return redirect(url_for("u_add_page"))
+
     schedule = {
-        "company":request.form.get("company"),
-        "step":request.form.get("step"),
-        "detail":request.form.get("detail"),
-        "place":request.form.get("place"),
-        "date_time":request.form.get("date_time")
+        "company":company,
+        "step":step,
+        "detail":detail,
+        "place":place,
+        "date_time":{
+            "value":date_time,
+            "display":date_time.replace("T"," ")
+        }
     }
+    
     return render_template("u_add_2.html",schedule=schedule)
 
 @app.route("/u_add/done",methods=["POST"])
@@ -314,7 +341,7 @@ def u_practice_home():
     today = datetime.date.today()
     practices = dbmg.exec_query("select practice.id as id,name as teacher,date,comment,carrying_out_flg from practice inner join a_account on teacher = a_account.id where user_display_flg=%s and date>=%s and practice.id in (select schedule_id from practice_attendance where student=%s) order by date asc",(True,today,student))
     
-    teachers = dbmg.exec_query("select id,name from a_account")
+    teachers = dbmg.exec_query("select id,name from a_account where public_flg=1")
 
     if request.method == "GET":
         return render_template("u_practice_home.html",teachers=teachers,practices=practices,method="get")
@@ -396,7 +423,7 @@ def u_check_detail():
 @app.route("/u_check/request")
 def u_check_request():
     dbmg = db_manager()
-    teachers = dbmg.exec_query("select id,name from a_account")
+    teachers = dbmg.exec_query("select id,name from a_account where public_flg=1")
     return render_template("u_check_1.html",teachers=teachers)
 
 @app.route("/u_check/confirm",methods=["POST"])
@@ -877,7 +904,11 @@ def a_account_confirm():
         return redirect(url_for("a_account_page"))
 
     dep1 = dbmg.exec_query("select * from dep where id=%s",dep1)[0]
-    dep2 = dbmg.exec_query("select * from dep where id=%s",dep2)[0]
+    if grad_year2 and dep2:
+        dep2 = dbmg.exec_query("select * from dep where id=%s",dep2)[0]
+    else:
+        grad_year2 = None
+        dep2 = None
 
     account = {
         "id":id,
@@ -894,6 +925,8 @@ def a_account_confirm():
 
 @app.route("/a_account/done",methods=["POST"])
 def a_account():
+    dbmg = db_manager()
+
     id = session["id"]
     pw = request.form.get("pw")
     name = request.form.get("name")
@@ -908,16 +941,17 @@ def a_account():
     elif published == "false":
         published = False
 
-    class_id1 = grad_year1 + dep1
-    class_id2 = grad_year2 + dep2
-
-    dbmg = db_manager()
     hash_pw, salt = dbmg.calc_pw_hash(pw)
 
     dbmg.exec_query("update a_account set hash_pw=%s, salt=%s, name=%s, public_flg=%s where id=%s",(hash_pw,salt,name,published,id))
     dbmg.exec_query("delete from teacher_class where id = %s",id)
+    
+    class_id1 = grad_year1 + dep1
     dbmg.exec_query("insert into teacher_class values(%s,%s)",(id,class_id1))
-    dbmg.exec_query("insert into teacher_class values(%s,%s)",(id,class_id2))
+
+    if grad_year2 and dep2:
+        class_id2 = grad_year2 + dep2
+        dbmg.exec_query("insert into teacher_class values(%s,%s)",(id,class_id2))
 
     return render_template("a_account_3.html")
 
@@ -940,7 +974,12 @@ def a_signup_confirm():
     published = request.form.get("published")
 
     # 未入力の項目がある場合
-    if not (pw and name and grad_year1 and dep1 and published):
+    if not (id and pw and name and grad_year1 and dep1 and published):
+        return redirect(url_for("a_signup_page"))
+
+    # idが既に使われている場合
+    id_check = dbmg.exec_query("select * from a_account where id=%s",id)
+    if len(id_check) != 0:
         return redirect(url_for("a_signup_page"))
 
     # pw の入力チェック
@@ -956,7 +995,11 @@ def a_signup_confirm():
         return redirect(url_for("a_account_page"))
 
     dep1 = dbmg.exec_query("select * from dep where id=%s",dep1)[0]
-    dep2 = dbmg.exec_query("select * from dep where id=%s",dep2)[0]
+    if grad_year2 and dep2:
+        dep2 = dbmg.exec_query("select * from dep where id=%s",dep2)[0]
+    else:
+        grad_year2 = None
+        dep2 = None
 
     account = {
         "id":id,
@@ -973,6 +1016,8 @@ def a_signup_confirm():
 
 @app.route("/a_signup/done",methods=["POST"])
 def a_signup():
+    dbmg = db_manager()
+
     id = request.form.get("id")
     pw = request.form.get("pw")
     name = request.form.get("name")
@@ -986,16 +1031,16 @@ def a_signup():
         published = True
     elif published == "false":
         published = False
-
-    dbmg = db_manager()
     hash_pw, salt = dbmg.calc_pw_hash(pw)
 
-    class_id1 = grad_year1 + dep1
-    class_id2 = grad_year2 + dep2
-
     dbmg.exec_query("insert into a_account values(%s,%s,%s,%s,%s)",(id,hash_pw,salt,name,published))
+
+    class_id1 = grad_year1 + dep1
     dbmg.exec_query("insert into teacher_class values(%s,%s)",(id,class_id1))
-    dbmg.exec_query("insert into teacher_class values(%s,%s)",(id,class_id2))
+
+    if grad_year2 and dep2:
+        class_id2 = grad_year2 + dep2
+        dbmg.exec_query("insert into teacher_class values(%s,%s)",(id,class_id2))
 
     return render_template("a_signup_3.html")
 
@@ -1074,7 +1119,7 @@ def forum_contribute():
     date_time = datetime.datetime.now()
 
     # 入力チェック
-    if not body or len(body) > 600:
+    if not body or len(body) > 500:
         return redirect(url_for("forum_brows",thread_id=thread_id,user=user))
 
     # 名前の取得

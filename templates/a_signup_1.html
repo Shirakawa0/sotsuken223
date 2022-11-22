@@ -4,8 +4,12 @@ _account_page
 <div id="a_signup_1" class="main">
     <div class="content_area">
         <h1 class="title">管理者アカウント新規登録</h1>
-        <p class="message">登録情報を入力してください</p>
-        <div class="content_50">
+        <p class="message">以下の内容を入力してください。</p>
+        <p class="explanation">
+            担当クラス1は必須ですが、担当クラス2は任意です。<br>
+            公開設定で「公開しない」を選択すると、文章チェックが届かなくなります。
+        </p>
+        <div class="content_60">
             <form action="{{ url_for('a_signup_confirm') }}" method="post">
                 <div class="row_input">
                     <div class="label">ID</div>
@@ -37,7 +41,7 @@ _account_page
                     </div>
                 </div>
                 <div class="row_input">
-                    <div class="label">担当クラス2</div>
+                    <div class="label">担当クラス2（任意）</div>
                     <div class="values">
                         <select name="grad_year2">
                             <option value="">卒業年を選択</option>
