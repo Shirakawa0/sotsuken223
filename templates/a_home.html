@@ -2,7 +2,7 @@
 {% block content %}
 <div id="a_home" class="home">
 <div class="home_content">
-    <h1 class="title">本日選考予定の生徒</h1>
+    <h1 class="title">選考予定の生徒</h1>
     <div class="scrollArea">
         {% for res in schedules %}
         <div class="box">
@@ -16,33 +16,31 @@
         </div>
         {% endfor %}
     </div>
-    <a href="{{ url_for('a_all_page') }}" class="btn btn-outline-primary">選考状況一覧</a>
+    
+    <a href="{{ url_for('a_all_page') }}" class="btn btn-outline-primary mt-4">選考状況一覧</a>
     <div class="container">
         <div class="content">
-            <h1 class="title">面接練習 {{practices|length}}件</h1>
+            <h1 class="title">面接練習</h1>
                 {% for res in practices %}
-                    {{res.dep}}
-                    {{res.grade}}年
-                    {{res.class}}組
-                    {{res.name}}
-                    {{res.date}}  
-                <br>
+                <div class="a_check_content btn btn-light">
+                    <div class="sub">{{res.date}}</div>
+                    <div class="main">{{res.comment}}</div> 
+                </div>
                 {% endfor %}
+                
             <a href="{{url_for('a_practice_home')}}" class="btn btn-outline-primary">希望状況を閲覧</a>
         </div>
         
         <div class="content">
             <h1 class="title">文章チェック</h1>
-            <div class="scrollArea">
                 {% for res in reviews %}
                 <div class="a_check_content btn btn-light">
                         <div class="sub">{{res.student}}</div>
                         <div class="main">{{res.title}}</div>  
                 </div>
                 {% endfor %}
-            </div>
             
-            <!-- <a href="{{url_for('a_check_home')}}" class="btn btn-outline-primary">文章チェックへ進む</a> -->
+            <a href="{{url_for('a_check_home')}}" class="btn btn-outline-primary">文章チェックへ進む</a>
         </div>
         
         <div class="content">
@@ -58,6 +56,22 @@
             </div>
         </div>
     </div>
+    <h1 class="title">掲示板</h1>
+    <p class="explanation">就活者どうしの雑談や１人ではわからない問題を解決する場として設置しています。コミュニティとして活用してください。</p>
+    {% for thread in threads %}
+        <div class="box btn btn-light">
+            <a href="{{ url_for('forum_brows',thread_id=thread.id,user='admin') }}" class="links forum">
+                <div class="sub text_over">
+                    <p class="last_update">最終更新：{{ thread.last_update }}</p>
+                    <p class="comment_num">投稿数：{{ thread.comment_num }}</p>
+                    <p class="author">作成者：{{ thread.author }}</p>
+                    <p class="last_contributer">最終投稿者：{{ thread.last_contributer }}</p>
+                </div>
+                <div class="main text_over">{{ thread.title }}</div>
+            </a>
+        </div>
+    {% endfor %}
+    <a href="{{ url_for('a_forum_page') }}" class="btn btn-outline-primary mt-4">スレッド一覧・作成</a>
     
     <br>
     <!--

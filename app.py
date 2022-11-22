@@ -554,8 +554,9 @@ def a_home_page():
     id = session["id"]
     dbmg = db_manager()
     date = str(datetime.date.today())
+    late = str(datetime.date.today()+datetime.timedelta(30))
     date_time_s = date + " " + "00:00:00"
-    date_time_e = date + " " + "23:59:59"
+    date_time_e = late + " " + "23:59:59"
     
     """
         notification.notify(
@@ -569,20 +570,28 @@ def a_home_page():
     
 
     #本日選考予定(sql変更予定)
-    sql = "select u_account.name as name,schedule.company as company,schedule.step as step,schedule.detail as detail,substring(schedule.date_time,12,5) as date_time from schedule left join u_account on schedule.id = u_account.id where date_time <= %s and date_time >= %s"
+    sql = "select u_account.name as name,schedule.company as company,schedule.step as step,schedule.detail as detail,replace(substring(schedule.date_time,6,5),'-','/') as date_time from schedule left join u_account on schedule.id = u_account.id where date_time <= %s and date_time >= %s"
     schedules = dbmg.exec_query(sql,(date_time_e,date_time_s))
     sql = "select d.name as dep,b.name as name,right(date,5) as date from practice a,u_account b,class c,dep d where a.student = b.id and b.class_id = c.id and c.dep_id = d.id and a.teacher = %s"
-    # practices = dbmg.exec_query(sql,(id))
-    practices = []
+    #面接練習
+    sql = "select date,comment from practice where teacher = %s limit 3"
+    practices = dbmg.exec_query(sql,(id))
     #文章チェック
-    sql = "select student,title from review where teacher = %s and check_flg = 0"
+    sql = "select b.name as student,a.title from review a,u_account b where a.student = b.id and a.teacher = %s and a.check_flg = 0 limit 3"
     reviews = dbmg.exec_query(sql,(id))
     #内定未内定
     sql = "select count(distinct b.id) as cnt from u_account a,schedule b where a.id = b.id and b.passed_flg = 1"
     passed = dbmg.exec_query(sql)
     sql = "select count(*) as cnt from u_account"
     sum = dbmg.exec_query(sql)
-    return render_template("a_home.html",schedules=schedules,practices=practices,reviews=reviews,passed=passed,sum=sum)
+    # 掲示板
+    sql = "select * from threads order by last_update desc limit 3"
+    threads = dbmg.exec_query(sql)
+    for thread in threads:
+        comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
+        thread["comment_num"] = comment_num[0]["num"]
+   
+    return render_template("a_home.html",schedules=schedules,practices=practices,reviews=reviews,passed=passed,sum=sum,threads=threads)
     
 @app.route("/a_all")
 def a_all_page():
