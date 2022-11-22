@@ -1,13 +1,38 @@
-{% extends "template.html" %}
+{% extends "temp_user.html" %}
 {% block content %}
-<h1>利用者アカウント編集</h1>
-<h1>変更内容を確認してください</h1><br>
-<a href="{{ url_for('') }}"></a><br>
-<a href="{{ url_for('') }}"></a><br>
-<a href="{{ url_for('') }}"></a><br>
-<a href="{{ url_for('') }}"></a><br>
-<form action="">
-    <input type="submit" value="戻る"class="btn btn-outline-secondary">
-    <input type="submit" value="次へ進む" class="btn btn-outline-primary">
-</form>
+<div id="u_account_2" class="main">
+    <div class="content_area">
+        <h1 class="title">利用者アカウント編集</h1>
+        <p class="message">この内容に変更します。よろしいですか？</p>
+        <div class="content_50">
+            <div class="row_confirm">
+                <div class="label">パスワード</div>
+                <div class="value">{{ account.pw }}</div>
+            </div>
+            <div class="row_confirm">
+                <div class="label">名前</div>
+                <div class="value">{{ account.name }}</div>
+            </div>
+            <div class="row_confirm">
+                <div class="label">卒業年</div>
+                <div class="value">{{ account.grad_year + "卒"}}</div>
+            </div>
+            <div class="row_confirm">
+                <div class="label">学科</div>
+                <div class="value">{{ account.dep.name }}</div>
+            </div>
+        </div>
+        <form action="{{ url_for('u_account') }}" method="post">
+            <div class="btn_area">
+                <input type="hidden" name="id" value="{{ account.id }}">
+                <input type="hidden" name="pw" value="{{ account.pw }}">
+                <input type="hidden" name="name" value="{{ account.name }}">
+                <input type="hidden" name="grad_year" value="{{ account.grad_year }}">
+                <input type="hidden" name="dep" value="{{ account.dep.id }}">
+                <a href="{{ url_for('a_account_page') }}" class="btn btn-outline-secondary">戻る</a>
+                <input type="submit" value="変更する" class="btn btn-outline-primary">
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}
