@@ -22,10 +22,10 @@
         <div class="content">
             <h1 class="title">面接練習</h1>
                 {% for res in practices %}
-                <div class="a_check_content btn btn-light">
+                <a href="{{url_for('a_practice_detail',id=res.id)}}" class="a_check_content btn btn-light">
                     <div class="sub">{{res.date}}</div>
                     <div class="main">{{res.comment}}</div> 
-                </div>
+                </a>
                 {% endfor %}
                 
             <a href="{{url_for('a_practice_home')}}" class="btn btn-outline-primary">希望状況を閲覧</a>
@@ -34,10 +34,10 @@
         <div class="content">
             <h1 class="title">文章チェック</h1>
                 {% for res in reviews %}
-                <div class="a_check_content btn btn-light">
+                <a href="{{url_for('a_check_detail',id=res.id)}}" class="a_check_content btn btn-light">
                         <div class="sub">{{res.student}}</div>
                         <div class="main">{{res.title}}</div>  
-                </div>
+                </a>
                 {% endfor %}
             
             <a href="{{url_for('a_check_home')}}" class="btn btn-outline-primary">文章チェックへ進む</a>
