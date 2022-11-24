@@ -28,7 +28,12 @@ def get_classes():
 
 @app.route("/")
 def u_login_page():
-    return render_template("u_login.html")
+    if "id" not in session:
+        return render_template("u_login.html")
+    if session["user"] == "user" :
+        return redirect("/u_home")
+    if session["user"] == "admin":
+        return redirect("/a_home")
 
 @app.route("/",methods=["POST"])
 def u_login():
@@ -47,8 +52,9 @@ def u_login():
 
     if hash_pw == account[0]["hash_pw"]:
         session["id"] = account[0]["id"]
+        session["user"] = "user"
         session.permanent = True
-        app.permanent_session_lifetime = datetime.timedelta(minutes=SESSION_LIFETIME_MINUTES)
+        app.permanent_session_lifetime = datetime.timedelta(hours=168)
         return redirect("/u_home")
     else:
         return redirect("/")
@@ -669,6 +675,7 @@ def a_login():
 
     if hash_pw == user[0]["hash_pw"]:
         session["id"] = user[0]["id"]
+        session["user"] = "admin"
         # sessionの有効期限
         session.permanent = True
         app.permanent_session_lifetime = datetime.timedelta(minutes=SESSION_LIFETIME_MINUTES)
