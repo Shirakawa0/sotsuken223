@@ -9,19 +9,19 @@
             <form action="{{ url_for('u_signup_confirm') }}" method="post">
                 <div class="row_input">
                     <p class="label">学籍番号</p>
-                    <input type="text" name="id" class="value">
+                    <input type="text" name="id" class="value" minlength="7" maxlength="7" required>
                 </div>
                 <div class="row_input">
                     <p class="label">パスワード</p>
-                    <input type="password" name="pw" class="value">
+                    <input type="password" name="pw" class="value" required>
                 </div>
                 <div class="row_input">
                     <p class="label">名前</p>
-                    <input type="text" name="name" class="value">
+                    <input type="text" name="name" class="value" maxlength="16" required>
                 </div>
                 <div class="row_input">
                     <p class="label">卒業年</p>
-                    <select name="grad_year" class="value">
+                    <select name="grad_year" class="value" required>
                         <option value="">卒業年を選択</option>
                         {% for grad_year in grad_years %}
                         <option value="{{ grad_year }}">{{ grad_year }}卒</option>
@@ -30,7 +30,7 @@
                 </div>
                 <div class="row_input">
                     <p class="label">学科・組</p>
-                    <select name="dep" class="value">
+                    <select name="dep" class="value" required>
                         <option value="">学科・組を選択</option>
                         {% for dep in deps %}
                         <option value="{{ dep.id }}">{{ dep.name }}</option>
