@@ -72,33 +72,30 @@ def u_signup_confirm():
     if not (id and pw and name and grad_year and dep_id):
         return redirect(url_for("u_signup_page"))
     
-    # id の入力チェック
-    ## 既に使われている場合
+    # idが既に使われている場合
     id_check = dbmg.exec_query("select * from u_account where id=%s",id)
     if len(id_check) != 0:
         return redirect(url_for("u_signup_page"))
     
-    ## 文字数が7文字でない場合
+    ## idが7文字でない場合
     if len(id) != 7:
         return redirect(url_for("u_signup_page"))
 
-    ## 学籍番号が文字列の場合
+    ## idが文字列の場合
     try:
         int(id)
     except ValueError:
         return redirect(url_for("u_signup_page"))
 
-    ## 学籍番号が不正な場合
+    ## idが不正な場合
     if int(id) < 1000000:
         return redirect(url_for("u_signup_page"))
 
-    # pw の入力チェックS
-    ## 文字数が不正な場合
+    # pwの文字数が不正な場合
     if len(pw) < 8 or len(pw) > 20:
         return redirect(url_for("u_signup_page"))
 
-    # name の入力チェック
-    ## 文字数が不正な場合
+    # nameの文字数が不正な場合
     if len(name) > 16:
         return redirect(url_for("u_signup_page"))
     
@@ -599,21 +596,54 @@ def u_account_page():
     grad_years,deps = get_classes()
     return render_template("u_account_1.html",deps=deps,grad_years=grad_years)
 
-@app.route("/u_account",methods=["POST"])
-def u_account():
+@app.route("/u_account/confirm",methods=["POST"])
+def u_account_confirm():
+    dbmg = db_manager()
+
     id = session["id"]
     pw = request.form.get("pw")
     name = request.form.get("name")
     grad_year = request.form.get("grad_year")
     dep = request.form.get("dep")
 
-    class_id = grad_year + dep
+    # 未入力の項目がある場合
+    if not (id and pw and name and grad_year and dep):
+        return redirect(url_for("u_account_page"))
 
+    # pwの文字数が不正な場合
+    if len(pw) < 8 or len(pw) > 20:
+        return redirect(url_for("u_account_page"))
+
+    # nameの文字数が不正な場合
+    if len(name) > 16:
+        return redirect(url_for("u_account_page"))
+
+    dep = dbmg.exec_query("select * from dep where id=%s",dep)[0]
+
+    account = {
+        "id":id,
+        "pw":pw,
+        "name":name,
+        "grad_year":grad_year,
+        "dep":dep
+    }
+
+    return render_template("u_account_2.html",account=account)
+
+@app.route("/u_account/done",methods=["POST"])
+def u_account():
     dbmg = db_manager()
-    hash_pw, salt = dbmg.calc_pw_hash(pw)
 
-    sql = "update u_account set hash_pw=%s, salt=%s, name=%s, class_id=%s where id=%s"
-    dbmg.exec_query(sql, (hash_pw, salt, name, class_id, id))
+    id = request.form.get("id")
+    pw = request.form.get("pw")
+    name = request.form.get("name")
+    grad_year = request.form.get("grad_year")
+    dep_id = request.form.get("dep")
+
+    hash_pw,salt = dbmg.calc_pw_hash(pw)
+    class_id = grad_year + dep_id
+
+    dbmg.exec_query("update u_account set hash_pw=%s,salt=%s,name=%s,class_id=%s where id=%s",(hash_pw,salt,name,class_id,id))
 
     return render_template("u_account_3.html")
 
