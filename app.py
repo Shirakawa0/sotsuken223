@@ -726,7 +726,7 @@ def a_home_page():
     for thread in threads:
         comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
         thread["comment_num"] = comment_num[0]["num"]
-   
+
     return render_template("a_home.html",schedules=schedules,practices=practices,reviews=reviews,passed=passed,sum=sum,threads=threads)
     
 @app.route("/a_all")
