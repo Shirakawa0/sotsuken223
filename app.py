@@ -706,7 +706,7 @@ def a_home_page():
     
 
     #本日選考予定(sql変更予定)
-    sql = "select u_account.name as name,schedule.company as company,schedule.step as step,schedule.detail as detail,replace(substring(schedule.date_time,6,5),'-','/') as date_time from schedule left join u_account on schedule.id = u_account.id where date_time <= %s and date_time >= %s"
+    sql = "select u_account.id as id,u_account.name as name,schedule.company as company,schedule.step as step,schedule.detail as detail,replace(substring(schedule.date_time,6,5),'-','/') as date_time from schedule left join u_account on schedule.id = u_account.id where date_time <= %s and date_time >= %s"
     schedules = dbmg.exec_query(sql,(date_time_e,date_time_s))
     sql = "select d.name as dep,b.name as name,right(date,5) as date from practice a,u_account b,class c,dep d where a.student = b.id and b.class_id = c.id and c.dep_id = d.id and a.teacher = %s"
     #面接練習

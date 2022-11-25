@@ -6,13 +6,13 @@
     <div class="scrollArea">
         {% for res in schedules %}
         <div class="box">
-            <div class="links btn btn-light">
+            <a href="{{url_for('a_student_page',id=res.id)}}" class="links btn btn-light">
                     <div class="text_over">{{res.name}}</div>
                     <div class="text_over">{{res.company}}</div>
                     <div class="text_over">{{res.step}}</div>
                     <div class="text_over">{{res.detail}}</div>
                     <div class="text_over">{{res.date_time}}</div>
-            </div>
+            </a>
         </div>
         {% endfor %}
     </div>
