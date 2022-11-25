@@ -720,6 +720,9 @@ def a_home_page():
     passed = dbmg.exec_query(sql)
     sql = "select count(*) as cnt from u_account"
     sum = dbmg.exec_query(sql)
+    print(passed)
+    percent = round(passed[0]["cnt"] / sum[0]["cnt"] * 100,1)
+    
     # 掲示板
     sql = "select * from threads order by last_update desc limit 3"
     threads = dbmg.exec_query(sql)
@@ -727,7 +730,7 @@ def a_home_page():
         comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
         thread["comment_num"] = comment_num[0]["num"]
    
-    return render_template("a_home.html",schedules=schedules,practices=practices,reviews=reviews,passed=passed,sum=sum,threads=threads)
+    return render_template("a_home.html",schedules=schedules,practices=practices,reviews=reviews,passed=passed,sum=sum,threads=threads,percent=percent)
     
 @app.route("/a_all")
 def a_all_page():

@@ -853,3 +853,8 @@
     color: cornflowerblue;
     font-size: small;
 }
+
+.percent{
+    display: flex;
+    justify-content: space-between;
+}

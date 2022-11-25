@@ -50,7 +50,7 @@
             {% for sum in sum %}
                 <input type="hidden" id="sum" value="{{ sum.cnt }}">
             {% endfor %}
-            <h1 class="title">内定率</h1>
+            <h1 class="title percent"><div>内定率</div><div>{{percent}}%</div></h1>
             <div style="position:relative; width:250px; height:250px;">
                 <canvas id="myChart" style="position: relative; height:150; width:150"></canvas>
             </div>
@@ -103,8 +103,8 @@
                     {
                         data: [pass.value, no_pass],
                         backgroundColor: [
-                            "rgb(54, 162, 235)",
-                            "rgb(255, 99, 132)"
+                            "rgb(100,149,237)",
+                            "rgb(230, 230, 250)"
                         ]
                     }
                 ]
