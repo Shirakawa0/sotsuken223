@@ -1,54 +1,70 @@
-{% extends "template.html" %}
+{% extends "temp_user.html" %}
+
 {% block content %}
-<div id="u_search" class="home">
-    <a href="{{ url_for('u_home_page') }}">
-        <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る" class="return_btn">
-    </a>
-<div class="home_content">
-    <h1 class="title">報告書検索</h1>
-
-    <form action="{{url_for('u_search')}}" class="search_form">
-        企業名
-        <input type="text" name="name" value="{{ name }}" placeholder="企業名を入力">
-        年度
-        <select name="year">
-            <option value="*">年度を選択</option>
-            {% for year in years %}
-                <option value="{{ year[0] }}">{{ year[0] }}</option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="検索" class="">
-        <br>
-    </form>
-
-    <div class="scrollArea">
-        {% for res in results %}
-        <div class="box btn btn-light">
-            <div href="{{url_for('static',filename=res[0])}}" class="pdf links">
-                {{res[1]}}
+<div id="u_search" class="main">
+    <div class="content_area">
+        <div class="search_area">
+            <div class="search_content">
+                <div class="return_btn">
+                    <a href="{{ url_for('u_home_page') }}">
+                        <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る">
+                    </a>
+                </div>
+                <h1 class="title">報告書検索</h1>
+                <form action="{{url_for('u_search')}}" class="search_form">
+                    <input type="text" name="name" placeholder="企業名を入力">
+                    <select name="year">
+                        <option value="">年度を選択</option>
+                        {% for year in years %}
+                            <option value="{{ year[0] }}">{{ year[0] }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="検索">
+                    <br>
+                </form>
+                <div class="search_results scroll">
+                    {% if explanation_flg %}
+                    <p class="explanation">
+                        条件を指定して検索できます。
+                    </p>
+                    {% elif not results %}
+                    <p class="explanation">
+                        条件に一致する報告書はありませんでした。
+                    </p>
+                    {% endif %}
+                    {% for res in results %}
+                    <div class="box btn btn-light pdf">
+                        <div href="{{url_for('static',filename=res[0])}}" class="box_content">
+                            {{ res[1] }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
-        {% endfor %}
+        <div id="show_pdf" class="display_area">
+            <p id="explanation">
+                閲覧したいPDFを選択すると<br>
+                ここに表示されます
+            </p>
+        </div>
     </div>
-    
-</div>
-<div id="show_pdf">
-    <div class="back_str">ここにpdfが表示されます </div>
-</div>
 </div>
 
 <script>
-    let a = document.getElementsByClassName('pdf')
+    let pdf = document.getElementsByClassName('pdf')
     let show_pdf = document.getElementById('show_pdf')
     let iframe = document.createElement('iframe')
-    for(let element of a){
-        element.addEventListener('click',function(){
-            current = document.getElementsByClassName("current")
-            if(current[0] != null){
+    let explanation = document.getElementById('explanation')
+    let current = document.getElementsByClassName("current")
+    for(let element of pdf){
+        element.addEventListener('mousedown',function(){
+            if(current[0]){
                 current[0].classList.remove("current")
             }
             element.classList.add("current")
-            iframe.src = element.getAttribute('href')+'#toolbar=0&navpanes=0'
+            explanation.remove()
+            iframe.src = element.children[0].getAttribute('href')+'#toolbar=0&navpanes=0'
             show_pdf.appendChild(iframe)
         })
     };
