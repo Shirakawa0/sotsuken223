@@ -725,10 +725,10 @@ def a_home_page():
     schedules = dbmg.exec_query(sql,(date_time_e,date_time_s))
     sql = "select d.name as dep,b.name as name,right(date,5) as date from practice a,u_account b,class c,dep d where a.student = b.id and b.class_id = c.id and c.dep_id = d.id and a.teacher = %s"
     #面接練習
-    sql = "select date,comment,id from practice where teacher = %s and date >= %s and carrying_out_flg=1 order by date asc limit 3"
+    sql = "select date,comment,id from practice where teacher = %s and date >= %s and carrying_out_flg=1 order by date asc"
     practices = dbmg.exec_query(sql,(id,date))
     #文章チェック
-    sql = "select a.id as id,b.name as student,a.title from review a,u_account b where a.student = b.id and a.teacher = %s and a.check_flg = 0 order by date asc limit 3"
+    sql = "select a.id as id,b.name as student,a.title from review a,u_account b where a.student = b.id and a.teacher = %s and a.check_flg = 0 order by date asc"
     reviews = dbmg.exec_query(sql,(id))
     #内定未内定
     sql = "select count(distinct b.id) as cnt from u_account a,schedule b where a.id = b.id and b.passed_flg = 1"

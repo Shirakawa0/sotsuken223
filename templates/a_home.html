@@ -1,115 +1,121 @@
-{% extends "template3.html" %}
+{% extends "temp_admin.html" %}
+
 {% block content %}
-<div id="a_home" class="home">
-<div class="home_content">
-    <h1 class="title">選考予定の生徒</h1>
-    <div class="scrollArea">
-        {% for res in schedules %}
-        <div class="box">
-            <a href="{{url_for('a_student_page',id=res.id)}}" class="links btn btn-light">
-                    <div class="text_over">{{res.name}}</div>
-                    <div class="text_over">{{res.company}}</div>
-                    <div class="text_over">{{res.step}}</div>
-                    <div class="text_over">{{res.detail}}</div>
-                    <div class="text_over">{{res.date_time}}</div>
-            </a>
-        </div>
-        {% endfor %}
-    </div>
-    
-    <a href="{{ url_for('a_all_page') }}" class="btn btn-outline-primary mt-4">選考状況一覧</a>
-    <div class="container">
-        <div class="content">
-            <h1 class="title">面接練習</h1>
-                {% for res in practices %}
-                <a href="{{url_for('a_practice_detail',id=res.id)}}" class="a_check_content btn btn-light">
-                    <div class="sub">{{res.date}}</div>
-                    <div class="main">{{res.comment}}</div> 
+<div id="a_home" class="main">
+    <div class="content_area">
+        <h1 class="title">選考予定の生徒</h1>
+        <div class="scroll">
+            {% if not schedules %}
+            <p class="none">ありません。</p>
+            {% endif %}
+            {% for res in schedules %}
+            <div class="box btn btn-light">
+                <a href="{{ url_for('a_student_page',id=res.id) }}" class="box_content">
+                    <div style="width: 15%;" class="text_overflow">{{ res.name }}</div>
+                    <div style="width: 25%;" class="text_overflow">{{ res.company }}</div>
+                    <div style="width: 15%;" class="text_overflow">{{ res.step }}</div>
+                    <div style="width: 20%;" class="text_overflow">{{ res.detail }}</div>
+                    <div>{{ res.date_time }}</div>
                 </a>
-                {% endfor %}
-                
-            <a href="{{url_for('a_practice_home')}}" class="btn btn-outline-primary">希望状況を閲覧</a>
+            </div>
+            {% endfor %}
         </div>
-        
-        <div class="content">
-            <h1 class="title">文章チェック</h1>
-                {% for res in reviews %}
-                <a href="{{url_for('a_check_detail',id=res.id)}}" class="a_check_content btn btn-light">
-                        <div class="sub">{{res.student}}</div>
-                        <div class="main">{{res.title}}</div>  
-                </a>
-                {% endfor %}
-            
-            <a href="{{url_for('a_check_home')}}" class="btn btn-outline-primary">文章チェックへ進む</a>
+        <div class="btn_area">
+            <a href="{{ url_for('a_all_page') }}" class="btn btn-outline-primary">選考状況一覧</a>
         </div>
-        
-        <div class="content">
-            {% for passed in passed %}
+
+        <div class="container">
+            <div class="content">
+                <h1 class="title">面接練習</h1>
+                {% if not practices %}
+                <p class="none">ありません。</p>
+                {% endif %}
+                <div class="scroll" style="height: 192.5px;">
+                    {% for res in practices %}
+                    <div class="box_small btn btn-light">
+                        <a href="{{ url_for('a_practice_detail',id=res.id) }}" class="box_content_small">
+                            <div class="text_overflow sub">{{res.date}}</div>
+                            <div class="text_overflow">{{res.comment}}</div> 
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="btn_area">
+                    <a href="{{url_for('a_practice_home')}}" class="btn btn-outline-primary">希望状況を閲覧</a>
+                </div>
+            </div>
+            <div class="content">
+                <h1 class="title">文章チェック</h1>
+                {% if not reviews %}
+                <p class="none">ありません。</p>
+                {% endif %}
+                <div class="scroll" style="height: 192.5px;">
+                    {% for res in reviews %}
+                    <div class="box_small btn btn-light">
+                        <a href="{{ url_for('a_check_detail',id=res.id) }}" class="box_content_small">
+                            <div class="text_overflow sub">{{ res.student }}</div>
+                            <div class="text_overflow">{{ res.title }}</div>  
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="btn_area">
+                    <a href="{{url_for('a_check_home')}}" class="btn btn-outline-primary">文章チェックへ進む</a>
+                </div>
+            </div>
+            <div class="content">
+                {% for passed in passed %}
                 <input type="hidden" id="pass" value="{{ passed.cnt }}">
-            {% endfor %}
-            {% for sum in sum %}
+                {% endfor %}
+                {% for sum in sum %}
                 <input type="hidden" id="sum" value="{{ sum.cnt }}">
-            {% endfor %}
-            <h1 class="title percent"><div>内定率</div><div>{{percent}}%</div></h1>
-            <div style="position:relative; width:250px; height:250px;">
-                <canvas id="myChart" style="position: relative; height:150; width:150"></canvas>
+                {% endfor %}
+                <h1 class="title percent"><div>内定率</div><div>{{percent}}%</div></h1>
+                <div style="position:relative; width:250px; height:250px;">
+                    <canvas id="myChart" style="position: relative; height:150; width:150"></canvas>
+                </div>
             </div>
         </div>
-    </div>
-    <h1 class="title">掲示板</h1>
-    <p class="explanation">就活者どうしの雑談や１人ではわからない問題を解決する場として設置しています。コミュニティとして活用してください。</p>
-    {% for thread in threads %}
+        
+        <h1 class="title">掲示板</h1>
+        <p class="explanation">利用者どうしの雑談や１人ではわからない問題を解決する場として設置しています。コミュニティとして活用してください。</p>
+        {% for thread in threads %}
         <div class="box btn btn-light">
-            <a href="{{ url_for('forum_brows',thread_id=thread.id,user='admin') }}" class="links forum">
-                <div class="sub text_over">
+            <a href="{{ url_for('forum_brows',thread_id=thread.id,user='admin') }}" class="box_content_forum">
+                <div class="sub text_overflow">
                     <p class="last_update">最終更新：{{ thread.last_update }}</p>
                     <p class="comment_num">投稿数：{{ thread.comment_num }}</p>
                     <p class="author">作成者：{{ thread.author }}</p>
                     <p class="last_contributer">最終投稿者：{{ thread.last_contributer }}</p>
                 </div>
-                <div class="main text_over">{{ thread.title }}</div>
+                <div class="main text_overflow">{{ thread.title }}</div>
             </a>
         </div>
-    {% endfor %}
-    <a href="{{ url_for('a_forum_page') }}" class="btn btn-outline-primary mt-4">スレッド一覧・作成</a>
-    
-    <br>
-    <!--
-        <a href="{{ url_for('a_forum_page') }}" class="btn btn-outline-secondary">掲示板</a>
-        <br><br>
-        <a href="{{ url_for('a_user_account_page') }}" class="btn btn-outline-secondary">利用者アカウント管理</a>
-        <br><br>
-        <a href="{{ url_for('a_account_page') }}" class="btn btn-outline-secondary">管理者アカウント編集</a>
-        <br><br>
-        <a href="{{ url_for('a_signup_page') }}" class="btn btn-outline-secondary">管理者アカウント新規登録</a>
-        <br><br>
-        <a href="{{ url_for('logout') }}" class="btn btn-outline-secondary">ログアウト</a>
-    -->
-    
-
-</div>
+        {% endfor %}
+        <a href="{{ url_for('a_forum_page') }}" class="btn btn-outline-primary mt-4">スレッド一覧・作成</a>
+    </div>
 </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-    <script>
-        let pass = document.getElementById("pass")
-        let sum = document.getElementById("sum")
-        no_pass = sum.value - pass.value
-        new Chart(document.getElementById("myChart"), {
-            type: "doughnut",
-            data: {
-                labels: ["内定", "未内定"],
-                datasets: [
-                    {
-                        data: [pass.value, no_pass],
-                        backgroundColor: [
-                            "rgb(100,149,237)",
-                            "rgb(230, 230, 250)"
-                        ]
-                    }
-                ]
-            }
-        });
-    </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<script>
+    let pass = document.getElementById("pass")
+    let sum = document.getElementById("sum")
+    no_pass = sum.value - pass.value
+    new Chart(document.getElementById("myChart"), {
+        type: "doughnut",
+        data: {
+            labels: ["内定", "未内定"],
+            datasets: [
+                {
+                    data: [pass.value, no_pass],
+                    backgroundColor: [
+                        "rgb(100,149,237)",
+                        "rgb(230, 230, 250)"
+                    ]
+                }
+            ]
+        }
+    });
+</script>
 {% endblock %}
