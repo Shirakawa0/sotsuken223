@@ -144,6 +144,9 @@ def u_home_page():
     # 企業ごとの最新の選考予定を表示
     sql = "select * from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company group by company) and finished_flg = 0 and passed_flg = 0 order by date_time asc;"
     schedules = dbmg.exec_query(sql,session["id"])
+    for schedule in schedules:
+        # "YY-MM-DD hh-mm-ss" を "YY-MM-DD hh-mm" に変更
+        schedule["date_time"] = str(schedule["date_time"])[:16]
 
     # 内定済の企業
     sql = "select company from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company group by company) and passed_flg = 1 order by date_time asc;"

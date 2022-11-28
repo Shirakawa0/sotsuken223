@@ -1,118 +1,131 @@
-{% extends "template.html" %}
+{% extends "temp_user.html" %}
+
 {% block content %}
-<div id="u_home" class="home">
-<div class="home_content">
-    <h1 class="title">選考中の企業</h1>
-    <div class="scrollArea">
-        {% for schedule in schedules %}
-        <div class=" btn btn-light box">
-            <a href="{{ url_for('u_company_page',company=schedule.company) }}" class="links">
-                <div class="text_over">{{ schedule.company }}</div>
-                <div class="text_over">{{ schedule.step }}</div>
-                <div class="text_over">{{ schedule.detail }}</div>
-                <div class="text_over">{{ schedule.date_time }}</div>
-            </a> 
-        </div>
-        {% endfor %}
-    </div>
-
-    <!-- 選考中の企業がない場合 -->
-    {% if not schedules %}
-    <p>ありません。</p>
-    {% endif %}
-    
-    <a href="{{ url_for('u_add_page') }}" class="btn btn-outline-primary mt-4">企業追加</a>
-    <br><br>
-    
-    <!-- <h1 class="title">内定済みの企業</h1>
-    {% if passed_companies %}
-        {% for passed_company in passed_companies %}
-        <div class="non_link">
-            {{ passed_company.company }}
-        </div>
-        {% endfor %}
-    {% else %}
-    <p>ありません。</p>
-    {% endif %}
-    <br><br> -->
-
-    <details>
-        <summary style=" list-style: none;"><h1 class="title">内定済みの企業</h1></summary>
-        {% if passed_companies %}
-        {% for passed_company in passed_companies %}
-        <div class="non_link links_ns">
-            {{ passed_company.company }}
-        </div>
-        {% endfor %}
-        {% else %}
-        <p>ありません。</p>
+<div id="u_home" class="main">
+    <div class="content_area">
+        <h1 class="title">選考中の企業</h1>
+        {% if not schedules %}
+        <p class="none">ありません。</p>
         {% endif %}
-    </details>
-    <br><br>
-
-    <!-- <h1 class="title">選考終了済みの企業</h1>
-    {% if finished_companies %}
-        {% for finished_company in finished_companies %}
-        <div class="non_link">
-            {{ finished_company.company }}
+        <div class="scroll">
+            {% for schedule in schedules %}
+            <div class="btn btn-light box">
+                <a href="{{ url_for('u_company_page',company=schedule.company) }}" class="box_content">
+                    <div style="width: 30%;" class="text_overflow">{{ schedule.company }}</div>
+                    <div style="width: 15%;" class="text_overflow">{{ schedule.step }}</div>
+                    <div style="width: 20%;" class="text_overflow">{{ schedule.detail }}</div>
+                    <div style="width: 20%;" class="text_overflow">{{ schedule.date_time }}</div>
+                </a> 
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    {% else %}
-    <p>ありません。</p>
-    {% endif %}
-    <br><br> -->
-
-    <details>
-        <summary style=" list-style: none;"><h1 class="title">選考終了済みの企業</h1></summary>
-        {% if finished_companies %}
-        {% for finished_company in finished_companies %}
-        <div class="non_link links_ns">
-            {{ finished_company.company }}
-        </div>
-        {% endfor %}
-        {% else %}
-        <p>ありません。</p>
-        {% endif %}
-    </details>
-    <br><br>
-
-    <div class="container">
-        <div class="content">
-            <h1 class="title">面接練習</h1>
-            <p class="explanation">面接練習を希望する際はこちらから申し込んでください。</p>
-            <a href="{{ url_for('u_practice_home') }}" class="btn btn-outline-primary">面接練習を希望</a>
+        <div class="btn_area">
+            <a href="{{ url_for('u_add_page') }}" class="btn btn-outline-primary">受験企業追加</a>
         </div>
         
-        <div class="content">
-            <h1 class="title">文章チェック</h1>
-            <p class="explanation">ESの文章を提出する前などに、文章のチェックを依頼できます。</p>
-            <a href="{{ url_for('u_check_home') }}" class="btn btn-outline-primary">文章チェックを依頼</a>
+        <h1 class="title">内定済みの企業</h1>
+        {% if not passed_companies %}
+        <p class="none">ありません。</p>
+        {% endif %}
+        <div class="scroll" style="max-height: 142px;">
+            {% for passed_company in passed_companies %}
+            <div class="box btn btn-light">
+                <div class="box_content">
+                    <div class="text_overflow">{{ passed_company.company }}</div>
+                </div>
+            </div>
+            {% endfor %}
         </div>
-        <div class="content">
-            <h1 class="title">報告書検索</h1>
-            <p class="explanation">先輩の報告書を検索し、閲覧できます。</p>
-            <a href="{{ url_for('u_search_page') }}" class="btn btn-outline-primary">報告書を閲覧</a>
+        <!-- <details>
+            <summary style=" list-style: none;"><h1 class="title">内定済みの企業</h1></summary>
+            {% if not passed_companies %}
+            <p class="none">ありません。</p>
+            {% endif %}
+            <div class="scroll" style="max-height: 142px;">
+                {% for passed_company in passed_companies %}
+                <div class="box btn btn-light">
+                    <div class="box_content">
+                        <div class="text_overflow">{{ passed_company.company }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </details> -->
+
+        <h1 class="title">選考終了済みの企業</h1>
+        {% if not finished_companies %}
+        <p class="none">ありません。</p>
+        {% endif %}
+        <div class="scroll" style="max-height: 142px;">
+            {% for finished_company in finished_companies %}
+            <div class="box btn btn-light">
+                <div class="box_content">
+                    <div class="text_overflow">{{ finished_company.company }}</div>
+                    
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- <details>
+            <summary style=" list-style: none;"><h1 class="title">選考終了済みの企業</h1></summary>
+            {% if not finished_companies %}
+            <p class="none">ありません。</p>
+            {% endif %}
+            <div class="scroll" style="max-height: 142px;">
+                {% for finished_company in finished_companies %}
+                <div class="box btn btn-light">
+                    <div class="box_content">
+                        <div class="text_overflow">{{ finished_company.company }}</div>
+                        
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </details> -->
+
+        <div class="container">
+            <div class="content">
+                <h1 class="title">面接練習</h1>
+                <p class="explanation">面接練習を希望する際はこちらから申し込んでください。</p>
+                <div class="btn_area">
+                    <a href="{{ url_for('u_practice_home') }}" class="btn btn-outline-primary">面接練習を希望</a>
+                </div>
+            </div>
+            <div class="content">
+                <h1 class="title">文章チェック</h1>
+                <p class="explanation">ESの文章を提出する前などに、文章のチェックを依頼できます。</p>
+                <div class="btn_area">
+                    <a href="{{ url_for('u_check_home') }}" class="btn btn-outline-primary">文章チェックを依頼</a>
+                </div>
+            </div>
+            <div class="content">
+                <h1 class="title">報告書検索</h1>
+                <p class="explanation">先輩の報告書を検索し、閲覧できます。</p>
+                <div class="btn_area">
+                    <a href="{{ url_for('u_search_page') }}" class="btn btn-outline-primary">報告書を閲覧</a>
+                </div>
+            </div>
         </div>
         
-    </div>
-    
-    <h1 class="title">掲示板</h1>
-    <p class="explanation">就活者どうしの雑談や１人ではわからない問題を解決する場として設置しています。コミュニティとして活用してください。</p>
-    {% for thread in threads %}
+        <h1 class="title">掲示板</h1>
+        <p class="explanation">就活者どうしの雑談や１人ではわからない問題を解決する場として設置しています。コミュニティとして活用してください。</p>
+        {% for thread in threads %}
         <div class="box btn btn-light">
-            <a href="{{ url_for('forum_brows',thread_id=thread.id,user='user') }}" class="links forum">
-                <div class="sub text_over">
+            <a href="{{ url_for('forum_brows',thread_id=thread.id,user='user') }}" class="box_content_forum">
+                <div class="sub text_overflowflow">
                     <p class="last_update">最終更新：{{ thread.last_update }}</p>
                     <p class="comment_num">投稿数：{{ thread.comment_num }}</p>
                     <p class="author">作成者：{{ thread.author }}</p>
                     <p class="last_contributer">最終投稿者：{{ thread.last_contributer }}</p>
                 </div>
-                <div class="main text_over">{{ thread.title }}</div>
+                <div class="main text_overflowflow">{{ thread.title }}</div>
             </a>
         </div>
-    {% endfor %}
-    <a href="{{ url_for('u_forum_page') }}" class="btn btn-outline-primary mt-4">スレッド一覧・作成</a>
-</div>
+        {% endfor %}
+        <div class="btn_area">
+            <a href="{{ url_for('u_forum_page') }}" class="btn btn-outline-primary">スレッド一覧・作成</a>
+        </div>
+    </div>
 </div>
 
 {% endblock %}
