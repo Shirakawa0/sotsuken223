@@ -557,26 +557,38 @@ def u_check():
 
 @app.route("/u_search")
 def u_search_page():
-    years = []
-    for i,a in enumerate(glob.glob('./static/pdf/*/')):
-        years.append([a[13:17]])
-    return render_template("u_search.html",years=years)
+    explanation_flg = "true"
 
-@app.route("/u_search/u_search_res")
+    years = []
+    for a in glob.glob('./static/pdf/*/'):
+        years.append([a[13:17]])
+    # 年度を新しい順（降順）にする
+    years.sort(reverse=True)
+
+    return render_template("u_search.html",years=years,explanation_flg=explanation_flg)
+
+@app.route("/u_search/result")
 def u_search():
     name = request.args.get("name")
     year = request.args.get("year")
+    if not name:
+        name = "*"
+    if not year:
+        year = "*"
+
     results = []
-    for i,a in enumerate(glob.glob('./static/pdf/'+year+'/*'+name+'*.pdf')):
+    for a in glob.glob('./static/pdf/' + year + '/*' + name + '*.pdf'):
         result = a.replace("\\","/")[9:]
         filename = result[9:]
         results.append([result,filename])
+
     years = []
-    for i,a in enumerate(glob.glob('./static/pdf/*/')):
+    for a in glob.glob('./static/pdf/*/'):
         years.append([a[13:17]])
+    # 年度を新しい順（降順）にする
+    years.sort(reverse=True)
 
-    return render_template("u_search.html",results=results,years=years,name=name)
-
+    return render_template("u_search.html",results=results,years=years)
 
 @app.route("/u_forum",methods=["GET","POST"])
 def u_forum_page():

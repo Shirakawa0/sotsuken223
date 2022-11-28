@@ -122,6 +122,24 @@
     border-radius: 5px;
 }
 
+.scroll{
+    padding-right: 8px;
+}
+
+.scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scroll::-webkit-scrollbar-track {
+    border-radius: 10px;
+	background: #f2f2f2;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+	background:#b8b8b8;
+}
+
 /* BootStrap を上書きするために .main で指定している */
 .main .box{ 
     width: 100%;
@@ -708,6 +726,95 @@
 
 #a_all .company_num{
     width: 120px;
+}
+
+#u_search{
+    margin: 0;
+    width: 100%;
+    height: 100vh;
+}
+
+#u_search .content_area{
+    width: 100%;
+    height: 100%;
+    padding-bottom: 0;
+    display: flex;
+}
+
+#u_search .search_area{
+    width: 50%;
+    /* padding: 20px 20px 20px 50px; */
+    overflow: auto;
+    /* margin: 0 auto; */
+}
+
+#u_search .search_area .search_content{
+    width: 450px;
+    margin: 0 auto;
+    padding: 20px 20px 20px 60px;
+    position: relative;
+}
+
+#u_search .return_btn a{
+    display: block;
+    position: absolute;
+    top: 20px;
+    left: 0px;
+    text-align: left;
+}
+
+#u_search .search_area .title{
+    margin: 0 0 20px 0;
+}
+
+#u_search .search_area form{
+    margin-bottom: 20px;
+}
+
+#u_search .search_area form *{
+    height: 30px;
+}
+
+#u_search .search_area .search_results{
+    overflow-y: auto;
+    height: 380px;
+}
+
+#u_search .search_area .current{
+    background-color:#09C9D9;
+}
+
+#u_search .search_area .explanation{
+    width: 100%;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    color: rgb(97, 97, 97);
+}
+
+#u_search .display_area{
+    width: 50%;
+    display: flex;
+    align-items: center;
+}
+
+#u_search .display_area iframe{
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+#u_search .display_area #explanation{
+    /* text-align: left; */
+    width: 95%;
+    height: 95%;
+    margin: auto;
+    background-color: #dedede;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(97, 97, 97);
 }
 
 /* -------------------------------------------------------- */
