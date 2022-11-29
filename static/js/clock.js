@@ -36,4 +36,5 @@ const clock = () => {
 };
 
 // 1秒ごとにclock関数を呼び出す
-setInterval(clock, 1000);
+clock();
+setInterval(clock,1000);
