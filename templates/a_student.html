@@ -1,48 +1,50 @@
 {% extends "temp_admin.html" %}
 
 {% block content %}
-<div id="u_home" class="main"> 
+<div id="a_student" class="main"> 
     <div class="return_btn">
         <a href="{{ url_for('a_all_page') }}">
             <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る">
         </a>
     </div>   
     <div class="content_area">
-        <h1 class="title">{{ student.grad_year + "卒" + " " + student.dep + " " + student.name }}</h1>
-
-        <p class="title_sub">選考中の企業</p>
+        <h1 class="title_center">{{ student.grad_year + "卒" + " " + student.dep + " " + student.name }}</h1>
+        <p class="title">選考中の企業</p>
         {% if not schedules %}
-        <p>ありません。</p>
+        <p class="none">ありません。</p>
         {% endif %}
         {% for schedule in schedules %}
         <div class="btn btn-light box">
-            <div class="box_content">
-                <div class="text_overflow">{{ schedule.company }}</div>
-            </div>
+            <a href="{{ url_for('a_company_page',id=schedule.id,company=schedule.company,state='選考中') }}" class="box_content">
+                <div style="width: 30%;" class="text_overflow">{{ schedule.company }}</div>
+                <div style="width: 15%;" class="text_overflow">{{ schedule.step }}</div>
+                <div style="width: 20%;" class="text_overflow">{{ schedule.detail }}</div>
+                <div style="width: 20%;" class="text_overflow">{{ schedule.date_time }}</div>
+            </a>
         </div>
         {% endfor %}
 
-        <p class="title_sub">内定済みの企業</p>
+        <p class="title">内定済みの企業</p>
         {% if not passed %}
-        <p>ありません。</p>
+        <p class="none">ありません。</p>
         {% endif %}
         {% for schedule in passed %}
         <div class="btn btn-light box">
-            <div class="box_content">
+            <a href="{{ url_for('a_company_page',id=schedule.id,company=schedule.company,state='内定済み') }}" class="box_content">
                 <div class="text_overflow">{{ schedule.company }}</div>
-            </div>
+            </a>
         </div>
         {% endfor %}
         
-        <p class="title_sub">選考終了済みの企業</p>
+        <p class="title">落選済みの企業</p>
         {% if not passed %}
-        <p>ありません。</p>
+        <p class="none">ありません。</p>
         {% endif %}
         {% for schedule in finished %}
         <div class="btn btn-light box">
-            <div class="box_content">
+            <a href="{{ url_for('a_company_page',id=schedule.id,company=schedule.company,state='落選済み') }}" class="box_content">
                 <div class="text_overflow">{{ schedule.company }}</div>
-            </div>
+            </a>
         </div>
         {% endfor %}
     </div>

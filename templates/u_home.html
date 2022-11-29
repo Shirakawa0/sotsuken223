@@ -28,11 +28,11 @@
         <p class="none">ありません。</p>
         {% endif %}
         <div class="scroll" style="max-height: 142px;">
-            {% for passed_company in passed_companies %}
+            {% for passed in passed_companies %}
             <div class="box btn btn-light">
-                <div class="box_content">
-                    <div class="text_overflow">{{ passed_company.company }}</div>
-                </div>
+                <a href="{{ url_for('u_company_readonly',id=passed.id,company=passed.company,state='内定済み') }}" class="box_content">
+                    <div class="text_overflow">{{ passed.company }}</div>
+                </a>
             </div>
             {% endfor %}
         </div>
@@ -52,17 +52,16 @@
             </div>
         </details> -->
 
-        <h1 class="title">選考終了済みの企業</h1>
+        <h1 class="title">落選済みの企業</h1>
         {% if not finished_companies %}
         <p class="none">ありません。</p>
         {% endif %}
         <div class="scroll" style="max-height: 142px;">
-            {% for finished_company in finished_companies %}
+            {% for finished in finished_companies %}
             <div class="box btn btn-light">
-                <div class="box_content">
-                    <div class="text_overflow">{{ finished_company.company }}</div>
-                    
-                </div>
+                <a href="{{ url_for('u_company_readonly',id=finished.id,company=finished.company,state='落選済み') }}" class="box_content">
+                    <div class="text_overflow">{{ finished.company }}</div>
+                </a>
             </div>
             {% endfor %}
         </div>

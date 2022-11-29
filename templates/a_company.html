@@ -1,0 +1,40 @@
+{% extends "temp_admin.html" %}
+
+{% block content %}
+<div id="a_company" class="main">
+    <div class="return_btn">
+        <a href="{{ url_for('a_student_page',id=student.id) }}">
+            <img src="{{ url_for('static', filename='img/return.png') }}" alt="戻る">
+        </a>
+    </div>
+    <div class="content_area">
+        <h1 class="title_center">{{ student.grad_year + "卒" + " " + student.dep + " " + student.name }}</h1>
+        <h1 class="title">{{ schedules[0].company + "（" + state + "）" }}</h1>
+        <p class="title_sub">最新の選考状況</p>
+        <div class="box btn btn-light">
+            <div class="box_content">
+                <div style="width: 65px;">{{ schedules[0].step }}</div>
+                <div style="width: 125px;">{{ schedules[0].detail }}</div>
+                <div style="width: 105px;">{{ schedules[0].place }}</div>
+                <div>{{ schedules[0].date_time }}</div>
+            </div>
+        </div>
+        <p class="title_sub">これまでの選考状況</p>
+        {% if schedules|length <= 1 %}
+        <p class="none">ありません。</p>
+        {% endif %}
+        {% for schedule in schedules %}
+        {% if loop.index > 1 %}
+        <div class="box btn btn-light">
+            <div class="box_content">
+                <div style="width: 65px;">{{ schedule.step }}</div>
+                <div style="width: 125px;">{{ schedule.detail }}</div>
+                <div style="width: 105px;">{{ schedule.place }}</div>
+                <div>{{ schedule.date_time }}</div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
