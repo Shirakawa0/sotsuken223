@@ -16,7 +16,11 @@
                 <div>{{ student.grad_year + "卒" }}</div>
                 <div class="dep">{{ student.dep }}</div>
                 <div class="name text_overflow">{{ student.name }}</div>
+                {% if student.company_num == 0 %}
                 <div class="company_num">受験企業なし</div>
+                {% else %}
+                <div class="company_num">{{ student.company_num }}社受験</div>
+                {% endif %}
             </a>
         </div>
         {% endfor %}

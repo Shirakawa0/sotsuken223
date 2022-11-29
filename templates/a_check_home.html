@@ -30,7 +30,7 @@
                     <div class="check_title text_overflow" >{{ check.title }}</div>
                     <div class="teacher text_overflow">{{ check.name }}</div>
                     {% if check.check_flg == 0 %}
-                    <div class="flg">コメント未入力</div>
+                    <div class="flg" style="color: red;">コメント未入力</div>
                     {% elif check.check_flg == 1 %}
                     <div class="flg" style="color: green;">コメント済</div>
                     {% endif %}

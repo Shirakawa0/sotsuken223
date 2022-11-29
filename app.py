@@ -142,19 +142,19 @@ def u_home_page():
     dbmg = db_manager()
 
     # 企業ごとの最新の選考予定を表示
-    sql = "select * from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company group by company) and finished_flg = 0 and passed_flg = 0 order by date_time asc;"
-    schedules = dbmg.exec_query(sql,session["id"])
+    id = session["id"]
+    schedules = dbmg.exec_query("select * from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company and s2.id=%s group by company) and finished_flg = 0 and passed_flg = 0 order by date_time asc;",(id,id))
     for schedule in schedules:
         # "YY-MM-DD hh-mm-ss" を "YY-MM-DD hh-mm" に変更
         schedule["date_time"] = str(schedule["date_time"])[:16]
 
     # 内定済の企業
-    sql = "select company from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company group by company) and passed_flg = 1 order by date_time asc;"
-    passed_companies = dbmg.exec_query(sql,session["id"])
+    sql = "select * from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company and s2.id=%s group by company) and passed_flg = 1 order by date_time asc;"
+    passed_companies = dbmg.exec_query(sql,(id,id))
 
     # 選考終了済の企業
-    sql = "select company from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company group by company) and finished_flg = 1 order by date_time asc;"
-    finished_companies = dbmg.exec_query(sql,session["id"])
+    sql = "select * from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company and s2.id=%s group by company) and finished_flg = 1 order by date_time asc;"
+    finished_companies = dbmg.exec_query(sql,(id,id))
 
     # 掲示板
     sql = "select * from threads order by last_update desc limit 3"
@@ -181,6 +181,23 @@ def u_company_page():
         schedule["date_time"] = str(schedule["date_time"])[:16]
 
     return render_template("u_company.html", schedules=schedules)
+
+@app.route("/u_company/readonly")
+def u_company_readonly():
+    dbmg = db_manager()
+
+    id = request.args.get("id")
+    company = request.args.get("company")
+    state = request.args.get("state")
+
+    schedules = dbmg.exec_query("select * from schedule where id=%s and company=%s order by date_time desc",(id,company))
+    student = dbmg.exec_query("select u_account.id as id,u_account.name as name,cast(graduation as char) as grad_year,dep.name as dep from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where u_account.id=%s",id)
+
+    for schedule in schedules:
+        # "YY-MM-DD hh-mm-ss" を "YY-MM-DD hh-mm" に加工して更新
+        schedule["date_time"] = str(schedule["date_time"])[:16]
+
+    return render_template("u_company_readonly.html",schedules=schedules,student=student[0],state=state)
 
 @app.route("/u_add")
 def u_add_page():
@@ -705,7 +722,7 @@ def a_home_page():
     id = session["id"]
     dbmg = db_manager()
     date = str(datetime.date.today())
-    late = str(datetime.date.today()+datetime.timedelta(30))
+    late = str(datetime.date.today() + datetime.timedelta(7))
     date_time_s = date + " " + "00:00:00"
     date_time_e = late + " " + "23:59:59"
     
@@ -720,22 +737,21 @@ def a_home_page():
     """
     
 
-    #本日選考予定(sql変更予定)
-    sql = "select u_account.id as id,u_account.name as name,schedule.company as company,schedule.step as step,schedule.detail as detail,replace(substring(schedule.date_time,6,5),'-','/') as date_time from schedule left join u_account on schedule.id = u_account.id where date_time <= %s and date_time >= %s"
+    # 直近の選考予定
+    sql = "select u_account.id as id,u_account.name as name,schedule.company as company,schedule.step as step,schedule.detail as detail,replace(substring(schedule.date_time,6,5),'-','/') as date_time from schedule left join u_account on schedule.id = u_account.id where date_time <= %s and date_time >= %s order by date_time asc"
     schedules = dbmg.exec_query(sql,(date_time_e,date_time_s))
-    sql = "select d.name as dep,b.name as name,right(date,5) as date from practice a,u_account b,class c,dep d where a.student = b.id and b.class_id = c.id and c.dep_id = d.id and a.teacher = %s"
-    #面接練習
+    # sql = "select d.name as dep,b.name as name,right(date,5) as date from practice a,u_account b,class c,dep d where a.student = b.id and b.class_id = c.id and c.dep_id = d.id and a.teacher = %s"
+    # 面接練習
     sql = "select date,comment,id from practice where teacher = %s and date >= %s and carrying_out_flg=1 order by date asc"
     practices = dbmg.exec_query(sql,(id,date))
-    #文章チェック
+    # 文章チェック
     sql = "select a.id as id,b.name as student,a.title from review a,u_account b where a.student = b.id and a.teacher = %s and a.check_flg = 0 order by date asc"
     reviews = dbmg.exec_query(sql,(id))
-    #内定未内定
+    # 内定未内定
     sql = "select count(distinct b.id) as cnt from u_account a,schedule b where a.id = b.id and b.passed_flg = 1"
     passed = dbmg.exec_query(sql)
     sql = "select count(*) as cnt from u_account"
     sum = dbmg.exec_query(sql)
-    print(passed)
     percent = round(passed[0]["cnt"] / sum[0]["cnt"] * 100,1)
     
     # 掲示板
@@ -744,7 +760,7 @@ def a_home_page():
     for thread in threads:
         comment_num = dbmg.exec_query("select count(id) as num from comments where thread_id = %s",thread["id"])
         thread["comment_num"] = comment_num[0]["num"]
-   
+    
     return render_template("a_home.html",schedules=schedules,practices=practices,reviews=reviews,passed=passed,sum=sum,threads=threads,percent=percent)
     
 @app.route("/a_all")
@@ -787,10 +803,31 @@ def a_student_page():
 
     dbmg = db_manager()
     student = dbmg.exec_query("select u_account.id as id,u_account.name as name,cast(graduation as char) as grad_year,dep.name as dep from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where u_account.id=%s",id)
-    schedules = dbmg.exec_query("select * from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company group by company) and finished_flg = 0 and passed_flg = 0 order by date_time asc;",id)
-    passed = dbmg.exec_query("select company from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company group by company) and passed_flg = 1 order by date_time asc;",id)
-    finished = dbmg.exec_query("select company from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company group by company) and finished_flg = 1 order by date_time asc;",id)
+    schedules = dbmg.exec_query("select * from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company and s2.id=%s group by company) and finished_flg = 0 and passed_flg = 0 order by date_time asc;",(id,id))
+    for schedule in schedules:
+        # "YY-MM-DD hh-mm-ss" を "YY-MM-DD hh-mm" に加工して更新
+        schedule["date_time"] = str(schedule["date_time"])[:16]
+    
+    passed = dbmg.exec_query("select * from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company and s2.id=%s group by company) and passed_flg = 1 order by date_time asc;",(id,id))
+    finished = dbmg.exec_query("select * from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where s1.company = s2.company and s2.id=%s group by company) and finished_flg = 1 order by date_time asc;",(id,id))
     return render_template("a_student.html",student=student[0],schedules=schedules,passed=passed,finished=finished)
+
+@app.route("/a_company")
+def a_company_page():
+    dbmg = db_manager()
+
+    id = request.args.get("id")
+    company = request.args.get("company")
+    state = request.args.get("state")
+
+    schedules = dbmg.exec_query("select * from schedule where id=%s and company=%s order by date_time desc",(id,company))
+    student = dbmg.exec_query("select u_account.id as id,u_account.name as name,cast(graduation as char) as grad_year,dep.name as dep from u_account inner join class on class_id = class.id inner join dep on dep_id = dep.id where u_account.id=%s",id)
+
+    for schedule in schedules:
+        # "YY-MM-DD hh-mm-ss" を "YY-MM-DD hh-mm" に加工して更新
+        schedule["date_time"] = str(schedule["date_time"])[:16]
+
+    return render_template("a_company.html",schedules=schedules,student=student[0],state=state)
 
 @app.route("/a_forum",methods=["GET","POST"])
 def a_forum_page():

@@ -325,8 +325,15 @@
     margin: 40px 0;
 }
 
+.main .title_center{
+    font-size: x-large;
+    font-weight: 450;
+    margin-top: 40px;
+    /* text-align: left; */
+}
+
 .main .title_sub{
-    font-size: large;
+    margin: 30px 0 10px 0;
     text-align: left;
 }
 
@@ -598,10 +605,6 @@
     color: rgb(97, 97, 97);
 }
 
-#u_check_home .title_sub{
-    margin: 20px 0 5px 0;
-}
-
 #u_check_home .check_title{
     width: 40%;
     /* text-align: left; */
@@ -635,10 +638,6 @@
 
 #a_check_home .flg{
     width: 20%;
-}
-
-#a_check_home .title_sub{
-    margin: 20px 0 5px 0;
 }
 
 #u_forum .btn_area{
@@ -743,12 +742,12 @@
     margin-top: 10px;
 }
 
-#u_company .title_sub{
-    margin: 30px 0 10px 0;
+#u_company .none{
+    margin: 30px;
 }
 
-#a_all .title_sub{
-    margin: 30px 0 10px 0;
+#a_company .none{
+    margin: 30px;
 }
 
 #a_all .dep{
@@ -959,6 +958,14 @@
 #a_home .percent{
     display: flex;
     justify-content: space-between;
+}
+
+#a_student .none{
+    margin: 50px;
+}
+
+#a_student .title{
+    margin-bottom: 10px;
 }
 
 /* -------------------------------------------------------- */
