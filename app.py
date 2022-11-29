@@ -1233,8 +1233,10 @@ def a_signup():
 
 @app.route("/logout")
 def logout():
+    # セッションを空にする
     if "id" in session:
-        session.pop("id",None)   # セッションを空にする
+        session.pop("id",None)
+        session.pop("user",None)
     
     return redirect("/")
 
