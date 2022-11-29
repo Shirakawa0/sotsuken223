@@ -226,6 +226,41 @@
     height: 40px;
 }
 
+@import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
+
+.clock_container {
+  width: 10%;
+  height: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-left: auto;
+  padding-top:0px;
+}
+
+.clock {
+  font-family: 'Share Tech Mono', monospace;
+  color: #daf6ff;
+  /* text-shadow: 0 0 5px #0aafe6; */
+  line-height: 1.2;
+  text-align: center;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+
+.clock-date {
+  font-size: 10px;
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+
+.clock-time {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
 /* ログイン系の画面に共通する部分 -------------------------- */
 
 .login{

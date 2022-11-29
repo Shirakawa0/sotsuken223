@@ -17,6 +17,12 @@
     <nav class="navbar navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ url_for('u_home_page') }}"><img src="{{ url_for('static',filename='img/logo.png') }}" alt="JBRecruit" class="logo_header"></a>
+            <div class="clock_container">
+                <div class="clock">
+                    <h3 class="clock-date"></h3>
+                    <h3 class="clock-time"></h3>
+                </div>
+            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -63,5 +69,6 @@
 </nav>
 {% block content %}
 {% endblock %}
+<script src="static/js/clock.js"></script>
 </body>
 </html>
