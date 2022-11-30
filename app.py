@@ -42,9 +42,8 @@ def u_login():
     id = request.form.get("id")
     pw = request.form.get("pw")
     
+    # 入力されたIDが存在しない場合
     account = dbmg.exec_query("select * from u_account where id=%s",id)
-
-    # 入力された id が存在しない場合
     if len(account) == 0:
         return redirect("/")
 
@@ -54,9 +53,10 @@ def u_login():
         session["id"] = account[0]["id"]
         session["user"] = "user"
         session.permanent = True
-        app.permanent_session_lifetime = datetime.timedelta(hours=168)
+        app.permanent_session_lifetime = datetime.timedelta(hours=168) # 定数？
         return redirect("/u_home")
     else:
+        # パスワードが間違っている場合
         return redirect("/")
 
 @app.route("/u_signup")
@@ -83,25 +83,25 @@ def u_signup_confirm():
     if len(id_check) != 0:
         return redirect(url_for("u_signup_page"))
     
-    ## idが7文字でない場合
+    # idが7文字でない場合（HTML側でも制御している）
     if len(id) != 7:
         return redirect(url_for("u_signup_page"))
 
-    ## idが文字列の場合
+    # idが文字列の場合
     try:
         int(id)
     except ValueError:
         return redirect(url_for("u_signup_page"))
 
-    ## idが不正な場合
+    # idが不正な場合
     if int(id) < 1000000:
         return redirect(url_for("u_signup_page"))
 
-    # pwの文字数が不正な場合
+    # pwの文字数が不正な場合（HTML側でも制御している）
     if len(pw) < 8 or len(pw) > 20:
         return redirect(url_for("u_signup_page"))
 
-    # nameの文字数が不正な場合
+    # nameの文字数が不正な場合（HTML側でも制御している）
     if len(name) > 16:
         return redirect(url_for("u_signup_page"))
     
