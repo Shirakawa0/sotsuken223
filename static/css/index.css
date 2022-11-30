@@ -261,6 +261,19 @@
   margin-bottom: 5px;
 }
 
+.navbar-dark .navbar-toggler{
+    border: none;
+    outline: none;
+}
+
+.navbar-dark .navbar-toggler:focus{
+    box-shadow: none;
+    border: none;
+    outline: none;
+}
+
+
+
 /* ログイン系の画面に共通する部分 -------------------------- */
 
 .login{
