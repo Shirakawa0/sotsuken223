@@ -41,7 +41,7 @@
                     {% endfor %}
                 </div>
                 <div class="btn_area">
-                    <a href="{{url_for('a_practice_home')}}" class="btn btn-outline-primary">希望状況を閲覧</a>
+                    <a href="{{url_for('a_practice_home')}}" class="btn btn-outline-primary">面接練習</a>
                 </div>
             </div>
             <div class="content">
@@ -53,24 +53,20 @@
                     {% for res in reviews %}
                     <div class="box_small btn btn-light">
                         <a href="{{ url_for('a_check_detail',id=res.id) }}" class="box_content_small">
-                            <div class="text_overflow sub">{{ res.student }}</div>
+                            <div class="text_overflow sub">{{ res.name }}</div>
                             <div class="text_overflow">{{ res.title }}</div>  
                         </a>
                     </div>
                     {% endfor %}
                 </div>
                 <div class="btn_area">
-                    <a href="{{url_for('a_check_home')}}" class="btn btn-outline-primary">文章チェックへ進む</a>
+                    <a href="{{url_for('a_check_home')}}" class="btn btn-outline-primary">文章チェック</a>
                 </div>
             </div>
             <div class="content">
-                {% for passed in passed %}
-                <input type="hidden" id="pass" value="{{ passed.cnt }}">
-                {% endfor %}
-                {% for sum in sum %}
-                <input type="hidden" id="sum" value="{{ sum.cnt }}">
-                {% endfor %}
-                <h1 class="title percent"><div>内定率</div><div>{{percent}}%</div></h1>
+                <input type="hidden" id="pass" value="{{ passed }}">
+                <input type="hidden" id="sum" value="{{ sum }}">
+                <h1 class="title percent"><div>内定率</div><div>{{ percent }}%</div></h1>
                 <div style="position:relative; width:250px; height:250px;">
                     <canvas id="myChart" style="position: relative; height:150; width:150"></canvas>
                 </div>
