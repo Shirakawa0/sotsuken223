@@ -17,9 +17,9 @@
                     <input type="text" name="id" value="{{ id }}">
                     <input type="submit" value="検索" class="btn btn-sm btn-primary">
                     <!-- formタグの中にbuttonタグがあるとtype:submitが規定値になるのでtype:resetにした -->
-                    <button class="btn btn-outline-primary btn_option" type="reset">学籍番号以外で検索</button>
+                    <button id="btn_option" class="btn btn-outline-primary btn_option" type="reset">学籍番号以外で検索</button>
                 </form>
-                <form action="{{ url_for('a_user_account_page') }}" method="post" class="search_sub">
+                <form action="{{ url_for('a_user_account_page') }}" method="post" id="form_option" class="search_sub" hidden>
                     <div>
                         <div class="row_input">
                             <p class="label">卒業年</p>
@@ -67,4 +67,18 @@
         </div>
     </div>
 </div>
+<script>
+    let btn = document.getElementById("btn_option")
+    let form = document.getElementById("form_option")
+    console.log(form)
+    btn.addEventListener('click',function(){
+        if(form.hidden){
+            form.hidden = false
+            btn.textContent = "検索オプションを閉じる"
+        }else{
+            form.hidden = true
+            btn.textContent = "学籍番号以外で検索"
+        }
+    })
+</script>
 {% endblock %}

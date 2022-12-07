@@ -456,15 +456,12 @@
     margin-bottom: 30px;
 }
 
-#a_user_account_1 .search_main{
-    margin-bottom: 20px;
-}
-
 #a_user_account_1 .btn_option{
     margin-left: 20px;
 }
 
 #a_user_account_1 .search_sub{
+    margin-top: 20px;
     display: flex;
     justify-content: center;
 }
