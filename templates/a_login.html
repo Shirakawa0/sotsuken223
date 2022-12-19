@@ -4,7 +4,7 @@
 <div id="a_login" class="login">
     <div class="content_area">
         <img src="{{ url_for('static',filename='img/logo.png') }}" alt="JBRecruit" class="logo">
-        <h3 class="title">管理者ログイン</h3>
+        <h3 class="title">教員ログイン</h3>
         <div class="content">
             <form action="{{ url_for('a_login') }}" method="post">
                 <div class="row_input">
@@ -18,7 +18,7 @@
                 <input type="submit" value="ログイン" class="btn btn-primary btn_wide">
             </form>
             <div class="link_area">
-                <a href="{{ url_for('u_login_page') }}">利用者ログイン</a>
+                <a href="{{ url_for('u_login_page') }}">学生ログイン</a>
             </div>
         </div>
     </div>
