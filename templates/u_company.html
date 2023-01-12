@@ -19,7 +19,11 @@
                 <div>{{ schedules[0].step }}</div>
                 <div>{{ schedules[0].detail }}</div>
                 <div>{{ schedules[0].place }}</div>
-                <div>{{ schedules[0].date_time }}</div>
+                {% if schedules[0].red %}
+                <div style="width: 20%; color:red;" class="text_overflow">{{ schedules[0].date_time }}</div>
+                {% else %}
+                <div style="width: 20%;" class="text_overflow">{{ schedules[0].date_time }}</div>
+                {% endif %}
                 <div>
                     <a href="{{ url_for('u_register_page',company=schedules[0].company) }}" class="btn btn-outline-primary btn-sm">通過</a>
                     <a href="{{ url_for('u_delete_page',company=schedules[0].company) }}" class="btn btn-outline-primary btn-sm">落選</a>

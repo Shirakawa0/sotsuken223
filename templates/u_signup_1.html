@@ -45,4 +45,12 @@
         </div>
     </div>
 </div>
+<input type="hidden" value="{{ e }}" id="err">
+<script>
+    err = document.getElementById("err")
+    if(err.value == 1){
+        console.log("11")
+        alert("この学籍番号は既に使われています")
+    }
+</script>
 {% endblock %}

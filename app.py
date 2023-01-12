@@ -61,8 +61,9 @@ def u_login():
 
 @app.route("/u_signup")
 def u_signup_page():
+    e = request.args.get("e")
     grad_years,deps = get_classes()
-    return render_template("u_signup_1.html",grad_years=grad_years,deps=deps)
+    return render_template("u_signup_1.html",grad_years=grad_years,deps=deps,e=e)
 
 @app.route("/u_signup/confirm",methods=["POST"])
 def u_signup_confirm():
@@ -81,7 +82,7 @@ def u_signup_confirm():
     # idが既に使われている場合
     id_check = dbmg.exec_query("select * from u_account where id=%s",id)
     if len(id_check) != 0:
-        return redirect(url_for("u_signup_page"))
+        return redirect(url_for("u_signup_page",e=1))
     
     # idが7文字でない場合（HTML側でも制御している）
     if len(id) != 7:
@@ -147,6 +148,14 @@ def u_home_page():
     sql = "select * from schedule as s1 where id = %s and date_time = (select max(date_time) from schedule as s2 where id = %s and s1.company = s2.company group by company) and finished_flg = 0 and passed_flg = 0 order by date_time asc;"
     schedules = dbmg.exec_query(sql,(id,id))
 
+    for sc in schedules :
+        dt = sc["date_time"]
+        today = datetime.datetime.now()
+        if dt < today :
+            sc["red"] = True  
+        else :
+            sc["red"] = False
+
     for schedule in schedules:
         # "YY-MM-DD hh:mm:ss" を "MM/DD hh:mm" に変更
         schedule["date_time"] = str(schedule["date_time"]).replace("-","/")[5:16]
@@ -179,6 +188,14 @@ def u_company_page():
 
     sql = "select * from schedule where id = %s and company = %s order by date_time desc"
     schedules = dbmg.exec_query(sql,(id,company))
+
+    for sc in schedules :
+        dt = sc["date_time"]
+        today = datetime.datetime.now()
+        if dt < today :
+            sc["red"] = True  
+        else :
+            sc["red"] = False
 
     for schedule in schedules:
         # "YY-MM-DD hh:mm:ss" を "MM/DD hh:mm" に変更
