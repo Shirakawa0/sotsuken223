@@ -18,7 +18,7 @@ def get_classes():
     dbmg = db_manager()
 
     this_year = datetime.date.today().year - 2000
-    grad_years = [this_year + 1,this_year + 2, this_year + 3, this_year + 4]
+    grad_years = [this_year,this_year + 1,this_year + 2, this_year + 3, this_year + 4]
     
     deps = dbmg.exec_query("select * from dep")
 

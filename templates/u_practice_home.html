@@ -29,7 +29,7 @@
         <h1 class="title">面接練習検索</h1>
         <form action="{{ url_for('u_practice_home') }}" method="post" class="search">
             <select name="teacher">
-                <option value="">先生を選択</option>
+                <option value="">教員を選択</option>
                 {% for teacher in teachers %}
                 <option value="{{ teacher.id }}">{{ teacher.name }}</option>
                 {% endfor %}
