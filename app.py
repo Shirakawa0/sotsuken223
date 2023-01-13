@@ -808,7 +808,7 @@ def a_all_page():
 
     teacher_id = session["id"]
 
-    passed_students_id = dbmg.exec_query("select distinct(id) from schedule where passed_flg=1")
+    passed_students_id = dbmg.exec_query("select id from u_account where class_id in (select class_id from teacher_class where id=%s) and id in (select distinct(id) from schedule where passed_flg=1)",teacher_id)
     passed_students = []
     for student in passed_students_id:
         # 学生の情報を取得
