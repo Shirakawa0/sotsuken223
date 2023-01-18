@@ -10,7 +10,7 @@
     <div class="content_area">
         <h1 class="title">{{ schedules[0].company }}</h1>
         <p class="message">
-            選考が終わったら、通過か落選を選択します。内容の変更も可能です。<br>
+            選考が終わったら、メニューから通過か落選を選択します。内容の変更も可能です。<br>
             内定をもらった場合は、下のボタンから内定を確定してください。
         </p>
         <p class="title_sub">最新の選考状況</p>
@@ -24,15 +24,28 @@
                 {% else %}
                 <div class="text_overflow">{{ schedules[0].date_time }}</div>
                 {% endif %}
-                <div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-expanded="false">
+                     Menu
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="{{ url_for('u_register_page',company=schedules[0].company) }}">通過</a></li>
+                      <li><a class="dropdown-item" href="{{ url_for('u_delete_page',company=schedules[0].company) }}">落選</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="{{ url_for('u_modify_page',company=schedules[0].company) }}">変更</a></li>
+                    </ul>
+                  </div>
+
+
+                <!-- <div>
                     <a href="{{ url_for('u_register_page',company=schedules[0].company) }}" class="btn btn-outline-primary btn-sm">通過</a>
-                    <a href="{{ url_for('u_modify_page',company=schedules[0].company) }}" class="btn btn-outline-primary btn-sm">変更</a>
-                </div>
+                    <a href="{{ url_for('u_delete_page',company=schedules[0].company) }}" class="btn btn-outline-primary btn-sm">落選</a>
+                    <a href="{{ url_for('u_modify_page',company=schedules[0].company) }}" class="btn btn-outline-secondary btn-sm">変更</a>
+                </div> -->
             </div>
         </div>
         <div class="btn_area">
             <a href="{{ url_for('u_passed_page',company=schedules[0].company) }}" class="btn btn-outline-primary">内定</a>
-            <a href="{{ url_for('u_delete_page',company=schedules[0].company) }}" class="btn btn-outline-primary">落選</a>
         </div>
         <p class="title_sub">これまでの選考状況</p>
         {% if schedules|length <= 1 %}
