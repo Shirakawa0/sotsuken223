@@ -17,7 +17,7 @@ for d in dep:
     except IntegrityError:
         continue
 
-this_year = datetime.date.today().year -2000
+this_year = datetime.date.today().year - 2000
 graduation_years = [this_year,this_year + 1,this_year + 2, this_year + 3, this_year + 4]
 
 for g in graduation_years:
