@@ -26,17 +26,15 @@
                 {% endif %}
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-expanded="false">
-                     Menu
+                        Menu
                     </button>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="{{ url_for('u_register_page',company=schedules[0].company) }}">通過</a></li>
-                      <li><a class="dropdown-item" href="{{ url_for('u_delete_page',company=schedules[0].company) }}">落選</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="{{ url_for('u_modify_page',company=schedules[0].company) }}">変更</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('u_register_page',company=schedules[0].company) }}">通過</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('u_delete_page',company=schedules[0].company) }}">落選</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ url_for('u_modify_page',company=schedules[0].company) }}">変更</a></li>
                     </ul>
-                  </div>
-
-
+                </div>
                 <!-- <div>
                     <a href="{{ url_for('u_register_page',company=schedules[0].company) }}" class="btn btn-outline-primary btn-sm">通過</a>
                     <a href="{{ url_for('u_delete_page',company=schedules[0].company) }}" class="btn btn-outline-primary btn-sm">落選</a>
