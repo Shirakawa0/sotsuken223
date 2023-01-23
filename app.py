@@ -512,8 +512,9 @@ def u_practice_detail():
 def u_practice_canceled():
     dbmg = db_manager()
 
+    student = session["id"]
     id = request.args.get("id")
-    dbmg.exec_query("delete from practice_attendance where schedule_id=%s",id)
+    dbmg.exec_query("delete from practice_attendance where schedule_id=%s and student=%s",(id,student))
 
     return render_template("u_practice_canceled.html")
 
