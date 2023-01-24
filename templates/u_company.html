@@ -10,7 +10,7 @@
     <div class="content_area">
         <h1 class="title">{{ schedules[0].company }}</h1>
         <p class="message">
-            選考が終わったら、メニューから通過か落選を選択します。内容の変更も可能です。<br>
+            選考が終わったら、メニューから通過か落選を選択します。内容の編集も可能です。<br>
             内定をもらった場合は、下のボタンから内定を確定してください。
         </p>
         <p class="title_sub">最新の選考状況</p>
@@ -32,7 +32,7 @@
                         <li><a class="dropdown-item" href="{{ url_for('u_register_page',company=schedules[0].company) }}">通過</a></li>
                         <li><a class="dropdown-item" href="{{ url_for('u_delete_page',company=schedules[0].company) }}">落選</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{ url_for('u_modify_page',company=schedules[0].company) }}">変更</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('u_modify_page',company=schedules[0].company) }}">編集</a></li>
                     </ul>
                 </div>
                 <!-- <div>

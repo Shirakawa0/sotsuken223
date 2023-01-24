@@ -528,7 +528,7 @@ def u_check_home():
         dbmg.exec_query("update review set read_flg=1 where id=%s",check_id)
 
     student_id = session["id"]
-    read = dbmg.exec_query("select review.id as id,a_account.name as teacher,title,body,date,check_flg,read_flg,comment from review inner join a_account on teacher=a_account.id where read_flg=1 and student=%s order by date asc",student_id)
+    read = dbmg.exec_query("select review.id as id,a_account.name as teacher,title,body,date,check_flg,read_flg,comment from review inner join a_account on teacher=a_account.id where read_flg=1 and student=%s order by date desc",student_id)
     unread = dbmg.exec_query("select review.id as id,a_account.name as teacher,title,body,date,check_flg,read_flg,comment from review inner join a_account on teacher=a_account.id where read_flg=0 and student=%s order by date asc",student_id)
     
     return render_template("u_check_home.html",read=read,unread=unread)
